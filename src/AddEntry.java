@@ -1,6 +1,11 @@
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
 
-public class executeQueryTest {
+public class AddEntry {
     static final String DATABASE_URL = "jdbc:mysql://localhost/books";
     public static void main(String[] args) {
 

@@ -3,7 +3,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-public class UpdateAuthor {
+public class UpdateEntry {
     static final String DATABASE_URL = "jdbc:mysql://localhost/books";
     public static void main(String[] args) {
         String firstName = "Lisa";
