@@ -6,7 +6,7 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 
 public class AddEntry {
-    static final String DATABASE_URL = "jdbc:mysql://localhost/books";
+    static final String DATABASE_URL = "jdbc:mysql://localhost:3306/jdbc-test";
     public static void main(String[] args) {
 
         Connection connection = null;
@@ -16,7 +16,7 @@ public class AddEntry {
         try {
             // Connect to database
             connection = DriverManager.getConnection(
-                    DATABASE_URL, "root", "password"
+                    DATABASE_URL, "root", "my-secret-pw"
             );
             pstat = connection.prepareStatement("SELECT AuthorID, FirstName, LastName FROM Authors");
 
