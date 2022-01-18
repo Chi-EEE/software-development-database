@@ -99,17 +99,6 @@
         </properties>
         <border type="none"/>
         <children>
-          <component id="1448d" class="javax.swing.JTextField" binding="tfDOB_DD">
-            <constraints>
-              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                <preferred-size width="30" height="30"/>
-              </grid>
-            </constraints>
-            <properties>
-              <text value=""/>
-              <toolTipText value="DD"/>
-            </properties>
-          </component>
           <component id="ed3de" class="javax.swing.JTextField" binding="tfDOB_YY">
             <constraints>
               <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
@@ -130,6 +119,14 @@
               <text value=""/>
               <toolTipText value="MM"/>
             </properties>
+          </component>
+          <component id="df30a" class="javax.swing.JFormattedTextField" binding="ftfDOB_DD" custom-create="true">
+            <constraints>
+              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                <preferred-size width="50" height="-1"/>
+              </grid>
+            </constraints>
+            <properties/>
           </component>
         </children>
       </grid>

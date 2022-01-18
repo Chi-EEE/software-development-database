@@ -1,6 +1,8 @@
 import javax.swing.*;
+import javax.swing.text.MaskFormatter;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.ParseException;
 
 public class SignUpForm  extends JFrame{
     private JTextField tfFirstName;
@@ -9,7 +11,6 @@ public class SignUpForm  extends JFrame{
     private JButton clearButton;
     private JPanel mainPanel;
     private JLabel lbWelcome;
-    private JTextField tfDOB_DD;
     private JTextField tfDOB_YY;
     private JTextField tfDOB_MM;
     private JTextField tfPhone;
@@ -17,6 +18,8 @@ public class SignUpForm  extends JFrame{
     private JTextField textField1;
     private JLabel tfEmail_Confirm;
     private JTextField textField2;
+    private JFormattedTextField ftfDOB_DD;
+    private MaskFormatter Date;
 
     public SignUpForm() {
         setContentPane(mainPanel);
@@ -44,5 +47,12 @@ public class SignUpForm  extends JFrame{
 
     public static void main(String[] args) {
         SignUpForm signUpForm = new SignUpForm();
+    }
+
+    private void createUIComponents() throws ParseException {
+        Date = new MaskFormatter("##");
+        Date.setPlaceholderCharacter('#');
+        ftfDOB_DD = new JFormattedTextField(Date);
+        ftfDOB_DD.setColumns(2);
     }
 }
