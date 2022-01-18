@@ -1,0 +1,33 @@
+Customer: [MIN]
+Customer ID
+Name
+Email
+Eircode
+Phone Number
+
+Invoice: [MIN]
+Invoice ID
+[Product Name, Product quantity]
+Customer
+
+Product: [MIN]
+Product ID
+Product Name
+Product Quantity
+
+Company:
+Company ID
+Company Name
+
+User:
+User ID
+Username
+Title??? [Mr,Mrs,Ms,Dr]
+First Name
+Last Name
+// Account Type [Customer or Company??]
+Address
+Date of Birth
+Email
+Phone Number
+Password
