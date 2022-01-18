@@ -9,6 +9,14 @@ public class SignUpForm  extends JFrame{
     private JButton clearButton;
     private JPanel mainPanel;
     private JLabel lbWelcome;
+    private JTextField tfDOB_DD;
+    private JTextField tfDOB_YY;
+    private JTextField tfDOB_MM;
+    private JTextField tfPhone;
+    private JTextField tfEmail;
+    private JTextField textField1;
+    private JLabel tfEmail_Confirm;
+    private JTextField textField2;
 
     public SignUpForm() {
         setContentPane(mainPanel);
