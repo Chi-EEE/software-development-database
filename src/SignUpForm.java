@@ -3,6 +3,7 @@ import javax.swing.text.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 public class SignUpForm extends JFrame {
     private JTextField tfFirstName;
@@ -23,8 +24,9 @@ public class SignUpForm extends JFrame {
     public SignUpForm() {
         setContentPane(mainPanel);
         setTitle("Welcome");
-        setSize(450, 300);
+        setSize(440, 390);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        setMinimumSize(new Dimension(440, 390));
         setVisible(true);
         okButton.addActionListener(new ActionListener() {
             @Override
@@ -67,7 +69,6 @@ public class SignUpForm extends JFrame {
         @Override
         public void insertString(FilterBypass fb, int offset, String string,
                                  AttributeSet attr) throws BadLocationException {
-
             Document doc = fb.getDocument();
             StringBuilder sb = new StringBuilder();
             sb.append(doc.getText(0, doc.getLength()));
