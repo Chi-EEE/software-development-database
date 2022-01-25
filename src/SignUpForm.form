@@ -87,8 +87,8 @@
           </component>
           <component id="3a365" class="javax.swing.JTextField" binding="tfDOB_MM" custom-create="true">
             <constraints>
-              <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                <preferred-size width="-1" height="30"/>
+              <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                <preferred-size width="30" height="30"/>
               </grid>
             </constraints>
             <properties>
@@ -147,12 +147,6 @@
         <properties>
           <text value="Email Address"/>
         </properties>
-      </component>
-      <component id="b2e4b" class="javax.swing.JTextField" binding="tfEmail">
-        <constraints>
-          <grid row="7" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
-        </constraints>
-        <properties/>
       </component>
       <component id="215df" class="javax.swing.JTextField" binding="textField1" default-binding="true">
         <constraints>
@@ -214,6 +208,12 @@
         <properties>
           <text value="Clear"/>
         </properties>
+      </component>
+      <component id="b2e4b" class="javax.swing.JTextField" binding="tfEmail">
+        <constraints>
+          <grid row="7" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties/>
       </component>
     </children>
   </grid>
