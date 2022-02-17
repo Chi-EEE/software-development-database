@@ -23,3 +23,6 @@ VALUES
 "IT Carlow",
 "TEST",
 "0000000");
+
+Export schema
+https://stackoverflow.com/a/46584511
