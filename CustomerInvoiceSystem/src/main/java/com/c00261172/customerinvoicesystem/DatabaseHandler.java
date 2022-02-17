@@ -9,7 +9,7 @@ import java.sql.SQLException;
  *
  * @author C00261172
  */
-public class DatabaseHandler {
+abstract class DatabaseHandler {
     static final String DATABASE_URL = "jdbc:mysql://localhost/CustomerInvoiceSystem";
     static final String DATABASE_USER = "root";
     static final String DATABASE_PASSWORD = "password";
@@ -23,7 +23,7 @@ public class DatabaseHandler {
             e.printStackTrace();
         }
     }
-    protected void insert(String sqlTable, String[] sqlParameters, String[] values) {
+    public void insert(String sqlTable, String[] sqlParameters, String[] values) {
         try {
             int entriesCreated = 0;
             pstat = connection.prepareStatement("INSERT INTO " + sqlTable + " (" + sqlParameters[0] + ") VALUES (" + sqlParameters[1] + ")");
