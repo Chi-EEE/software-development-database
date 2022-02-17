@@ -1,0 +1,25 @@
+Notes:
+Download mySQL connector java and place into a folder called lib. Then go to File > Project Stucture then Modules > Dependencies. Click plus and add JAR file
+In Command Prompt, use this script: "docker run --name AppName -p 3306:3306 -e MYSQL_ROOT_PASSWORD=password -d mysql" to create a new docker app.
+In MySQL Workbench, connect to database with username being: "root" and password being "password",
+then create a new Schema then Right-click tables and create the tables for the entries
+
+
+INSERT INTO `sys`.`Customer`
+(`customerId`,
+`firstName`,
+`lastName`,
+`DOB`,
+`email`,
+`address`,
+`eircode`,
+`phoneNumber`)
+VALUES
+(0,
+"Chi",
+"Test",
+"1990-09-09",
+"Chi@test.com",
+"IT Carlow",
+"TEST",
+"0000000");
