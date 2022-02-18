@@ -6,29 +6,43 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 /**
- *
  * @author C00261172
+ * @summary Singleton Class for database
  */
-abstract class DatabaseHandler {
+public class DatabaseHandler {
     static final String DATABASE_URL = "jdbc:mysql://localhost/CustomerInvoiceSystem";
     static final String DATABASE_USER = "root";
     static final String DATABASE_PASSWORD = "password";
     
+    private static DatabaseHandler instance = null;
     private Connection connection;
     private PreparedStatement pstat;
-    DatabaseHandler() {
+    
+    public static DatabaseHandler getInstance() {
+        if (instance == null) { // Only one DatabaseHandler is created
+            instance = new DatabaseHandler();
+        }
+        return instance;
+    }
+    
+    /**
+     * @summary Prevent creating databaseHandler outside of class
+     */
+    private DatabaseHandler() {
         try {
             connection = DriverManager.getConnection(DATABASE_URL, DATABASE_USER, DATABASE_PASSWORD);
         } catch(SQLException e) {
             e.printStackTrace();
         }
     }
-    public void insert(String sqlTable, String[] sqlParameters, String[] values) {
+    
+    public void insert(String query, Object[] args) {
         try {
             int entriesCreated = 0;
-            pstat = connection.prepareStatement("INSERT INTO " + sqlTable + " (" + sqlParameters[0] + ") VALUES (" + sqlParameters[1] + ")");
-            for (int i = 0; i < values.length; i++) {
-                pstat.setString(i + 1, values[i]);
+            //sqlTable + " (" + sqlParameters[0] + ") VALUES (" + sqlParameters[1]
+            pstat = connection.prepareStatement("INSERT INTO " + query);
+            for (int i = 0; i < args.length; i++) {
+                pstat.setObject(i + 1, args[i]);
             }
             entriesCreated = pstat.executeUpdate();
             if (entriesCreated > 0) {
