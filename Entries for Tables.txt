@@ -4,16 +4,23 @@ Name
 Email
 Eircode
 Phone Number
+DOB
 
 Invoice: [MIN]
 Invoice ID
+Customer ID
 [Product Name, Product quantity]
 Customer
+
+Invoice Item:
+Invoice Item ID
+Product ID
+Product Quantity
+Invoice ID
 
 Product: [MIN]
 Product ID
 Product Name
-Product Quantity
 
 Company:
 Company ID
