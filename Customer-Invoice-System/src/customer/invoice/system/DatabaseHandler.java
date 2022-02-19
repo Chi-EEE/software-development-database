@@ -10,7 +10,7 @@ import java.sql.SQLException;
  * @summary Singleton Class for database
  */
 public class DatabaseHandler {
-    static final String DATABASE_URL = "jdbc:mysql://localhost/sys";
+    static final String DATABASE_URL = "jdbc:mysql://localhost/Application";
     static final String DATABASE_USER = "root";
     static final String DATABASE_PASSWORD = "password";
     
@@ -20,6 +20,14 @@ public class DatabaseHandler {
     
     public static DatabaseHandler getInstance() {
         if (instance == null) { // Only one DatabaseHandler is created
+            try {
+                String className = "com.mysql.cj.jdbc.Driver";
+                Class.forName(className);
+                System.out.println("Load Success");
+            } catch (ClassNotFoundException ex) {
+                System.out.println("Error in loading jdbc Driver");
+                System.out.println(ex.getMessage());
+            }
             instance = new DatabaseHandler();
         }
         return instance;

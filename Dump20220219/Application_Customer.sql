@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 8.0.28, for Win64 (x86_64)
 --
--- Host: 127.0.0.1    Database: sys
+-- Host: 127.0.0.1    Database: Application
 -- ------------------------------------------------------
 -- Server version	8.0.28
 
@@ -32,7 +32,7 @@ CREATE TABLE `Customer` (
   `eircode` varchar(7) NOT NULL,
   `phoneNumber` varchar(10) NOT NULL,
   PRIMARY KEY (`customerId`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='When a user makes a customer account';
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -41,7 +41,7 @@ CREATE TABLE `Customer` (
 
 LOCK TABLES `Customer` WRITE;
 /*!40000 ALTER TABLE `Customer` DISABLE KEYS */;
-INSERT INTO `Customer` VALUES (1,'Chi','Test','1990-09-09 00:00:00','Chi@test.com','IT Carlow','TEST','0000000');
+INSERT INTO `Customer` VALUES (1,'Chi','FromJava','1970-01-01 00:00:00','Chi@Java','IT Carlow','Carlow','00000');
 /*!40000 ALTER TABLE `Customer` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -54,4 +54,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-02-17 23:11:08
+-- Dump completed on 2022-02-19 20:14:20
