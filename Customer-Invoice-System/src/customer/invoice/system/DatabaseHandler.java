@@ -1,4 +1,4 @@
-package com.c00261172.customerinvoicesystem;
+package customer.invoice.system;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -10,7 +10,7 @@ import java.sql.SQLException;
  * @summary Singleton Class for database
  */
 public class DatabaseHandler {
-    static final String DATABASE_URL = "jdbc:mysql://localhost/CustomerInvoiceSystem";
+    static final String DATABASE_URL = "jdbc:mysql://localhost/sys";
     static final String DATABASE_USER = "root";
     static final String DATABASE_PASSWORD = "password";
     

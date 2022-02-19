@@ -1,4 +1,4 @@
-package com.c00261172.customerinvoicesystem;
+package customer.invoice.system;
 
 /**
  *
