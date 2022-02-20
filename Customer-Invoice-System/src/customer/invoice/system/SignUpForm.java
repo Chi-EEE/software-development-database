@@ -37,7 +37,7 @@ public class SignUpForm extends javax.swing.JFrame {
         OkButton = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jDateChooser1 = new com.toedter.calendar.JDateChooser();
+        DOBChooser = new com.toedter.calendar.JDateChooser();
         jLabel8 = new javax.swing.JLabel();
         EircodeTF = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
@@ -107,7 +107,7 @@ public class SignUpForm extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel3)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                                .addComponent(DOBChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                             .addComponent(EmailTF, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(FNameTF, javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
@@ -154,7 +154,7 @@ public class SignUpForm extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(DOBChooser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(17, 17, 17)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
@@ -187,13 +187,14 @@ public class SignUpForm extends javax.swing.JFrame {
 
     private void OkButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OkButtonActionPerformed
         DatabaseHandler databaseHandler = DatabaseHandler.getInstance();
-//        Object[] s = {0, "Chi", "FromJava", new Date(0), "Chi@Java", "IT Carlow", "Carlow", "00000"};
-//        databaseHandler.insert("Customer(customerId,firstName,lastName,DOB,email,address,eircode,phoneNumber) VALUES (?,?,?,?,?,?,?,?)", s)
+        Object[] s = {0, FNameTF.getText(), LNameTF.getText(), new java.sql.Date(DOBChooser.getDate().getTime()), EmailTF.getText(), addressField.getText(), EircodeTF.getText(), PhoneNumberTF.getText()};
+        databaseHandler.insert("Customer(customerId,firstName,lastName,DOB,email,address,eircode,phoneNumber) VALUES (?,?,?,?,?,?,?,?)", s);
         
     }//GEN-LAST:event_OkButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField CEmailTF;
+    private com.toedter.calendar.JDateChooser DOBChooser;
     private javax.swing.JTextField EircodeTF;
     private javax.swing.JTextField EmailTF;
     private javax.swing.JTextField FNameTF;
@@ -201,7 +202,6 @@ public class SignUpForm extends javax.swing.JFrame {
     private javax.swing.JButton OkButton;
     private javax.swing.JTextField PhoneNumberTF;
     private javax.swing.JTextArea addressField;
-    private com.toedter.calendar.JDateChooser jDateChooser1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
