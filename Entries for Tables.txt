@@ -1,5 +1,11 @@
+Account:
+Account ID
+Username
+Password
+
 Customer: [MIN]
 Customer ID
+Account ID
 Name
 Email
 Eircode
@@ -24,6 +30,7 @@ Product Name
 
 Company:
 Company ID
+Account ID
 Company Name
 
 User:
