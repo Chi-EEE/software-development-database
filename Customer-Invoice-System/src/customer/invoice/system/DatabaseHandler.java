@@ -3,7 +3,11 @@ package customer.invoice.system;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author C00261172
@@ -69,6 +73,27 @@ public class DatabaseHandler {
         }
         return entriesCreated >= 1;
     }
+    
+    public List<Object> get(String query) {
+        ResultSet resultSet = null;
+        List<Object> objects = new ArrayList<Object>();
+        try {
+            pstat = connection.prepareStatement("SELECT " + query);
+            resultSet = pstat.executeQuery();
+            
+            ResultSetMetaData metaData = resultSet.getMetaData();
+            int numberOfColumns = metaData.getColumnCount();
+            while (resultSet.next()) {
+                for (int i = 1; i <= numberOfColumns; i++) {
+                    objects.add(resultSet.getObject(i));
+                }
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return objects;
+    }
+    
     protected void finalize() { 
         try {
             if (connection != null) {

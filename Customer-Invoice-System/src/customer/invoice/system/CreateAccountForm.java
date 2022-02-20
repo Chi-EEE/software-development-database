@@ -51,12 +51,6 @@ public class CreateAccountForm extends javax.swing.JFrame {
 
         jLabel4.setText("Email Address");
 
-        EmailTF.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                EmailTFActionPerformed(evt);
-            }
-        });
-
         jLabel5.setText("Confirm Email Address");
 
         jLabel6.setText("Phone Number");
@@ -199,10 +193,6 @@ public class CreateAccountForm extends javax.swing.JFrame {
             new SelectAccountType().setVisible(true);
         }
     }//GEN-LAST:event_OkButtonActionPerformed
-
-    private void EmailTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EmailTFActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_EmailTFActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextArea AddressField;
