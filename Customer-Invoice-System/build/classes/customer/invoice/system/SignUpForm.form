@@ -33,7 +33,7 @@
                           <Group type="102" attributes="0">
                               <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="DOBChooser" pref="0" max="32767" attributes="0"/>
+                              <Component id="DOB" pref="0" max="32767" attributes="0"/>
                           </Group>
                           <Component id="EmailTF" alignment="0" max="32767" attributes="0"/>
                           <Component id="FNameTF" alignment="0" max="32767" attributes="0"/>
@@ -98,7 +98,7 @@
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="jLabel3" min="-2" pref="22" max="-2" attributes="0"/>
-                  <Component id="DOBChooser" min="-2" max="-2" attributes="0"/>
+                  <Component id="DOB" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="17" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
@@ -225,12 +225,12 @@
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="ff" green="ff" red="ff" type="rgb"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Your Personal Details"/>
+            <Property name="text" type="java.lang.String" value="Create an Account"/>
           </Properties>
         </Component>
       </SubComponents>
     </Container>
-    <Component class="com.toedter.calendar.JDateChooser" name="DOBChooser">
+    <Component class="com.toedter.calendar.JDateChooser" name="DOB">
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel8">
       <Properties>
