@@ -44,9 +44,9 @@ public class DatabaseHandler {
         }
     }
     
-    public void insert(String query, Object[] args) {
+    public boolean insert(String query, Object[] args) {
+        int entriesCreated = 0;
         try {
-            int entriesCreated = 0;
             //sqlTable + " (" + sqlParameters[0] + ") VALUES (" + sqlParameters[1]
             pstat = connection.prepareStatement("INSERT INTO " + query);
             for (int i = 0; i < args.length; i++) {
@@ -60,15 +60,20 @@ public class DatabaseHandler {
             e.printStackTrace();
         } finally {
             try {
-                pstat.close();
+                if (pstat != null) {
+                    pstat.close();
+                }
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
+        return entriesCreated >= 1;
     }
     protected void finalize() { 
         try {
-            connection.close();
+            if (connection != null) {
+                connection.close();
+            }
         } catch(SQLException e) {
             e.printStackTrace();
         }
