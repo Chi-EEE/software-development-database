@@ -74,9 +74,9 @@ public class DatabaseHandler {
         return entriesCreated >= 1;
     }
     
-    public List<Object> get(String query) {
+    public List<List<Object>> get(String query) {
         ResultSet resultSet = null;
-        List<Object> objects = new ArrayList<Object>();
+        List<List<Object>> objects = new ArrayList<List<Object>>();
         try {
             pstat = connection.prepareStatement("SELECT " + query);
             resultSet = pstat.executeQuery();
@@ -84,9 +84,11 @@ public class DatabaseHandler {
             ResultSetMetaData metaData = resultSet.getMetaData();
             int numberOfColumns = metaData.getColumnCount();
             while (resultSet.next()) {
+                List<Object> row = new ArrayList<Object>();
                 for (int i = 1; i <= numberOfColumns; i++) {
-                    objects.add(resultSet.getObject(i));
+                    row.add(resultSet.getObject(i));
                 }
+                objects.add(row);
             }
         } catch (SQLException ex) {
             ex.printStackTrace();

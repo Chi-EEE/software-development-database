@@ -17,9 +17,13 @@ public class Main {
      */
     public static void main(String[] args) {
         DatabaseHandler handler = DatabaseHandler.getInstance();
-        List<Object> objects = handler.get("* FROM Application.Account");
+        List<List<Object>> objects = handler.get("* FROM Application.Account");
         for (int i = 0; i < objects.size(); i++) {
-            System.out.println(objects.get(i));
+            List<Object> row = objects.get(i);
+            for (int j = 0; j < row.size(); j++) {
+                System.out.print(row.get(j) + " ");
+            }
+            System.out.println();
         }
 //        java.awt.EventQueue.invokeLater(new Runnable() {
 //            public void run() {
