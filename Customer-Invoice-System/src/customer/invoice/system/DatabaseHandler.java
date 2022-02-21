@@ -74,7 +74,7 @@ public class DatabaseHandler {
         return entriesCreated >= 1;
     }
     
-    public List<List<Object>> get(String query) {
+    public List<List<Object>> get(String query, int rowCount) {
         ResultSet resultSet = null;
         List<List<Object>> objects = new ArrayList<List<Object>>();
         try {
@@ -83,12 +83,14 @@ public class DatabaseHandler {
             
             ResultSetMetaData metaData = resultSet.getMetaData();
             int numberOfColumns = metaData.getColumnCount();
-            while (resultSet.next()) {
+            int count = 0;
+            while (resultSet.next() && count < rowCount) {
                 List<Object> row = new ArrayList<Object>();
                 for (int i = 1; i <= numberOfColumns; i++) {
                     row.add(resultSet.getObject(i));
                 }
                 objects.add(row);
+                count++;
             }
         } catch (SQLException ex) {
             ex.printStackTrace();

@@ -17,7 +17,7 @@ public class Main {
      */
     public static void main(String[] args) {
         DatabaseHandler handler = DatabaseHandler.getInstance();
-        List<List<Object>> objects = handler.get("* FROM Application.Account");
+        List<List<Object>> objects = handler.get("* FROM Application.Account", 2);
         for (int i = 0; i < objects.size(); i++) {
             List<Object> row = objects.get(i);
             for (int j = 0; j < row.size(); j++) {
