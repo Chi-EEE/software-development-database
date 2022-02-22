@@ -33,9 +33,8 @@ public class Account {
     }
     
     public void login(String username, String password) {
-        accountId = getAccountId(username);
         sessionId = requestLogin(username, password);
-        if (sessionId ) {
+        if (isLoggedIn()) {
             this.username = username;
             this.password = password;
         }
@@ -46,15 +45,17 @@ public class Account {
     }
     
     public static boolean createAccount(String username, String password, String email, String address, String eircode, String phoneNumber) {
-        Object[] args = {0, username, password, email, address, eircode, phoneNumber};
-        DatabaseHandler handler = DatabaseHandler.getInstance();
-        boolean success = handler.insert("Account(accountId,username,password,email,address,eircode,phoneNumber) VALUES (?,?,?,?,?,?,?)", args);
-        if (success) {
-            getInstance();
-            instance.login(username, password);
-            getAccountId(username);
+        if (!accountExists(username)) { // Check if username doesn't exist
+            Object[] args = {0, username, password, email, address, eircode, phoneNumber};
+            DatabaseHandler handler = DatabaseHandler.getInstance();
+            boolean success = handler.insert("Account(accountId,username,password,email,address,eircode,phoneNumber) VALUES (?,?,?,?,?,?,?)", args);
+            return success;
         }
-        return success;
+        return false;
+    }
+    
+    private static boolean accountExists(String username) {
+        return getAccountId(username) > 0;
     }
     
     private static int getAccountId(String username) {
