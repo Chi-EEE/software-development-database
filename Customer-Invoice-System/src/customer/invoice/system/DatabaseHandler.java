@@ -53,9 +53,11 @@ public class DatabaseHandler {
         try {
             //sqlTable + " (" + sqlParameters[0] + ") VALUES (" + sqlParameters[1]
             pstat = connection.prepareStatement("INSERT INTO " + query);
+            
             for (int i = 0; i < args.length; i++) {
                 pstat.setObject(i + 1, args[i]);
             }
+            
             entriesCreated = pstat.executeUpdate();
             if (entriesCreated > 0) {
                 System.out.println(entriesCreated + " entries created.");
@@ -74,11 +76,16 @@ public class DatabaseHandler {
         return entriesCreated >= 1;
     }
     
-    public List<List<Object>> get(String query, int rowCount) {
+    public List<List<Object>> get(String query, Object[] args, int rowCount) {
         ResultSet resultSet = null;
         List<List<Object>> objects = new ArrayList<List<Object>>();
         try {
             pstat = connection.prepareStatement("SELECT " + query);
+            
+            for (int i = 0; i < args.length; i++) {
+                pstat.setObject(i + 1, args[i]);
+            }
+            
             resultSet = pstat.executeQuery();
             
             ResultSetMetaData metaData = resultSet.getMetaData();

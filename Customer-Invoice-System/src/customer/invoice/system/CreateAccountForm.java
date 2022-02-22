@@ -186,8 +186,8 @@ public class CreateAccountForm extends javax.swing.JFrame {
     private void OkButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OkButtonActionPerformed
         DatabaseHandler databaseHandler = DatabaseHandler.getInstance();
         //new java.sql.Date(DOB.getDate().getTime())
-        Object[] s = {0, UsernameTF.getText(), PasswordTF.getText(), EmailTF.getText(), AddressField.getText(), EircodeTF.getText(), PhoneNumberTF.getText()};
-        boolean success = databaseHandler.insert("Account(accountId,username,password,email,address,eircode,phoneNumber) VALUES (?,?,?,?,?,?,?)", s);
+//        boolean success = databaseHandler.insert("Account(accountId,username,password,email,address,eircode,phoneNumber) VALUES (?,?,?,?,?,?,?)", s);
+        boolean success = Account.createAccount(UsernameTF.getText(), PasswordTF.getText(), EmailTF.getText(), AddressField.getText(), EircodeTF.getText(), PhoneNumberTF.getText());
         if (success) {
             dispose();
             new SelectAccountType().setVisible(true);
