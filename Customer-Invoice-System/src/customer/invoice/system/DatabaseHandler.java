@@ -48,6 +48,30 @@ public class DatabaseHandler {
         }
     }
     
+    public boolean update(String query, Object[] args) {
+        int entriesUpdated  = 0;
+        try {
+            pstat = connection.prepareStatement("UPDATE " + query);
+            
+            for (int i = 0; i < args.length; i++) {
+                pstat.setObject(i + 1, args[i]);
+            }
+            
+            entriesUpdated = pstat.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (pstat != null) {
+                    pstat.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return entriesUpdated >= 1;
+    }
+    
     public boolean insert(String query, Object[] args) {
         int entriesCreated = 0;
         try {
@@ -59,9 +83,6 @@ public class DatabaseHandler {
             }
             
             entriesCreated = pstat.executeUpdate();
-            if (entriesCreated > 0) {
-                System.out.println(entriesCreated + " entries created.");
-            }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
