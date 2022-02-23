@@ -121,7 +121,23 @@ public class LoginAccountForm extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void LoginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LoginButtonActionPerformed
-        // TODO add your handling code here:
+        Account account = Account.getInstance();
+        boolean success = account.login(UsernameTF.getText(), PasswordTF.getText());
+        if (success) { // Successful login
+            AccountType accountType = account.getAccountType();
+            switch (accountType) {
+                case COMPANY:
+                    System.out.println("Company Menu Here");
+                    break;
+                case CUSTOMER:
+                    System.out.println("Customer Menu Here");
+                    break;
+                case NULL:
+                    new SelectAccountType().setVisible(true);
+                    break;
+            }
+            dispose();
+        }
     }//GEN-LAST:event_LoginButtonActionPerformed
 
     private void SignUpButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SignUpButtonActionPerformed

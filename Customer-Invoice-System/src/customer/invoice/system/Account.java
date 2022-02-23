@@ -13,6 +13,7 @@ import java.util.UUID;
  * @author C00261172
  */
 
+
 public class Account {
 
     private String username;
@@ -59,20 +60,20 @@ public class Account {
         return sessionId != "";
     }
 
-    private static boolean hasSubAccount(int accountId, String sessionId) {
+    public AccountType getAccountType() {
         if (checkSessionId(accountId, sessionId)) {
             DatabaseHandler handler = DatabaseHandler.getInstance();
             Object[] info = {accountId};
             List<List<Object>> result_1 = handler.get("accountId FROM Application.Company WHERE accountId = ?", info, 1);
             if (result_1.size() >= 1) {
-                return true;
+                return AccountType.COMPANY;
             }
             List<List<Object>> result_2 = handler.get("accountId FROM Application.Customer WHERE accountId = ?", info, 1);
             if (result_2.size() >= 1) {
-                return true;
+                return AccountType.CUSTOMER;
             }
         }
-        return false;
+        return AccountType.NULL;
     }
 
     public static AccountCreateResult createAccount(String username, String password, String email, String address, String eircode, String phoneNumber) {
@@ -87,6 +88,19 @@ public class Account {
             return AccountCreateResult.DATABASE_ERROR;
         }
         return AccountCreateResult.ALREADY_EXISTS;
+    }
+
+    public void setAccountTypeToCustomer(String title, String firstName, String lastName, java.util.Date dob) {
+        if (checkSessionId(accountId, sessionId)) {
+            int titleInteger = Title.valueOf(title).ordinal();
+            java.sql.Date sqlDOB = new java.sql.Date(dob.getTime());
+            if (getAccountType() == AccountType.NULL) {
+                DatabaseHandler handler = DatabaseHandler.getInstance();
+                Object[] args = {0, accountId, titleInteger, firstName, lastName, dob};
+                boolean success = handler.insert("Customer(customerId, accountId,title,firstName,lastName,dob) VALUES (?,?,?,?,?)", args);
+                System.out.println("Created Customer Account");
+            }
+        }
     }
 
     private static boolean accountExists(String username) {
@@ -113,6 +127,13 @@ public class Account {
         return false;
     }
 
+    /***
+     * Checks if account id and session id matches inside of the SessionId database table.
+     * [USED TO CHECK IF USER IS SIGNED IN OR ACCOUNT EXISTS]
+     * @param accountId Account Id of user
+     * @param sessionId Session Id of current session
+     * @return true if logged in and account exists
+     */
     private static boolean checkSessionId(int accountId, String sessionId) {
         Object[] info = {accountId, sessionId};
         DatabaseHandler handler = DatabaseHandler.getInstance();
@@ -131,12 +152,12 @@ public class Account {
                 DatabaseHandler handler = DatabaseHandler.getInstance();
                 Object[] info = {username, password};
                 List<List<Object>> result = handler.get("Application.SessionId.sessionId FROM Application.SessionId JOIN Application.Account ON Application.Account.accountId = Application.SessionId.accountId AND Application.Account.username = ? AND Application.Account.password = ?", info, 1);
-                if (result.size() == 0) { // No session id existsApplication.SessionId.sessionId FROM Application.SessionId JOIN Application.Account ON Application.Account.accountId = Application.SessionId.accountId 
+                if (result.size() == 0) { // No session id exists
                     Object[] args = {accountId, sessionId};
                     boolean success = handler.insert("SessionId(accountId,sessionId) VALUES (?,?)", args);
                 } else { // Session id already exists
                     Object[] args = {sessionId, accountId};
-                    boolean success = handler.insert("SessionId SET sessionId=? WHERE accountId=?", args);
+                    boolean success = handler.update("SessionId SET sessionId=? WHERE accountId=?", args);
                 }
                 return sessionId;
             }
