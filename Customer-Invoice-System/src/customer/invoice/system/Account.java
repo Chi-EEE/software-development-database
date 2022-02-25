@@ -97,8 +97,19 @@ public class Account {
             if (getAccountType() == AccountType.NULL) {
                 DatabaseHandler handler = DatabaseHandler.getInstance();
                 Object[] args = {0, accountId, titleInteger, firstName, lastName, dob};
-                boolean success = handler.insert("Customer(customerId, accountId,title,firstName,lastName,dob) VALUES (?,?,?,?,?)", args);
+                boolean success = handler.insert("Customer(customerId, accountId,title,firstName,lastName,dob) VALUES (?,?,?,?,?,?)", args);
                 System.out.println("Created Customer Account");
+            }
+        }
+    }
+
+    public void setAccountTypeToCompany(String name, String website) {
+        if (checkSessionId(accountId, sessionId)) {
+            if (getAccountType() == AccountType.NULL) {
+                DatabaseHandler handler = DatabaseHandler.getInstance();
+                Object[] args = {0, accountId, name, website};
+                boolean success = handler.insert("Company(companyId, accountId,name,website) VALUES (?,?,?,?)", args);
+                System.out.println("Created Company Account");
             }
         }
     }

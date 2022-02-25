@@ -265,13 +265,13 @@ public class SelectAccountType extends javax.swing.JFrame {
     }//GEN-LAST:event_CompanyRadioActionPerformed
 
     private void OkButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OkButtonActionPerformed
+        Account account = Account.getInstance();
         if (CompanyRadio.isSelected()) {
-            
-        }
-        else {
-            Account account = Account.getInstance();
+            account.setAccountTypeToCompany(CompanyNameTF.getText(), WebsiteTF.getText());
+        } else {
             account.setAccountTypeToCustomer(String.valueOf(TitleBox.getSelectedItem()), FirstNameTF.getText(), LastNameTF.getText(), DOB.getDate());
         }
+        dispose();
     }//GEN-LAST:event_OkButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

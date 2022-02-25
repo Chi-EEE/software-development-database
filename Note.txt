@@ -26,3 +26,8 @@ VALUES
 
 Export schema
 https://stackoverflow.com/a/46584511
+
+Customer invoice system:
+Admin adds customers to database.
+Customers can make their own account in database.
+Their account customer name must match to added admin customer.
