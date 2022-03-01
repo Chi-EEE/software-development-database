@@ -26,10 +26,45 @@ public class CompanyMenu extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jButton4 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
-        jPanel2 = new javax.swing.JPanel();
+        MainInvoicePanel = new javax.swing.JPanel();
+        ViewInvoicePanel = new javax.swing.JPanel();
+        InvoiceTitleLabel1 = new javax.swing.JLabel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        jTable3 = new javax.swing.JTable();
+        DateLabel1 = new javax.swing.JLabel();
+        addressLabel1 = new javax.swing.JLabel();
+        TownLabel1 = new javax.swing.JLabel();
+        CountyLabel1 = new javax.swing.JLabel();
+        HouseLabel1 = new javax.swing.JLabel();
+        CountryLabel1 = new javax.swing.JLabel();
+        PhoneNumberLabel1 = new javax.swing.JLabel();
+        EmailLabel1 = new javax.swing.JLabel();
+        EditButton1 = new javax.swing.JButton();
+        EditInvoicePanel = new javax.swing.JPanel();
+        InvoiceTitleLabel2 = new javax.swing.JLabel();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        jTable4 = new javax.swing.JTable();
+        DateLabel2 = new javax.swing.JLabel();
+        addressLabel2 = new javax.swing.JLabel();
+        TownLabel2 = new javax.swing.JLabel();
+        CountyLabel2 = new javax.swing.JLabel();
+        HouseLabel2 = new javax.swing.JLabel();
+        CountryLabel2 = new javax.swing.JLabel();
+        PhoneNumberLabel2 = new javax.swing.JLabel();
+        EmailLabel2 = new javax.swing.JLabel();
+        EditButton2 = new javax.swing.JButton();
+        jComboBox1 = new javax.swing.JComboBox<>();
+        jDateChooser1 = new com.toedter.calendar.JDateChooser();
+        jTextField1 = new javax.swing.JTextField();
+        jTextField2 = new javax.swing.JTextField();
+        jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
+        jButton6 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
-        jButton6 = new javax.swing.JButton();
+        DeleteButton = new javax.swing.JButton();
+        CreateButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -37,7 +72,7 @@ public class CompanyMenu extends javax.swing.JFrame {
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText("Customer Menu");
+        jLabel1.setText("Company Menu");
 
         jButton4.setText("Log out");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
@@ -77,20 +112,14 @@ public class CompanyMenu extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        jPanel2.setBackground(new java.awt.Color(204, 204, 204));
+        MainInvoicePanel.setBackground(new java.awt.Color(204, 204, 204));
+        MainInvoicePanel.setLayout(new java.awt.CardLayout());
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 222, Short.MAX_VALUE)
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
+        ViewInvoicePanel.setBackground(new java.awt.Color(204, 204, 204));
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        InvoiceTitleLabel1.setText("Invoice No. ### - Customer Name");
+
+        jTable3.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null},
                 {null, null, null, null, null},
@@ -98,12 +127,277 @@ public class CompanyMenu extends javax.swing.JFrame {
                 {null, null, null, null, null}
             },
             new String [] {
-                "Date", "Invoice #", "Paid", "Total", "Balance Due"
+                "ID", "Item", "Qty", "Unit Price", "Total Price"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
+        jScrollPane3.setViewportView(jTable3);
+        if (jTable3.getColumnModel().getColumnCount() > 0) {
+            jTable3.getColumnModel().getColumn(0).setResizable(false);
+            jTable3.getColumnModel().getColumn(3).setResizable(false);
+            jTable3.getColumnModel().getColumn(4).setResizable(false);
+        }
+
+        DateLabel1.setText("Date: 02/03/2022");
+
+        addressLabel1.setText("Address:");
+
+        TownLabel1.setText("Kilkenny Road");
+
+        CountyLabel1.setText("Carlow");
+
+        HouseLabel1.setText("IT Carlow");
+
+        CountryLabel1.setText("Ireland, R93 V960");
+
+        PhoneNumberLabel1.setText("Phone Number: 000 0000000");
+
+        EmailLabel1.setText("Email: ITCarlow@itcarlow.ie");
+
+        EditButton1.setText("Edit");
+
+        javax.swing.GroupLayout ViewInvoicePanelLayout = new javax.swing.GroupLayout(ViewInvoicePanel);
+        ViewInvoicePanel.setLayout(ViewInvoicePanelLayout);
+        ViewInvoicePanelLayout.setHorizontalGroup(
+            ViewInvoicePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(ViewInvoicePanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(ViewInvoicePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 463, Short.MAX_VALUE)
+                    .addGroup(ViewInvoicePanelLayout.createSequentialGroup()
+                        .addGroup(ViewInvoicePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(ViewInvoicePanelLayout.createSequentialGroup()
+                                .addComponent(addressLabel1)
+                                .addGap(2, 2, 2)
+                                .addGroup(ViewInvoicePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(HouseLabel1)
+                                    .addComponent(CountryLabel1)
+                                    .addComponent(TownLabel1)
+                                    .addComponent(CountyLabel1)))
+                            .addComponent(InvoiceTitleLabel1))
+                        .addGap(18, 18, 18)
+                        .addGroup(ViewInvoicePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(ViewInvoicePanelLayout.createSequentialGroup()
+                                .addComponent(DateLabel1)
+                                .addGap(54, 54, 54))
+                            .addComponent(PhoneNumberLabel1)
+                            .addComponent(EmailLabel1))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(EditButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
+        );
+        ViewInvoicePanelLayout.setVerticalGroup(
+            ViewInvoicePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(ViewInvoicePanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(ViewInvoicePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(EditButton1)
+                    .addComponent(DateLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(InvoiceTitleLabel1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(ViewInvoicePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(addressLabel1)
+                    .addComponent(HouseLabel1)
+                    .addComponent(PhoneNumberLabel1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(ViewInvoicePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(TownLabel1)
+                    .addComponent(EmailLabel1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(CountyLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(CountryLabel1)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+
+        MainInvoicePanel.add(ViewInvoicePanel, "card2");
+
+        EditInvoicePanel.setBackground(new java.awt.Color(204, 204, 204));
+
+        InvoiceTitleLabel2.setText("Invoice No. ### -");
+
+        jTable4.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
+            },
+            new String [] {
+                "ID", "Item", "Qty", "Unit Price", "Total Price"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
+        jScrollPane4.setViewportView(jTable4);
+        if (jTable4.getColumnModel().getColumnCount() > 0) {
+            jTable4.getColumnModel().getColumn(0).setResizable(false);
+            jTable4.getColumnModel().getColumn(3).setResizable(false);
+            jTable4.getColumnModel().getColumn(4).setResizable(false);
+        }
+
+        DateLabel2.setText("Date:");
+
+        addressLabel2.setText("Address:");
+
+        TownLabel2.setText("Kilkenny Road");
+
+        CountyLabel2.setText("Carlow");
+
+        HouseLabel2.setText("IT Carlow");
+
+        CountryLabel2.setText("Ireland, R93 V960");
+
+        PhoneNumberLabel2.setText("Phone Number:");
+
+        EmailLabel2.setText("Email:");
+
+        EditButton2.setText("Cancel");
+
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        jTextField1.setText("000 0000000");
+
+        jTextField2.setText("ITCarlow@itcarlow.ie");
+
+        jButton2.setText("Delete Selected");
+
+        jButton3.setText("Edit Selected");
+
+        jButton1.setText("Add New");
+
+        jButton6.setText("Ok");
+
+        javax.swing.GroupLayout EditInvoicePanelLayout = new javax.swing.GroupLayout(EditInvoicePanel);
+        EditInvoicePanel.setLayout(EditInvoicePanelLayout);
+        EditInvoicePanelLayout.setHorizontalGroup(
+            EditInvoicePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(EditInvoicePanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(EditInvoicePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane4)
+                    .addGroup(EditInvoicePanelLayout.createSequentialGroup()
+                        .addGroup(EditInvoicePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(EditInvoicePanelLayout.createSequentialGroup()
+                                .addComponent(addressLabel2)
+                                .addGap(2, 2, 2)
+                                .addGroup(EditInvoicePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(HouseLabel2)
+                                    .addComponent(CountryLabel2)
+                                    .addComponent(TownLabel2)
+                                    .addComponent(CountyLabel2))
+                                .addGap(0, 21, Short.MAX_VALUE))
+                            .addGroup(EditInvoicePanelLayout.createSequentialGroup()
+                                .addComponent(InvoiceTitleLabel2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(EditInvoicePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(EditInvoicePanelLayout.createSequentialGroup()
+                                .addGap(31, 31, 31)
+                                .addGroup(EditInvoicePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addGroup(EditInvoicePanelLayout.createSequentialGroup()
+                                        .addComponent(DateLabel2)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jDateChooser1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .addGroup(EditInvoicePanelLayout.createSequentialGroup()
+                                        .addComponent(PhoneNumberLabel2)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(EditInvoicePanelLayout.createSequentialGroup()
+                                        .addComponent(EmailLabel2)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jTextField2)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(EditInvoicePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(EditButton2, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jButton6, javax.swing.GroupLayout.Alignment.TRAILING)))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, EditInvoicePanelLayout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
+                                .addComponent(jButton1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jButton3)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jButton2)))))
+                .addContainerGap())
+        );
+        EditInvoicePanelLayout.setVerticalGroup(
+            EditInvoicePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(EditInvoicePanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(EditInvoicePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(EditInvoicePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(InvoiceTitleLabel2)
+                        .addComponent(DateLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(EditButton2))
+                    .addGroup(EditInvoicePanelLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(EditInvoicePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(addressLabel2)
+                    .addComponent(HouseLabel2)
+                    .addComponent(PhoneNumberLabel2)
+                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton6))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(EditInvoicePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(TownLabel2)
+                    .addComponent(EmailLabel2)
+                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(EditInvoicePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(EditInvoicePanelLayout.createSequentialGroup()
+                        .addComponent(CountyLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(CountryLabel2))
+                    .addGroup(EditInvoicePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jButton2)
+                        .addComponent(jButton3)
+                        .addComponent(jButton1)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 246, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        MainInvoicePanel.add(EditInvoicePanel, "card3");
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Date", "Invoice #", "Total", "Balance Due"
             }
         ));
         jScrollPane1.setViewportView(jTable1);
 
-        jButton6.setText("View");
+        DeleteButton.setText("Delete Selected Invoice");
+        DeleteButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                DeleteButtonActionPerformed(evt);
+            }
+        });
+
+        CreateButton.setText("Create new Invoice");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -111,28 +405,30 @@ public class CompanyMenu extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(35, 35, 35)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 359, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jButton6))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 512, Short.MAX_VALUE))
-                .addGap(69, 69, 69)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(CreateButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(DeleteButton)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(MainInvoicePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jButton6)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(DeleteButton)
+                            .addComponent(CreateButton))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 314, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 368, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(MainInvoicePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -147,14 +443,53 @@ public class CompanyMenu extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton5ActionPerformed
 
+    private void DeleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DeleteButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_DeleteButtonActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel CountryLabel1;
+    private javax.swing.JLabel CountryLabel2;
+    private javax.swing.JLabel CountyLabel1;
+    private javax.swing.JLabel CountyLabel2;
+    private javax.swing.JButton CreateButton;
+    private javax.swing.JLabel DateLabel1;
+    private javax.swing.JLabel DateLabel2;
+    private javax.swing.JButton DeleteButton;
+    private javax.swing.JButton EditButton1;
+    private javax.swing.JButton EditButton2;
+    private javax.swing.JPanel EditInvoicePanel;
+    private javax.swing.JLabel EmailLabel1;
+    private javax.swing.JLabel EmailLabel2;
+    private javax.swing.JLabel HouseLabel1;
+    private javax.swing.JLabel HouseLabel2;
+    private javax.swing.JLabel InvoiceTitleLabel1;
+    private javax.swing.JLabel InvoiceTitleLabel2;
+    private javax.swing.JPanel MainInvoicePanel;
+    private javax.swing.JLabel PhoneNumberLabel1;
+    private javax.swing.JLabel PhoneNumberLabel2;
+    private javax.swing.JLabel TownLabel1;
+    private javax.swing.JLabel TownLabel2;
+    private javax.swing.JPanel ViewInvoicePanel;
+    private javax.swing.JLabel addressLabel1;
+    private javax.swing.JLabel addressLabel2;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
+    private javax.swing.JComboBox<String> jComboBox1;
+    private com.toedter.calendar.JDateChooser jDateChooser1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JTable jTable1;
+    private javax.swing.JTable jTable3;
+    private javax.swing.JTable jTable4;
+    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField jTextField2;
     // End of variables declaration//GEN-END:variables
 }
