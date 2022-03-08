@@ -102,7 +102,6 @@ public class CompanyMenu extends javax.swing.JFrame {
         jTable4 = new javax.swing.JTable();
         EditButton = new javax.swing.JButton();
         Customer = new javax.swing.JPanel();
-        jTabbedPane1 = new javax.swing.JTabbedPane();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -512,17 +511,11 @@ public class CompanyMenu extends javax.swing.JFrame {
         Customer.setLayout(CustomerLayout);
         CustomerLayout.setHorizontalGroup(
             CustomerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(CustomerLayout.createSequentialGroup()
-                .addGap(308, 308, 308)
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(465, Short.MAX_VALUE))
+            .addGap(0, 918, Short.MAX_VALUE)
         );
         CustomerLayout.setVerticalGroup(
             CustomerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(CustomerLayout.createSequentialGroup()
-                .addGap(83, 83, 83)
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(200, Short.MAX_VALUE))
+            .addGap(0, 429, Short.MAX_VALUE)
         );
 
         BottomPanel.add(Customer, "card3");
@@ -622,7 +615,6 @@ public class CompanyMenu extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JSplitPane jSplitPane1;
-    private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTable jTable1;
     private javax.swing.JTable jTable2;
     private javax.swing.JTable jTable4;
