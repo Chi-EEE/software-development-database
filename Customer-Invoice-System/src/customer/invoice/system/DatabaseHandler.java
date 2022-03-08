@@ -75,7 +75,6 @@ public class DatabaseHandler {
     public boolean insert(String query, Object[] args) {
         int entriesCreated = 0;
         try {
-            //sqlTable + " (" + sqlParameters[0] + ") VALUES (" + sqlParameters[1]
             pstat = connection.prepareStatement("INSERT INTO " + query);
             
             for (int i = 0; i < args.length; i++) {

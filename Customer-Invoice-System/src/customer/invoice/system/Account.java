@@ -150,7 +150,7 @@ public class Account {
         DatabaseHandler handler = DatabaseHandler.getInstance();
         List<List<Object>> result = handler.get("accountId FROM Application.SessionId WHERE accountId = ? AND sessionId = ?", info, 1);
         if (result.size() >= 1) {
-            return ((int) result.get(0).get(0) > 0);
+            return true;
         }
         return false;
     }
