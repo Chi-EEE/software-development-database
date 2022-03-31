@@ -33,9 +33,10 @@ public class Invoice {
         items = new ArrayList<InvoiceItem>(); // Reset Invoice items
         DatabaseHandler handler = DatabaseHandler.getInstance();
         Object[] info = {invoiceId};
+        // Get invoice items
         List<List<Object>> invoiceItems = handler.get("invoiceItemId, productId, productQuantity FROM Application.InvoiceItem WHERE Application.InvoiceItem.invoiceId = ?", info, 1);
         for (List<Object> invoiceItem : invoiceItems) { // Get through invoice item information
-            InvoiceItem createdInvoiceItem = new InvoiceItem((int)invoiceItem.get(0), invoiceId,(int)invoiceItem.get(1), (int)invoiceItem.get(2));
+            InvoiceItem createdInvoiceItem = new InvoiceItem((int) invoiceItem.get(0), invoiceId, (int) invoiceItem.get(1), (int) invoiceItem.get(2));
             items.add(createdInvoiceItem);
         }
     }

@@ -70,6 +70,7 @@ public class CompanyMenu extends javax.swing.JFrame {
             Date invoiceDate = (Date)invoice.get(1);
             int invoiceTotal = (int)invoice.get(2);
             Invoice createdInvoice = new Invoice(invoiceId);
+            createdInvoice.getInvoiceItems();
             invoices.put(invoiceId, createdInvoice);
             model.addRow(addInvoice(invoiceId, invoiceDate, invoiceTotal));
         }
