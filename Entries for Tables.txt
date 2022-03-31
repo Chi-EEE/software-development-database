@@ -8,6 +8,7 @@ Customer ID
 Account ID
 Name
 Email
+Address
 Eircode
 Phone Number
 DOB

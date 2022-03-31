@@ -69,6 +69,7 @@ public class SelectAccountType extends javax.swing.JFrame {
         WebsiteTF = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Select Account Type");
 
         jPanel1.setBackground(new java.awt.Color(0, 153, 255));
 

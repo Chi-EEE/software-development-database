@@ -4,6 +4,8 @@
  */
 package customer.invoice.system;
 
+import java.util.Date;
+
 /**
  *
  * @author C00261172
@@ -39,49 +41,45 @@ public class AddCustomerForm extends javax.swing.JFrame {
         jLabel25 = new javax.swing.JLabel();
         CustomerPhoneNumber = new javax.swing.JTextField();
         jLabel26 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        OkButton = new javax.swing.JButton();
+        CancelButton = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        jDateChooser1 = new com.toedter.calendar.JDateChooser();
+        CustomerDOB = new com.toedter.calendar.JDateChooser();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Add Customer");
 
         CustomerTitle.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Mr", "Mrs", "Ms", "Mx" }));
-        CustomerTitle.setEnabled(false);
 
         jLabel28.setText("Title:");
 
         jLabel23.setText("First Name:");
 
-        CustomerFirstName.setEnabled(false);
-
-        CustomerLastName.setEnabled(false);
-
         jLabel27.setText("Last Name:");
 
         CustomerAddress.setColumns(20);
         CustomerAddress.setRows(5);
-        CustomerAddress.setEnabled(false);
         jScrollPane7.setViewportView(CustomerAddress);
 
         jLabel24.setText("Address: ");
 
-        CustomerEmailAddress.setEnabled(false);
-        CustomerEmailAddress.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                CustomerEmailAddressActionPerformed(evt);
-            }
-        });
-
         jLabel25.setText("Email");
-
-        CustomerPhoneNumber.setEnabled(false);
 
         jLabel26.setText("Phone Number: ");
 
-        jButton1.setText("Ok");
+        OkButton.setText("Ok");
+        OkButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                OkButtonActionPerformed(evt);
+            }
+        });
 
-        jButton2.setText("Cancel");
+        CancelButton.setText("Cancel");
+        CancelButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CancelButtonActionPerformed(evt);
+            }
+        });
 
         jLabel1.setText("Date Of Birth:");
 
@@ -108,7 +106,7 @@ public class AddCustomerForm extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel28)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGap(47, 47, 47)
                                 .addComponent(CustomerTitle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel25)
@@ -119,13 +117,13 @@ public class AddCustomerForm extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(CustomerPhoneNumber))
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jButton1)
+                                .addComponent(OkButton)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton2)))
+                                .addComponent(CancelButton)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(CustomerDOB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -161,18 +159,58 @@ public class AddCustomerForm extends javax.swing.JFrame {
                             .addComponent(jLabel26))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jButton1)
-                            .addComponent(jButton2)))
-                    .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(OkButton)
+                            .addComponent(CancelButton)))
+                    .addComponent(CustomerDOB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void CustomerEmailAddressActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CustomerEmailAddressActionPerformed
+    private void OkButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OkButtonActionPerformed
+        DatabaseHandler handler = DatabaseHandler.getInstance();
+        int title = Title.valueOf(String.valueOf(CustomerTitle.getSelectedItem())).ordinal();
+        String firstName = CustomerFirstName.getText();
+        if (firstName.isEmpty()) { // Validation
+            
+        }
+        
+        String lastName = CustomerLastName.getText();
+        if (lastName.isEmpty()) { // Validation
+            
+        }
+        
+        String address = CustomerAddress.getText();
+        if (address.isEmpty()) { // Validation
+            
+        }
+        
+        String email = CustomerEmailAddress.getText();
+        if (email.isEmpty()) { // Validation
+            
+        }
+        
+        Date dob = CustomerDOB.getDate();
+        if (dob == null) { // Validation
+            
+        }
+        
+        String phoneNumber = CustomerPhoneNumber.getText();
+        if (phoneNumber.isEmpty()) { // Validation
+            
+        }
+        
+        Object[] args = {0, title, firstName, lastName, address, email, dob, phoneNumber};
+        boolean success = handler.insert("Customer(customerId,title,firstName,lastName,address,email,dob,phoneNumber) VALUES (?,?,?,?,?,?,?,?)", args);
+        if (success) {
+            System.out.println("Successful at creating customer: " + firstName);
+        }
+    }//GEN-LAST:event_OkButtonActionPerformed
+
+    private void CancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CancelButtonActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_CustomerEmailAddressActionPerformed
+    }//GEN-LAST:event_CancelButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -210,15 +248,15 @@ public class AddCustomerForm extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton CancelButton;
     private javax.swing.JTextArea CustomerAddress;
+    private com.toedter.calendar.JDateChooser CustomerDOB;
     private javax.swing.JTextField CustomerEmailAddress;
     private javax.swing.JTextField CustomerFirstName;
     private javax.swing.JTextField CustomerLastName;
     private javax.swing.JTextField CustomerPhoneNumber;
     private javax.swing.JComboBox<String> CustomerTitle;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private com.toedter.calendar.JDateChooser jDateChooser1;
+    private javax.swing.JButton OkButton;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel24;

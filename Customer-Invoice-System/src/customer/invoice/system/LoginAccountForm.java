@@ -35,6 +35,7 @@ public class LoginAccountForm extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Login Account");
 
         jLabel2.setText("Username");
 
