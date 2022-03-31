@@ -21,6 +21,12 @@ public class CompanyMenu extends javax.swing.JFrame {
         Invoice.setVisible(true);
         Customer.setVisible(false);
         AddressTA.setFont(new Font("Segou UI", Font.PLAIN, 11));
+
+        AddProductButton.setVisible(false);
+        EditProductButton.setVisible(false);
+        RemoveProductButton.setVisible(false);
+        ConfirmInvoiceButton.setVisible(false);
+        ConfirmCustomerButton.setVisible(false);
     }
 
     /**
@@ -188,12 +194,10 @@ public class CompanyMenu extends javax.swing.JFrame {
             .addGroup(ListCustomerPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(ListCustomerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(ListCustomerPanelLayout.createSequentialGroup()
-                        .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                     .addGroup(ListCustomerPanelLayout.createSequentialGroup()
                         .addComponent(CreateCustomerButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
                         .addComponent(DeleteCustomerButton))))
         );
         ListCustomerPanelLayout.setVerticalGroup(
@@ -541,11 +545,9 @@ public class CompanyMenu extends javax.swing.JFrame {
                             .addGroup(InvoicePanelLayout.createSequentialGroup()
                                 .addGap(6, 6, 6)
                                 .addGroup(InvoicePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(InvoicePanelLayout.createSequentialGroup()
-                                        .addComponent(jLabel13)
-                                        .addGap(0, 0, Short.MAX_VALUE))
-                                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(jLabel13)
+                                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(0, 0, Short.MAX_VALUE)))))
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
