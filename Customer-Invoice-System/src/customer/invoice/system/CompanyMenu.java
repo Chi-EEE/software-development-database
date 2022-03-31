@@ -6,7 +6,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
+import javax.swing.JOptionPane;
 /**
  *
  * @author C00261172
@@ -254,6 +254,11 @@ public class CompanyMenu extends javax.swing.JFrame {
         });
 
         ConfirmCustomerButton.setText("Ok");
+        ConfirmCustomerButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ConfirmCustomerButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout CustomerPanelLayout = new javax.swing.GroupLayout(CustomerPanel);
         CustomerPanel.setLayout(CustomerPanelLayout);
@@ -392,9 +397,8 @@ public class CompanyMenu extends javax.swing.JFrame {
 
         InvoicePanel.setBackground(new java.awt.Color(204, 204, 204));
 
-        jLabel11.setText("Invoice No. ### -");
+        jLabel11.setText("Invoice No. -");
 
-        TitleBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         TitleBox.setEnabled(false);
 
         jLabel12.setText("Date:");
@@ -433,7 +437,6 @@ public class CompanyMenu extends javax.swing.JFrame {
 
         jLabel18.setText("Phone Number: ");
 
-        PhoneNumber.setText("000 0000 000");
         PhoneNumber.setEnabled(false);
 
         jLabel19.setText("Email: ");
@@ -453,7 +456,6 @@ public class CompanyMenu extends javax.swing.JFrame {
 
         AddressTA.setColumns(5);
         AddressTA.setRows(5);
-        AddressTA.setText("IT Carlow\nKilkenny Road\nCarlow\nIreland, R93 V960");
         AddressTA.setEnabled(false);
         jScrollPane3.setViewportView(AddressTA);
 
@@ -589,8 +591,7 @@ public class CompanyMenu extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_DeleteButtonActionPerformed
 
-    private void AmendInvoiceButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AmendInvoiceButtonActionPerformed
-        editingInvoice = !editingInvoice;
+    void setInvoiceEditing() {
         TitleBox.setEnabled(editingInvoice);
         AddressTA.setEnabled(editingInvoice);
         InvoiceDate.setEnabled(editingInvoice);
@@ -605,6 +606,17 @@ public class CompanyMenu extends javax.swing.JFrame {
         } else {
             AmendInvoiceButton.setText("Amend");
         }
+    }
+    
+    private void AmendInvoiceButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AmendInvoiceButtonActionPerformed
+        if (selectedInvoice == 0) {
+            JOptionPane.showMessageDialog(null, "An invoice must be selected!",
+                    "Invalid Invoice Selection", JOptionPane.ERROR_MESSAGE);
+        }
+        else {
+        editingInvoice = !editingInvoice;
+        setInvoiceEditing();
+        }
     }//GEN-LAST:event_AmendInvoiceButtonActionPerformed
 
     private void AddProductButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddProductButtonActionPerformed
@@ -612,21 +624,27 @@ public class CompanyMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_AddProductButtonActionPerformed
 
     private void ConfirmInvoiceButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ConfirmInvoiceButtonActionPerformed
-        // TODO add your handling code here:
+        int result = JOptionPane.showConfirmDialog(null,
+                "Are you sure you want to confirm these details?", "Edit Confirmation", JOptionPane.YES_NO_OPTION);
+        editingInvoice = false;
+        setInvoiceEditing();
     }//GEN-LAST:event_ConfirmInvoiceButtonActionPerformed
 
     private void InvoiceButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_InvoiceButtonActionPerformed
         Invoice.setVisible(true);
         Customer.setVisible(false);
+        editingCustomer = false;
+        setCustomerEditing();
     }//GEN-LAST:event_InvoiceButtonActionPerformed
 
     private void CustomerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CustomerButtonActionPerformed
         Invoice.setVisible(false);
         Customer.setVisible(true);
+        editingInvoice = false;
+        setInvoiceEditing();
     }//GEN-LAST:event_CustomerButtonActionPerformed
-
-    private void AmendCustomerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AmendCustomerButtonActionPerformed
-        editingCustomer = !editingCustomer;
+    
+    void setCustomerEditing() {
         ConfirmCustomerButton.setVisible(editingCustomer);
         CustomerTitle.setEnabled(editingCustomer);
         CustomerFirstName.setEnabled(editingCustomer);
@@ -639,12 +657,33 @@ public class CompanyMenu extends javax.swing.JFrame {
         } else {
             AmendCustomerButton.setText("Amend");
         }
+    }
+    
+    private void AmendCustomerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AmendCustomerButtonActionPerformed
+        if (selectedCustomer == 0) {
+            JOptionPane.showMessageDialog(null, "A customer must be selected!",
+                    "Invalid Customer Selection", JOptionPane.ERROR_MESSAGE);
+        }
+        else {
+            editingCustomer = !editingCustomer;
+            setCustomerEditing();
+        }
     }//GEN-LAST:event_AmendCustomerButtonActionPerformed
+
+    private void ConfirmCustomerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ConfirmCustomerButtonActionPerformed
+        int result = JOptionPane.showConfirmDialog(null,
+                "Are you sure you want to confirm these details?", "Edit Customer Confirmation", JOptionPane.YES_NO_OPTION);
+        editingCustomer = false;
+        setCustomerEditing();
+    }//GEN-LAST:event_ConfirmCustomerButtonActionPerformed
 
     private DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
     private boolean editingCustomer = false;
     private boolean editingInvoice = false;
-
+    
+    private int selectedCustomer = 0;
+    private int selectedInvoice = 0;
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton AddProductButton;
     private javax.swing.JTextArea AddressTA;
