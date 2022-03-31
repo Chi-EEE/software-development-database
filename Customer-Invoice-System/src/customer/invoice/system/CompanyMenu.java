@@ -153,6 +153,7 @@ public class CompanyMenu extends javax.swing.JFrame {
         ConfirmInvoiceButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Company Menu");
 
         TopBar.setBackground(new java.awt.Color(0, 153, 255));
 
@@ -239,6 +240,7 @@ public class CompanyMenu extends javax.swing.JFrame {
                 "Customer No.", "Name", "Email"
             }
         ));
+        CustomerTable.setToolTipText("");
         jScrollPane5.setViewportView(CustomerTable);
 
         CreateCustomerButton.setText("Create New Customer");

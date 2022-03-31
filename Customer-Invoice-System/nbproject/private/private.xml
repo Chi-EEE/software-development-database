@@ -2,18 +2,6 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group>
-            <file>file:/C:/Users/C00261172/Documents/GitHub/software-development-database/Customer-Invoice-System/src/customer/invoice/system/AccountType.java</file>
-            <file>file:/C:/Users/C00261172/Documents/GitHub/software-development-database/Customer-Invoice-System/src/customer/invoice/system/DatabaseHandler.java</file>
-            <file>file:/C:/Users/C00261172/Documents/GitHub/software-development-database/Customer-Invoice-System/src/customer/invoice/system/CustomerMenu.java</file>
-            <file>file:/C:/Users/C00261172/Documents/GitHub/software-development-database/Customer-Invoice-System/src/customer/invoice/system/LoginAccountForm.java</file>
-            <file>file:/C:/Users/C00261172/Documents/GitHub/software-development-database/Customer-Invoice-System/src/customer/invoice/system/AccountCreateResult.java</file>
-            <file>file:/C:/Users/C00261172/Documents/GitHub/software-development-database/Customer-Invoice-System/src/customer/invoice/system/Title.java</file>
-            <file>file:/C:/Users/C00261172/Documents/GitHub/software-development-database/Customer-Invoice-System/src/customer/invoice/system/Account.java</file>
-            <file>file:/C:/Users/C00261172/Documents/GitHub/software-development-database/Customer-Invoice-System/src/customer/invoice/system/CreateAccountForm.java</file>
-            <file>file:/C:/Users/C00261172/Documents/GitHub/software-development-database/Customer-Invoice-System/src/customer/invoice/system/SelectAccountType.java</file>
-            <file>file:/C:/Users/C00261172/Documents/GitHub/software-development-database/Customer-Invoice-System/src/customer/invoice/system/Main.java</file>
-            <file>file:/C:/Users/C00261172/Documents/GitHub/software-development-database/Customer-Invoice-System/src/customer/invoice/system/CompanyMenu.java</file>
-        </group>
+        <group/>
     </open-files>
 </project-private>
