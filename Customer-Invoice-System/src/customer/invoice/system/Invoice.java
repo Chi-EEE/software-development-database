@@ -28,6 +28,10 @@ public class Invoice {
         this.email = email;
         this.phoneNumber = phoneNumber;
     }
+    
+    public int getInvoiceId() {
+        return invoiceId;
+    }
 
     public void getInvoiceItems() {
         items = new ArrayList<InvoiceItem>(); // Reset Invoice items

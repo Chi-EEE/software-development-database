@@ -2,20 +2,18 @@ package customer.invoice.system;
 
 import java.awt.Font;
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
+
+import java.sql.SQLException;
 
 /**
  *
@@ -34,7 +32,7 @@ public class CompanyMenu extends javax.swing.JFrame {
         hideEditButtons();
         columnModel = InvoiceTable.getColumnModel();
         initaliseInvoices();
-        
+
         InvoiceTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             public void valueChanged(ListSelectionEvent event) {
 //                var invoiceId = Integer.parseInt(InvoiceTable.getValueAt(InvoiceTable.getSelectedRow(), 1).toString());
@@ -47,7 +45,12 @@ public class CompanyMenu extends javax.swing.JFrame {
             }
         });
     }
-    
+
+    private void unselectedInvoice() {
+        JOptionPane.showMessageDialog(null, "An invoice must be selected!",
+                "Invalid Invoice Selection", JOptionPane.ERROR_MESSAGE);
+    }
+
     private void hideEditButtons() {
         AddProductButton.setVisible(false);
         EditProductButton.setVisible(false);
@@ -55,28 +58,36 @@ public class CompanyMenu extends javax.swing.JFrame {
         ConfirmInvoiceButton.setVisible(false);
         ConfirmCustomerButton.setVisible(false);
     }
-    
+
     private void initaliseInvoices() {
         // Reset table with column
         InvoiceTable.setColumnModel(columnModel);
-        
+
         // Get model with the column names
         DefaultTableModel model = (DefaultTableModel) InvoiceTable.getModel();
 
         DatabaseHandler handler = DatabaseHandler.getInstance();
-        List<List<Object>> invoicelist = handler.get("invoiceId, date, total FROM Application.Invoice", new Object[]{}, 0);
-        for (List<Object> invoice: invoicelist) {
-            int invoiceId = (int)invoice.get(0);
-            Date invoiceDate = (Date)invoice.get(1);
-            int invoiceTotal = (int)invoice.get(2);
-            Invoice createdInvoice = new Invoice(invoiceId);
-            createdInvoice.getInvoiceItems();
-            invoices.put(invoiceId, createdInvoice);
-            model.addRow(addInvoice(invoiceId, invoiceDate, invoiceTotal));
+        try {
+            List<List<Object>> invoicelist = handler.get("invoiceId, date, total FROM Application.Invoice", new Object[]{}, 0);
+            if (invoicelist != null) {
+                for (List<Object> invoice : invoicelist) {
+                    int invoiceId = (int) invoice.get(0);
+                    Date invoiceDate = (Date) invoice.get(1);
+                    int invoiceTotal = (int) invoice.get(2);
+                    Invoice createdInvoice = new Invoice(invoiceId);
+                    createdInvoice.getInvoiceItems();
+                    invoices.put(invoiceId, createdInvoice);
+                    model.addRow(addInvoice(invoiceId, invoiceDate, invoiceTotal));
+                }
+                InvoiceTable.setModel(model);
+            } else {
+                DatabaseHandler.notConnectedDialog();
+            }
+        } catch (SQLException e) {
+            DatabaseHandler.notConnectedDialog();
         }
-        InvoiceTable.setModel(model);
     }
-    
+
     private Object[] addInvoice(int invoiceId, Date invoiceDate, int invoiceTotal) {
         List<String> list = new ArrayList<String>();
 
@@ -86,7 +97,7 @@ public class CompanyMenu extends javax.swing.JFrame {
 
         return list.toArray();
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -130,8 +141,8 @@ public class CompanyMenu extends javax.swing.JFrame {
         ListInvoicePanel = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         InvoiceTable = new javax.swing.JTable();
-        CreateButton = new javax.swing.JButton();
-        DeleteButton = new javax.swing.JButton();
+        CreateInvoiceButton = new javax.swing.JButton();
+        DeleteInvoiceButton = new javax.swing.JButton();
         InvoicePanel = new javax.swing.JPanel();
         invoiceNo = new javax.swing.JLabel();
         TitleBox = new javax.swing.JComboBox<>();
@@ -244,8 +255,18 @@ public class CompanyMenu extends javax.swing.JFrame {
         jScrollPane5.setViewportView(CustomerTable);
 
         CreateCustomerButton.setText("Create New Customer");
+        CreateCustomerButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CreateCustomerButtonActionPerformed(evt);
+            }
+        });
 
         DeleteCustomerButton.setText("Delete Selected");
+        DeleteCustomerButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                DeleteCustomerButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout ListCustomerPanelLayout = new javax.swing.GroupLayout(ListCustomerPanel);
         ListCustomerPanel.setLayout(ListCustomerPanelLayout);
@@ -422,12 +443,17 @@ public class CompanyMenu extends javax.swing.JFrame {
         });
         jScrollPane2.setViewportView(InvoiceTable);
 
-        CreateButton.setText("Create new Invoice");
-
-        DeleteButton.setText("Delete Selected Invoice");
-        DeleteButton.addActionListener(new java.awt.event.ActionListener() {
+        CreateInvoiceButton.setText("Create new Invoice");
+        CreateInvoiceButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                DeleteButtonActionPerformed(evt);
+                CreateInvoiceButtonActionPerformed(evt);
+            }
+        });
+
+        DeleteInvoiceButton.setText("Delete Selected Invoice");
+        DeleteInvoiceButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                DeleteInvoiceButtonActionPerformed(evt);
             }
         });
 
@@ -439,9 +465,9 @@ public class CompanyMenu extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(ListInvoicePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(ListInvoicePanelLayout.createSequentialGroup()
-                        .addComponent(CreateButton)
+                        .addComponent(CreateInvoiceButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(DeleteButton)
+                        .addComponent(DeleteInvoiceButton)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addContainerGap())
@@ -451,8 +477,8 @@ public class CompanyMenu extends javax.swing.JFrame {
             .addGroup(ListInvoicePanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(ListInvoicePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(DeleteButton)
-                    .addComponent(CreateButton))
+                    .addComponent(DeleteInvoiceButton)
+                    .addComponent(CreateInvoiceButton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                 .addContainerGap())
@@ -652,9 +678,26 @@ public class CompanyMenu extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_SettingsButtonActionPerformed
 
-    private void DeleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DeleteButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_DeleteButtonActionPerformed
+    private void DeleteInvoiceButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DeleteInvoiceButtonActionPerformed
+        if (selectedInvoice == null) {
+            unselectedInvoice();
+        } else {
+            DatabaseHandler databaseHandler = DatabaseHandler.getInstance();
+            try {
+                if (databaseHandler.isConnected()) {
+                    Object[] args = {selectedInvoice.getInvoiceId()};
+                    boolean success = databaseHandler.delete("Invoice", "invoiceId = ?;", args);
+                    if (success) {
+
+                    }
+                } else {
+                    DatabaseHandler.notConnectedDialog();
+                }
+            } catch (SQLException e) {
+                DatabaseHandler.notConnectedDialog();
+            }
+        }
+    }//GEN-LAST:event_DeleteInvoiceButtonActionPerformed
 
     void setInvoiceEditing() {
         TitleBox.setEnabled(editingInvoice);
@@ -675,8 +718,7 @@ public class CompanyMenu extends javax.swing.JFrame {
 
     private void AmendInvoiceButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AmendInvoiceButtonActionPerformed
         if (selectedInvoice == null) {
-            JOptionPane.showMessageDialog(null, "An invoice must be selected!",
-                    "Invalid Invoice Selection", JOptionPane.ERROR_MESSAGE);
+            unselectedInvoice();
         } else {
             editingInvoice = !editingInvoice;
             setInvoiceEditing();
@@ -740,6 +782,18 @@ public class CompanyMenu extends javax.swing.JFrame {
         setCustomerEditing();
     }//GEN-LAST:event_ConfirmCustomerButtonActionPerformed
 
+    private void DeleteCustomerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DeleteCustomerButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_DeleteCustomerButtonActionPerformed
+
+    private void CreateCustomerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CreateCustomerButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_CreateCustomerButtonActionPerformed
+
+    private void CreateInvoiceButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CreateInvoiceButtonActionPerformed
+        
+    }//GEN-LAST:event_CreateInvoiceButtonActionPerformed
+
     private DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
     private boolean editingCustomer = false;
     private boolean editingInvoice = false;
@@ -757,8 +811,8 @@ public class CompanyMenu extends javax.swing.JFrame {
     private javax.swing.JPanel BottomPanel;
     private javax.swing.JButton ConfirmCustomerButton;
     private javax.swing.JButton ConfirmInvoiceButton;
-    private javax.swing.JButton CreateButton;
     private javax.swing.JButton CreateCustomerButton;
+    private javax.swing.JButton CreateInvoiceButton;
     private javax.swing.JSplitPane Customer;
     private javax.swing.JTextArea CustomerAddress;
     private javax.swing.JButton CustomerButton;
@@ -769,8 +823,8 @@ public class CompanyMenu extends javax.swing.JFrame {
     private javax.swing.JTextField CustomerPhoneNumber;
     private javax.swing.JTable CustomerTable;
     private javax.swing.JComboBox<String> CustomerTitle;
-    private javax.swing.JButton DeleteButton;
     private javax.swing.JButton DeleteCustomerButton;
+    private javax.swing.JButton DeleteInvoiceButton;
     private javax.swing.JButton EditProductButton;
     private javax.swing.JTextField EmailAddress;
     private javax.swing.JSplitPane Invoice;

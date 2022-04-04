@@ -21,6 +21,8 @@ public class Main {
         } catch (Exception e) {
             System.out.println(e);
         }
+        DatabaseHandler databaseHandler = DatabaseHandler.getInstance();
+        databaseHandler.connect();
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
 //                new LoginAccountForm().setVisible(true);
