@@ -5,12 +5,10 @@
         <group>
             <file>file:/C:/Users/admin/Documents/GitHub/software-development-database/Customer-Invoice-System/src/customer/invoice/system/Account.java</file>
             <file>file:/C:/Users/admin/Documents/GitHub/software-development-database/Customer-Invoice-System/src/customer/invoice/system/DatabaseHandler.java</file>
+            <file>file:/C:/Users/admin/Documents/GitHub/software-development-database/Customer-Invoice-System/src/customer/invoice/system/AddCustomerForm.java</file>
             <file>file:/C:/Users/admin/Documents/GitHub/software-development-database/Customer-Invoice-System/src/customer/invoice/system/CreateAccountForm.java</file>
-            <file>file:/C:/Users/admin/Documents/GitHub/software-development-database/Customer-Invoice-System/src/customer/invoice/system/CustomerMenu.java</file>
-            <file>file:/C:/Users/admin/Documents/GitHub/software-development-database/Customer-Invoice-System/src/customer/invoice/system/AccountType.java</file>
-            <file>file:/C:/Users/admin/Documents/GitHub/software-development-database/Customer-Invoice-System/src/customer/invoice/system/SelectAccountType.java</file>
+            <file>file:/C:/Users/admin/Documents/GitHub/software-development-database/Customer-Invoice-System/src/customer/invoice/system/Invoice.java</file>
             <file>file:/C:/Users/admin/Documents/GitHub/software-development-database/Customer-Invoice-System/src/customer/invoice/system/Main.java</file>
-            <file>file:/C:/Users/admin/Documents/GitHub/software-development-database/Customer-Invoice-System/src/customer/invoice/system/LoginAccountForm.java</file>
             <file>file:/C:/Users/admin/Documents/GitHub/software-development-database/Customer-Invoice-System/src/customer/invoice/system/CompanyMenu.java</file>
         </group>
     </open-files>
