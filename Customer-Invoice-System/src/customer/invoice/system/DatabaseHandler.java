@@ -54,11 +54,17 @@ public class DatabaseHandler {
                 "Unable to connect to database", JOptionPane.ERROR_MESSAGE);
     }
 
-    public boolean isConnected() throws SQLException {
-        return connection != null && !connection.isClosed();
+    public boolean isConnected() {
+        boolean closed = true;
+        try {
+            closed = connection.isClosed();
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }
+        return connection != null && !closed;
     }
 
-    public boolean update(String query, Object[] args) throws SQLException {
+    public boolean update(String query, Object[] args) {
         if (isConnected()) {
             int entriesUpdated = 0;
             try {
@@ -85,7 +91,7 @@ public class DatabaseHandler {
         return false;
     }
 
-    public boolean insert(String query, Object[] args) throws SQLException {
+    public boolean insert(String query, Object[] args) {
         if (isConnected()) {
             int entriesCreated = 0;
             try {
@@ -112,7 +118,7 @@ public class DatabaseHandler {
         return false;
     }
     
-    public boolean delete(String table, String condition, Object[] args) throws SQLException {
+    public boolean delete(String table, String condition, Object[] args) {
         if (isConnected()) {
             int entriesDeleted = 0;
             try {
@@ -139,7 +145,7 @@ public class DatabaseHandler {
         return false;
     }
 
-    public List<List<Object>> get(String query, Object[] args, int rowCount) throws SQLException {
+    public List<List<Object>> get(String query, Object[] args, int rowCount) {
         if (isConnected()) {
             ResultSet resultSet = null;
             List<List<Object>> objects = new ArrayList<List<Object>>();
@@ -149,6 +155,34 @@ public class DatabaseHandler {
                 for (int i = 0; i < args.length; i++) {
                     pstat.setObject(i + 1, args[i]);
                 }
+
+                resultSet = pstat.executeQuery();
+
+                ResultSetMetaData metaData = resultSet.getMetaData();
+                int numberOfColumns = metaData.getColumnCount();
+                int count = 0;
+                while (resultSet.next() && count < rowCount) {
+                    List<Object> row = new ArrayList<Object>();
+                    for (int i = 1; i <= numberOfColumns; i++) {
+                        row.add(resultSet.getObject(i));
+                    }
+                    objects.add(row);
+                    count++;
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+            return objects;
+        }
+        return null;
+    }
+    
+    public List<List<Object>> get(String query, int rowCount) {
+        if (isConnected()) {
+            ResultSet resultSet = null;
+            List<List<Object>> objects = new ArrayList<List<Object>>();
+            try {
+                pstat = connection.prepareStatement("SELECT " + query);
 
                 resultSet = pstat.executeQuery();
 
