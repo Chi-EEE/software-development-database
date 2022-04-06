@@ -1,5 +1,6 @@
 package customer.invoice.system;
 
+import java.awt.Component;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -49,19 +50,17 @@ public class DatabaseHandler {
         }
     }
 
-    public static void notConnectedDialog() {
-        JOptionPane.showMessageDialog(null, "You must be connected to the Database!",
-                "Unable to connect to database", JOptionPane.ERROR_MESSAGE);
-    }
-
     public boolean isConnected() {
         boolean closed = true;
+        if (connection == null) {
+            return false;
+        }
         try {
             closed = connection.isClosed();
         } catch(SQLException e) {
             e.printStackTrace();
         }
-        return connection != null && !closed;
+        return !closed;
     }
 
     public boolean update(String query, Object[] args) {

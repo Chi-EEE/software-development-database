@@ -28,6 +28,7 @@ public class CompanyMenu extends javax.swing.JFrame {
      */
     public CompanyMenu() {
         initComponents();
+        this.setLocationRelativeTo(null);
         Invoice.setVisible(true);
         Customer.setVisible(false);
         AddressTA.setFont(new Font("Segou UI", Font.PLAIN, 11));
@@ -44,13 +45,48 @@ public class CompanyMenu extends javax.swing.JFrame {
                         selectedInvoice = new Invoice(invoiceId);
                     }
                     invoiceNo.setText("Invoice No. " + invoiceId);
+                    setInvoiceInformation(selectedInvoice);
                 }
             }
         });
     }
 
+    private void setInvoiceInformation(Invoice selectedInvoice) {
+        DatabaseHandler handler = DatabaseHandler.getInstance();
+        if (handler.isConnected()) {
+            Object[] args_1 = {selectedInvoice.getInvoiceId()};
+            // TODO: At home
+            List<List<Object>> invoiceList = handler.get(" customerId, date, address, phoneNumber, date, email FROM Application.Invoice WHERE invoiceId = ?", args_1, 1);
+            if (invoiceList.size() == 1) {
+                List<Object> invoiceInformation = invoiceList.get(0);
+                if (handler.isConnected()) {
+                    int customerId = (int) invoiceInformation.get(0);
+                    Object[] args_2 = {selectedInvoice.getInvoiceId()};
+                    List<List<Object>> customerList = handler.get(" customerName FROM Application.Customer WHERE customerId = ?", args_2, 1);
+                    if (customerList.size() == 1) {
+                        List<Object> customerInformation = customerList.get(0);
+                        String customerName = (String) customerInformation.get(0);
+                        // TODO: invoice information insert
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Customer was not found.",
+                                "Missing Customer", JOptionPane.ERROR_MESSAGE);
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(this, "Unable to retrieve invoice information - You must be connected to the Database!",
+                            "Unable to connect to database", JOptionPane.ERROR_MESSAGE);
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "Invoice was not found.",
+                        "Missing Invoice", JOptionPane.ERROR_MESSAGE);
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Unable to retrieve invoice information - You must be connected to the Database!",
+                    "Unable to connect to database", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
     private void unselectedInvoice() {
-        JOptionPane.showMessageDialog(null, "An invoice must be selected!",
+        JOptionPane.showMessageDialog(this, "An invoice must be selected!",
                 "Invalid Invoice Selection", JOptionPane.ERROR_MESSAGE);
     }
 
@@ -71,8 +107,8 @@ public class CompanyMenu extends javax.swing.JFrame {
         DefaultTableModel model = (DefaultTableModel) InvoiceTable.getModel();
 
         DatabaseHandler handler = DatabaseHandler.getInstance();
-        List<List<Object>> invoicelist = handler.get(" date,invoiceId,(SELECT SUM(i.itemQuantity * e.productCost) FROM Application.Invoice AS o INNER JOIN Application.InvoiceItem AS i ON o.invoiceId = i.invoiceId INNER JOIN Application.Product AS e ON i.productId = e.productId WHERE o.invoiceId = Application.Invoice.invoiceId GROUP BY o.invoiceId) FROM Application.Invoice", 1000);
-        if (invoicelist != null) {
+        if (handler.isConnected()) {
+            List<List<Object>> invoicelist = handler.get(" date,invoiceId,(SELECT SUM(i.itemQuantity * e.productCost) FROM Application.Invoice AS o INNER JOIN Application.InvoiceItem AS i ON o.invoiceId = i.invoiceId INNER JOIN Application.Product AS e ON i.productId = e.productId WHERE o.invoiceId = Application.Invoice.invoiceId GROUP BY o.invoiceId) FROM Application.Invoice", 1000);
             for (List<Object> invoice : invoicelist) {
                 java.util.Date newDate = convertToDateViaSqlTimestamp((LocalDateTime) invoice.get(0));
                 int invoiceId = (int) invoice.get(1);
@@ -81,14 +117,15 @@ public class CompanyMenu extends javax.swing.JFrame {
                     invoiceTotal = 0;
                 }
                 Invoice createdInvoice = new Invoice(invoiceId);
-                createdInvoice.getInvoiceItems();
                 invoices.put(invoiceId, createdInvoice);
                 model.addRow(addInvoice(invoiceId, newDate, invoiceTotal));
             }
             InvoiceTable.setModel(model);
         } else {
-            DatabaseHandler.notConnectedDialog();
+            JOptionPane.showMessageDialog(this, "Unable to retrieve invoices - You must be connected to the Database!",
+                    "Unable to connect to database", JOptionPane.ERROR_MESSAGE);
         }
+
     }
 
     private Object[] addInvoice(int invoiceId, Date invoiceDate, Number invoiceTotal) {
@@ -809,8 +846,8 @@ public class CompanyMenu extends javax.swing.JFrame {
         } else {
             DatabaseHandler databaseHandler = DatabaseHandler.getInstance();
             if (databaseHandler.isConnected()) {
-                int result = JOptionPane.showConfirmDialog(null,
-                "Are you sure you want to delete this invoice?", "Delete Invoice Confirmation", JOptionPane.YES_NO_OPTION);
+                int result = JOptionPane.showConfirmDialog(this,
+                        "Are you sure you want to delete this invoice?", "Delete Invoice Confirmation", JOptionPane.YES_NO_OPTION);
                 System.out.println(result);
                 Object[] args = {selectedInvoice.getInvoiceId()};
                 boolean success = databaseHandler.delete("Invoice", "invoiceId = ?;", args);
@@ -822,7 +859,7 @@ public class CompanyMenu extends javax.swing.JFrame {
                     selectedInvoiceRow = null;
                 }
             } else {
-                DatabaseHandler.notConnectedDialog();
+                DatabaseHandler.notConnectedDialog(this);
             }
         }
     }//GEN-LAST:event_DeleteInvoiceButtonActionPerformed
@@ -858,7 +895,7 @@ public class CompanyMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_AddProductButtonActionPerformed
 
     private void ConfirmInvoiceButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ConfirmInvoiceButtonActionPerformed
-        int result = JOptionPane.showConfirmDialog(null,
+        int result = JOptionPane.showConfirmDialog(this,
                 "Are you sure you want to confirm these details?", "Edit Confirmation", JOptionPane.YES_NO_OPTION);
         editingInvoice = false;
         setInvoiceEditing();
@@ -895,7 +932,7 @@ public class CompanyMenu extends javax.swing.JFrame {
 
     private void AmendCustomerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AmendCustomerButtonActionPerformed
         if (selectedCustomer == 0) {
-            JOptionPane.showMessageDialog(null, "A customer must be selected!",
+            JOptionPane.showMessageDialog(this, "A customer must be selected!",
                     "Invalid Customer Selection", JOptionPane.ERROR_MESSAGE);
         } else {
             editingCustomer = !editingCustomer;
@@ -904,7 +941,7 @@ public class CompanyMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_AmendCustomerButtonActionPerformed
 
     private void ConfirmCustomerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ConfirmCustomerButtonActionPerformed
-        int result = JOptionPane.showConfirmDialog(null,
+        int result = JOptionPane.showConfirmDialog(this,
                 "Are you sure you want to confirm these details?", "Edit Customer Confirmation", JOptionPane.YES_NO_OPTION);
         editingCustomer = false;
         setCustomerEditing();
@@ -919,6 +956,18 @@ public class CompanyMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_CreateCustomerButtonActionPerformed
 
     private void CreateInvoiceButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CreateInvoiceButtonActionPerformed
+        DatabaseHandler handler = DatabaseHandler.getInstance();
+        List<List<Object>> customerlist = handler.get(" customerId,customerName FROM Application.Customer", 1000);
+        if (handler.isConnected()) {
+            for (List<Object> customer : customerlist) {
+                CustomerBox.removeAllItems();
+                CustomerBox.addItem(new Item((int) customer.get(0), (String) customer.get(1)));
+            }
+        } else {
+            DatabaseHandler.notConnectedDialog(this);
+        }
+        CustomerBox.addItem(new Item(1, "Hello"));
+        AddInvoiceForm.setLocationRelativeTo(this);
         AddInvoiceForm.setVisible(true);
     }//GEN-LAST:event_CreateInvoiceButtonActionPerformed
 
@@ -928,45 +977,56 @@ public class CompanyMenu extends javax.swing.JFrame {
 
     private void InvoiceOkButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_InvoiceOkButtonActionPerformed
         // TODO: THISSS
-//        int customer = Title.valueOf(String.valueOf(CustomerBox.getSelectedItem())).ordinal();
+        Item item = (Item) CustomerBox.getSelectedItem();
+        if (item == null) { // Validation
+            JOptionPane.showMessageDialog(AddInvoiceForm, "Please input an select a customer inside of the box!",
+                    "Empty Customer Field", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        int customerId = item.getId();
+
         String address = InvoiceAddressForm.getText();
         if (address.isEmpty()) { // Validation
-            JOptionPane.showMessageDialog(null, "Please input an address into the address field!",
+            JOptionPane.showMessageDialog(AddInvoiceForm, "Please input an address into the address field!",
                     "Empty Address Field", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
         String email = InvoiceEmailForm.getText();
         if (email.isEmpty()) { // Validation
-            JOptionPane.showMessageDialog(null, "Please input an amail address into the email field!",
+            JOptionPane.showMessageDialog(AddInvoiceForm, "Please input an amail address into the email field!",
                     "Empty Email Field", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
         Date invoiceDate = InvoiceDateForm.getDate();
         if (invoiceDate == null) { // Validation
-            JOptionPane.showMessageDialog(null, "Please input a date into the DOB field!",
+            JOptionPane.showMessageDialog(AddInvoiceForm, "Please input a date into the DOB field!",
                     "Empty DOB Field", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
         String phoneNumber = InvoicePhoneNumberForm.getText();
         if (phoneNumber.isEmpty()) { // Validation
-            JOptionPane.showMessageDialog(null, "Please input a phone number into the phone number field!",
+            JOptionPane.showMessageDialog(AddInvoiceForm, "Please input a phone number into the phone number field!",
                     "Empty Phone Number Field", JOptionPane.ERROR_MESSAGE);
             return;
         }
         DatabaseHandler handler = DatabaseHandler.getInstance();
-        Object[] args = {0, 1, new java.sql.Date(invoiceDate.getTime()), address, email, phoneNumber};
-        boolean success = handler.insert("Invoice(invoiceId,customerId,date,address,emailAddress,phoneNumber) VALUES (?,?,?,?,?,?)", args);
-        if (success) {
-            JOptionPane.showMessageDialog(this, "Invoice was successfully created.");
+        Object[] args = {0, customerId, new java.sql.Date(invoiceDate.getTime()), address, email, phoneNumber};
+        if (handler.isConnected()) {
+            boolean success = handler.insert("Invoice(invoiceId,customerId,date,address,emailAddress,phoneNumber) VALUES (?,?,?,?,?,?)", args);
+            if (success) {
+                JOptionPane.showMessageDialog(AddInvoiceForm, "Invoice was successfully created.");
+            }
+        } else {
+            DatabaseHandler.notConnectedDialog(AddInvoiceForm);
         }
         AddInvoiceForm.dispose();
     }//GEN-LAST:event_InvoiceOkButtonActionPerformed
 
     private void InvoiceCancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_InvoiceCancelButtonActionPerformed
-        // TODO add your handling code here:
+        AddInvoiceForm.dispose();
     }//GEN-LAST:event_InvoiceCancelButtonActionPerformed
 
     private DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
@@ -977,7 +1037,7 @@ public class CompanyMenu extends javax.swing.JFrame {
     private Invoice selectedInvoice = null;
 
     private Integer selectedInvoiceRow = null;
-    
+
     private HashMap<Integer, Invoice> invoices = new HashMap<Integer, Invoice>();
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JDialog AddInvoiceForm;
@@ -992,7 +1052,7 @@ public class CompanyMenu extends javax.swing.JFrame {
     private javax.swing.JButton CreateInvoiceButton;
     private javax.swing.JSplitPane Customer;
     private javax.swing.JTextArea CustomerAddress;
-    private javax.swing.JComboBox<String> CustomerBox;
+    private javax.swing.JComboBox<Item> CustomerBox;
     private javax.swing.JButton CustomerButton;
     private javax.swing.JTextField CustomerEmailAddress;
     private javax.swing.JTextField CustomerFirstName;

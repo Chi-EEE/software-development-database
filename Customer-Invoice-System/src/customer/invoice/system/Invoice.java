@@ -1,8 +1,10 @@
 package customer.invoice.system;
 
+import java.awt.Component;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -15,7 +17,7 @@ public class Invoice {
     private Date date;
     private String email;
     private String phoneNumber;
-    private List<InvoiceItem> items;
+    private ArrayList<InvoiceItem> items;
 
     public Invoice(int invoiceId) {
         this.invoiceId = invoiceId;
@@ -28,20 +30,26 @@ public class Invoice {
         this.email = email;
         this.phoneNumber = phoneNumber;
     }
-    
+
     public int getInvoiceId() {
         return invoiceId;
     }
 
-    public void getInvoiceItems() {
+    public ArrayList<InvoiceItem> getInvoiceItems(Component component) {
         items = new ArrayList<InvoiceItem>(); // Reset Invoice items
         DatabaseHandler handler = DatabaseHandler.getInstance();
-        Object[] info = {invoiceId};
-        // Get invoice items
-        List<List<Object>> invoiceItems = handler.get("invoiceItemId, productId, itemQuantity FROM Application.InvoiceItem WHERE Application.InvoiceItem.invoiceId = ?", info, 1);
-        for (List<Object> invoiceItem : invoiceItems) { // Get through invoice item information
-            InvoiceItem createdInvoiceItem = new InvoiceItem((int) invoiceItem.get(0), invoiceId, (int) invoiceItem.get(1), (int) invoiceItem.get(2));
-            items.add(createdInvoiceItem);
+        if (handler.isConnected()) {
+            Object[] info = {invoiceId};
+            // Get invoice items
+            List<List<Object>> invoiceItems = handler.get(" invoiceItemId, productId, itemQuantity FROM Application.InvoiceItem WHERE Application.InvoiceItem.invoiceId = ?", info, 1);
+            for (List<Object> invoiceItem : invoiceItems) { // Get through invoice item information
+                InvoiceItem createdInvoiceItem = new InvoiceItem((int) invoiceItem.get(0), invoiceId, (int) invoiceItem.get(1), (int) invoiceItem.get(2));
+                items.add(createdInvoiceItem);
+            }
+        } else {
+            JOptionPane.showMessageDialog(component, "Unable to retrieve invoice information - You must be connected to the Database",
+                    "Unable to connect to database", JOptionPane.ERROR_MESSAGE);
         }
+        return items;
     }
 }
