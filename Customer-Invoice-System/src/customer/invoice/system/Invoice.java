@@ -41,7 +41,7 @@ public class Invoice {
         if (handler.isConnected()) {
             Object[] info = {invoiceId};
             // Get invoice items
-            List<List<Object>> invoiceItems = handler.get(" invoiceItemId, productId, itemQuantity FROM Application.InvoiceItem WHERE Application.InvoiceItem.invoiceId = ?", info, 1);
+            List<List<Object>> invoiceItems = handler.get(" invoiceItemId, productId, itemQuantity FROM Application.InvoiceItem WHERE Application.InvoiceItem.invoiceId = ?", info, 1000);
             for (List<Object> invoiceItem : invoiceItems) { // Get through invoice item information
                 InvoiceItem createdInvoiceItem = new InvoiceItem((int) invoiceItem.get(0), invoiceId, (int) invoiceItem.get(1), (int) invoiceItem.get(2));
                 items.add(createdInvoiceItem);

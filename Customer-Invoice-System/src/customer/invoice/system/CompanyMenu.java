@@ -67,6 +67,10 @@ public class CompanyMenu extends javax.swing.JFrame {
                         List<Object> customerInformation = customerList.get(0);
                         String customerName = (String) customerInformation.get(0);
                         // TODO: invoice information insert
+                        ArrayList<InvoiceItem> invoiceItems = selectedInvoice.getInvoiceItems(this);
+                        for (InvoiceItem invoiceItem : invoiceItems) {
+                            invoiceItem.getInvoiceItemId();
+                        }
                     } else {
                         JOptionPane.showMessageDialog(this, "Customer was not found.",
                                 "Missing Customer", JOptionPane.ERROR_MESSAGE);
