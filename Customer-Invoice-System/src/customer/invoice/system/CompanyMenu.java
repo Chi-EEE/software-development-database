@@ -863,7 +863,8 @@ public class CompanyMenu extends javax.swing.JFrame {
                     selectedInvoiceRow = null;
                 }
             } else {
-                DatabaseHandler.notConnectedDialog(this);
+                JOptionPane.showMessageDialog(this, "Unable to delete invoice - You must be connected to the Database!",
+                        "Unable to connect to database", JOptionPane.ERROR_MESSAGE);
             }
         }
     }//GEN-LAST:event_DeleteInvoiceButtonActionPerformed
@@ -968,7 +969,8 @@ public class CompanyMenu extends javax.swing.JFrame {
                 CustomerBox.addItem(new Item((int) customer.get(0), (String) customer.get(1)));
             }
         } else {
-            DatabaseHandler.notConnectedDialog(this);
+            JOptionPane.showMessageDialog(this, "Unable to retrieve customers - You must be connected to the Database!",
+                    "Unable to connect to database", JOptionPane.ERROR_MESSAGE);
         }
         CustomerBox.addItem(new Item(1, "Hello"));
         AddInvoiceForm.setLocationRelativeTo(this);
@@ -1024,7 +1026,8 @@ public class CompanyMenu extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(AddInvoiceForm, "Invoice was successfully created.");
             }
         } else {
-            DatabaseHandler.notConnectedDialog(AddInvoiceForm);
+            JOptionPane.showMessageDialog(this, "Unable to create invoice - You must be connected to the Database!",
+                    "Unable to connect to database", JOptionPane.ERROR_MESSAGE);
         }
         AddInvoiceForm.dispose();
     }//GEN-LAST:event_InvoiceOkButtonActionPerformed
