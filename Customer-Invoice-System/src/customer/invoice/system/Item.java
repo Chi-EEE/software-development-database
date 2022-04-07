@@ -10,20 +10,20 @@ package customer.invoice.system;
  */
 public class Item {
 
-    private int id;
+    private Object value;
     private String name;
 
-    public Item(int id, String name) {
-        this.id = id;
+    public Item(Object value, String name) {
+        this.value = value;
         this.name = name;
     }
 
-    public int getId() {
-        return id;
+    public Object getValue() {
+        return value;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setValue(Object value) {
+        this.value = value;
     }
 
     public String getName() {

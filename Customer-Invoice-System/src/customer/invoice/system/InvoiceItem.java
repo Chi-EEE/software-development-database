@@ -17,6 +17,11 @@ public class InvoiceItem {
         this.productQuantity = productQuantity;
     }
 
+    public InvoiceItem(int invoiceItemId, int productQuantity) {
+        this.invoiceItemId = invoiceItemId;
+        this.productQuantity = productQuantity;
+    }
+    
     public int getInvoiceItemId() {
         return invoiceItemId;
     }

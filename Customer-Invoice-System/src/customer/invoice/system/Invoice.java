@@ -35,11 +35,11 @@ public class Invoice {
         return invoiceId;
     }
 
-    public Packet setInformation() {
+    public Packet setInformation(int customerId, String address, String emailAddress, Date date, String phoneNumber) {
         DatabaseHandler handler = DatabaseHandler.getInstance();
         if (handler.isConnected()) {
-            Object[] args = {invoiceId};
-            boolean success = handler.update("Application.Invoice SET address=?, email=?, date=?, phoneNumber=? WHERE invoiceId=?", args);
+            Object[] args = {customerId, address, emailAddress, date, phoneNumber, invoiceId};
+            boolean success = handler.update("Application.Invoice SET customerId=?, address=?, emailAddress=?, date=?, phoneNumber=? WHERE invoiceId=?", args);
             if (success) {
                 return new Packet(PacketResult.SUCCESS);
             } else {

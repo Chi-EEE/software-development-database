@@ -14,14 +14,11 @@ public class Customer {
     private Date dob;
     private String phoneNumber;
 
-    public Customer(int customerId, Title title, String firstName, String lastName, String email, Date dob, String phoneNumber) {
+    public Customer(int customerId, String firstName, String lastName, String email) {
         this.customerId = customerId;
-        this.title = title;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
-        this.dob = dob;
-        this.phoneNumber = phoneNumber;
     }
-    
+
 }
