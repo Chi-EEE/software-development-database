@@ -31,6 +31,8 @@ public class CompanyMenu extends javax.swing.JFrame {
         this.setLocationRelativeTo(component);
         Invoice.setVisible(true);
         Customer.setVisible(false);
+        Product.setVisible(false);
+        
         AddressTA.setFont(new Font("Segou UI", Font.PLAIN, 11));
 
         InvoiceTable.setFocusable(false);
@@ -218,6 +220,7 @@ public class CompanyMenu extends javax.swing.JFrame {
         SettingsButton = new javax.swing.JButton();
         CustomerButton = new javax.swing.JButton();
         InvoiceButton = new javax.swing.JButton();
+        ProductButton = new javax.swing.JButton();
         BottomPanel = new javax.swing.JPanel();
         Customer = new javax.swing.JSplitPane();
         ListCustomerPanel = new javax.swing.JPanel();
@@ -267,6 +270,21 @@ public class CompanyMenu extends javax.swing.JFrame {
         jScrollPane3 = new javax.swing.JScrollPane();
         AddressTA = new javax.swing.JTextArea();
         ConfirmInvoiceButton = new javax.swing.JButton();
+        Product = new javax.swing.JSplitPane();
+        ListProductPanel = new javax.swing.JPanel();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        InvoiceTable1 = new javax.swing.JTable();
+        CreateProductButton = new javax.swing.JButton();
+        DeleteProductButton = new javax.swing.JButton();
+        ProductPanel = new javax.swing.JPanel();
+        panelNo = new javax.swing.JLabel();
+        AmendProductButton = new javax.swing.JButton();
+        ConfirmProductButton = new javax.swing.JButton();
+        jLabel5 = new javax.swing.JLabel();
+        ProductTitleBox = new javax.swing.JTextField();
+        ProductNo = new javax.swing.JTextField();
+        jLabel6 = new javax.swing.JLabel();
+        ProductQuantity = new javax.swing.JSpinner();
 
         AddInvoiceForm.setTitle("Add Invoice");
         AddInvoiceForm.setAlwaysOnTop(true);
@@ -483,6 +501,17 @@ public class CompanyMenu extends javax.swing.JFrame {
             }
         });
 
+        ProductButton.setBackground(new java.awt.Color(76, 181, 251));
+        ProductButton.setFont(new java.awt.Font("Gadugi", 1, 14)); // NOI18N
+        ProductButton.setForeground(new java.awt.Color(255, 255, 255));
+        ProductButton.setText("Product");
+        ProductButton.setBorder(null);
+        ProductButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ProductButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout TopBarLayout = new javax.swing.GroupLayout(TopBar);
         TopBar.setLayout(TopBarLayout);
         TopBarLayout.setHorizontalGroup(
@@ -494,7 +523,9 @@ public class CompanyMenu extends javax.swing.JFrame {
                 .addComponent(InvoiceButton, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(CustomerButton, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addComponent(ProductButton, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(SettingsButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(LogOutButton)
@@ -511,6 +542,7 @@ public class CompanyMenu extends javax.swing.JFrame {
                 .addContainerGap())
             .addComponent(InvoiceButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(CustomerButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(ProductButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         BottomPanel.setLayout(new java.awt.CardLayout());
@@ -926,6 +958,147 @@ public class CompanyMenu extends javax.swing.JFrame {
 
         BottomPanel.add(Invoice, "card4");
 
+        InvoiceTable1.setModel(new UnEditableDefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Date", "Invoice #", "Total"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        InvoiceTable1.setShowHorizontalLines(true);
+        InvoiceTable1.getTableHeader().setReorderingAllowed(false);
+        jScrollPane4.setViewportView(InvoiceTable1);
+        InvoiceTable1.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+
+        CreateProductButton.setText("Create new Product");
+        CreateProductButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CreateProductButtonActionPerformed(evt);
+            }
+        });
+
+        DeleteProductButton.setText("Delete Selected Product");
+        DeleteProductButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                DeleteProductButtonActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout ListProductPanelLayout = new javax.swing.GroupLayout(ListProductPanel);
+        ListProductPanel.setLayout(ListProductPanelLayout);
+        ListProductPanelLayout.setHorizontalGroup(
+            ListProductPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(ListProductPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(ListProductPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(ListProductPanelLayout.createSequentialGroup()
+                        .addComponent(CreateProductButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(DeleteProductButton)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        ListProductPanelLayout.setVerticalGroup(
+            ListProductPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(ListProductPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(ListProductPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(DeleteProductButton)
+                    .addComponent(CreateProductButton))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        Product.setLeftComponent(ListProductPanel);
+
+        ProductPanel.setBackground(new java.awt.Color(204, 204, 204));
+
+        panelNo.setText("Product No. -");
+
+        AmendProductButton.setText("Amend");
+        AmendProductButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                AmendProductButtonActionPerformed(evt);
+            }
+        });
+
+        ConfirmProductButton.setText("Ok");
+        ConfirmProductButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ConfirmProductButtonActionPerformed(evt);
+            }
+        });
+
+        jLabel5.setText("Product Title:");
+
+        ProductNo.setEnabled(false);
+
+        jLabel6.setText("Product Quantity");
+
+        javax.swing.GroupLayout ProductPanelLayout = new javax.swing.GroupLayout(ProductPanel);
+        ProductPanel.setLayout(ProductPanelLayout);
+        ProductPanelLayout.setHorizontalGroup(
+            ProductPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(ProductPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(ProductPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel6)
+                    .addComponent(jLabel5)
+                    .addComponent(panelNo))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(ProductPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(ProductPanelLayout.createSequentialGroup()
+                        .addComponent(ProductQuantity, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(ProductPanelLayout.createSequentialGroup()
+                        .addGroup(ProductPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(ProductNo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(ProductTitleBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 194, Short.MAX_VALUE)
+                        .addGroup(ProductPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(ConfirmProductButton)
+                            .addComponent(AmendProductButton))
+                        .addGap(35, 35, 35))))
+        );
+        ProductPanelLayout.setVerticalGroup(
+            ProductPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(ProductPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(ProductPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(ProductPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(ProductNo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(panelNo))
+                    .addGroup(ProductPanelLayout.createSequentialGroup()
+                        .addGap(28, 28, 28)
+                        .addGroup(ProductPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel5)
+                            .addComponent(ProductTitleBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(ProductPanelLayout.createSequentialGroup()
+                        .addComponent(AmendProductButton)
+                        .addGap(2, 2, 2)
+                        .addComponent(ConfirmProductButton)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(ProductPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6)
+                    .addComponent(ProductQuantity, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(291, Short.MAX_VALUE))
+        );
+
+        Product.setRightComponent(ProductPanel);
+
+        BottomPanel.add(Product, "card4");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -1045,6 +1218,7 @@ public class CompanyMenu extends javax.swing.JFrame {
     private void InvoiceButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_InvoiceButtonActionPerformed
         Invoice.setVisible(true);
         Customer.setVisible(false);
+        Product.setVisible(false);
         editingCustomer = false;
         setCustomerEditing();
     }//GEN-LAST:event_InvoiceButtonActionPerformed
@@ -1052,6 +1226,7 @@ public class CompanyMenu extends javax.swing.JFrame {
     private void CustomerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CustomerButtonActionPerformed
         Invoice.setVisible(false);
         Customer.setVisible(true);
+        Product.setVisible(false);
         editingInvoice = false;
         setInvoiceEditing();
     }//GEN-LAST:event_CustomerButtonActionPerformed
@@ -1183,6 +1358,28 @@ public class CompanyMenu extends javax.swing.JFrame {
         AddInvoiceItemForm.dispose();
     }//GEN-LAST:event_CancelInvoiceItemFormButtonActionPerformed
 
+    private void ProductButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ProductButtonActionPerformed
+        Invoice.setVisible(false);
+        Customer.setVisible(false);
+        Product.setVisible(true);
+    }//GEN-LAST:event_ProductButtonActionPerformed
+
+    private void CreateProductButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CreateProductButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_CreateProductButtonActionPerformed
+
+    private void DeleteProductButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DeleteProductButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_DeleteProductButtonActionPerformed
+
+    private void ConfirmProductButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ConfirmProductButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_ConfirmProductButtonActionPerformed
+
+    private void AmendProductButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AmendProductButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_AmendProductButtonActionPerformed
+
     private DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
     private boolean editingCustomer = false;
     private boolean editingInvoice = false;
@@ -1202,12 +1399,15 @@ public class CompanyMenu extends javax.swing.JFrame {
     private javax.swing.JTextArea AddressTA;
     private javax.swing.JButton AmendCustomerButton;
     private javax.swing.JButton AmendInvoiceButton;
+    private javax.swing.JButton AmendProductButton;
     private javax.swing.JPanel BottomPanel;
     private javax.swing.JButton CancelInvoiceItemFormButton;
     private javax.swing.JButton ConfirmCustomerButton;
     private javax.swing.JButton ConfirmInvoiceButton;
+    private javax.swing.JButton ConfirmProductButton;
     private javax.swing.JButton CreateCustomerButton;
     private javax.swing.JButton CreateInvoiceButton;
+    private javax.swing.JButton CreateProductButton;
     private javax.swing.JSplitPane Customer;
     private javax.swing.JTextArea CustomerAddress;
     private javax.swing.JComboBox<Item> CustomerBox;
@@ -1221,6 +1421,7 @@ public class CompanyMenu extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> CustomerTitle;
     private javax.swing.JButton DeleteCustomerButton;
     private javax.swing.JButton DeleteInvoiceButton;
+    private javax.swing.JButton DeleteProductButton;
     private javax.swing.JButton EditInvoiceItemButton;
     private javax.swing.JTextField EmailAddress;
     private javax.swing.JSplitPane Invoice;
@@ -1235,10 +1436,18 @@ public class CompanyMenu extends javax.swing.JFrame {
     private javax.swing.JPanel InvoicePanel;
     private javax.swing.JTextField InvoicePhoneNumberForm;
     private javax.swing.JTable InvoiceTable;
+    private javax.swing.JTable InvoiceTable1;
     private javax.swing.JPanel ListCustomerPanel;
     private javax.swing.JPanel ListInvoicePanel;
+    private javax.swing.JPanel ListProductPanel;
     private javax.swing.JButton LogOutButton;
     private javax.swing.JTextField PhoneNumber;
+    private javax.swing.JSplitPane Product;
+    private javax.swing.JButton ProductButton;
+    private javax.swing.JTextField ProductNo;
+    private javax.swing.JPanel ProductPanel;
+    private javax.swing.JSpinner ProductQuantity;
+    private javax.swing.JTextField ProductTitleBox;
     private javax.swing.JButton RemoveInvoiceItemButton;
     private javax.swing.JButton SettingsButton;
     private javax.swing.JComboBox<String> TitleBox;
@@ -1264,12 +1473,16 @@ public class CompanyMenu extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel32;
     private javax.swing.JLabel jLabel33;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JScrollPane jScrollPane8;
     private javax.swing.JSpinner jSpinner1;
+    private javax.swing.JLabel panelNo;
     // End of variables declaration//GEN-END:variables
 }
