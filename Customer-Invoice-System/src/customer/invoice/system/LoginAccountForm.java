@@ -1,6 +1,7 @@
 package customer.invoice.system;
 
 import java.awt.Component;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -144,20 +145,32 @@ public class LoginAccountForm extends javax.swing.JFrame {
         switch (loginPacket.getResult()) {
             case SUCCESS:
                 Packet accountTypePacket = account.getAccountType();
-                if (accountTypePacket.getResult() == PacketResult.SUCCESS) {
-                    AccountType accountType = (AccountType) accountTypePacket.getInformation();
-                    switch (accountType) {
-                        case COMPANY:
-                            new CompanyMenu(this).setVisible(true);
-                            break;
-                        case CUSTOMER:
-                            System.out.println("Customer Menu Here");
-                            break;
-                        case NULL:
-                            new SelectAccountType(this).setVisible(true);
-                            break;
-                    }
+                switch (accountTypePacket.getResult()) {
+                    /* Start */
+                    case SUCCESS:
+                        AccountType accountType = (AccountType) accountTypePacket.getInformation();
+                        switch (accountType) {
+                            case COMPANY:
+                                new CompanyMenu(this).setVisible(true);
+                                break;
+                            case CUSTOMER:
+                                System.out.println("Customer Menu Here");
+                                break;
+                            case NULL:
+                                new SelectAccountType(this).setVisible(true);
+                                break;
+                        }
+                        break;
+                    case CONNECTION_ERROR:
+                        ErrorLabel.setText("* A connection error.");
+                        ErrorLabel.setVisible(true);
+                        break;
+                    default:
+                        JOptionPane.showMessageDialog(this, "An Error has Occurred!",
+                                "Error Occurred", JOptionPane.ERROR_MESSAGE);
+                        break;
                 }
+                /* End */
                 dispose();
                 break;
             case ACCESS_DENIED:
@@ -181,6 +194,8 @@ public class LoginAccountForm extends javax.swing.JFrame {
                 ErrorLabel.setVisible(true);
                 break;
             default:
+                JOptionPane.showMessageDialog(this, "An Error has Occurred!",
+                        "Error Occurred", JOptionPane.ERROR_MESSAGE);
                 break;
         }
     }//GEN-LAST:event_LoginButtonActionPerformed

@@ -1,6 +1,7 @@
 package customer.invoice.system;
 
 import java.awt.Component;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -10,6 +11,7 @@ public class CreateAccountForm extends javax.swing.JFrame {
 
     /**
      * Creates new form SignUpForm
+     *
      * @param component
      */
     public CreateAccountForm(Component component) {
@@ -46,8 +48,10 @@ public class CreateAccountForm extends javax.swing.JFrame {
         PasswordTF = new javax.swing.JPasswordField();
         CPasswordTF = new javax.swing.JPasswordField();
         BackButton = new javax.swing.JButton();
+        jLabel7 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Sign Up");
 
         AddressField.setColumns(20);
         AddressField.setRows(5);
@@ -105,6 +109,8 @@ public class CreateAccountForm extends javax.swing.JFrame {
             }
         });
 
+        jLabel7.setForeground(new java.awt.Color(255, 51, 51));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -113,6 +119,7 @@ public class CreateAccountForm extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(PasswordTF)
@@ -127,33 +134,30 @@ public class CreateAccountForm extends javax.swing.JFrame {
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addComponent(jLabel3)
                                 .addGap(48, 48, 48))
-                            .addComponent(CPasswordTF))
-                        .addContainerGap())
+                            .addComponent(CPasswordTF)))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(PhoneNumberTF, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel6)
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel8)
-                                            .addComponent(AddressField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel9)
-                                            .addComponent(EircodeTF, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                    .addComponent(PhoneNumberTF, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel6)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel4)
-                                        .addGap(60, 60, 60)
-                                        .addComponent(jLabel5))
-                                    .addComponent(jLabel10))
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel4)
+                                .addGap(102, 102, 102)
+                                .addComponent(jLabel5))
+                            .addComponent(jLabel10)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addComponent(SignUpButton, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(34, 34, 34)
-                                .addComponent(BackButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                        .addGap(12, 12, 12))))
+                                .addGap(77, 77, 77)
+                                .addComponent(BackButton, javax.swing.GroupLayout.DEFAULT_SIZE, 101, Short.MAX_VALUE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel8)
+                                    .addComponent(AddressField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel9)
+                                    .addComponent(EircodeTF, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(0, 2, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -192,33 +196,97 @@ public class CreateAccountForm extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(PhoneNumberTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(SignUpButton)
-                    .addComponent(BackButton))
-                .addContainerGap(16, Short.MAX_VALUE))
+                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(BackButton)
+                    .addComponent(SignUpButton))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void SignUpButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SignUpButtonActionPerformed
-        DatabaseHandler databaseHandler = DatabaseHandler.getInstance();
+        String username = UsernameTF.getText();
+        if (username.isBlank()) {
+            jLabel7.setText("* Please fill in the username");
+            jLabel7.setVisible(true);
+            return;
+        }
+        String email = EmailTF.getText();
+        if (email.isBlank()) {
+            jLabel7.setText("* Please fill in the email");
+            jLabel7.setVisible(true);
+            return;
+        }
+        if (!email.equals(CEmailTF.getText())) {
+            jLabel7.setText("* The email addresses do not match!");
+            jLabel7.setVisible(true);
+            return;
+        }
+        String password = PasswordTF.getText();
+        if (password.isBlank()) {
+            jLabel7.setText("* Please fill in the password");
+            jLabel7.setVisible(true);
+            return;
+
+        }
+        if (!password.equals(CPasswordTF.getText())) {
+            jLabel7.setText("* The passwords do not match!");
+            jLabel7.setVisible(true);
+            return;
+        }
+        String address = AddressField.getText();
+        if (address.isBlank()) {
+            jLabel7.setText("* Please fill in the address");
+            jLabel7.setVisible(true);
+            return;
+        }
+        String eircode = EircodeTF.getText();
+        if (eircode.isBlank()) {
+            jLabel7.setText("* Please fill in the eircode");
+            jLabel7.setVisible(true);
+            return;
+        }
+        String phoneNumber = PhoneNumberTF.getText();
+        if (username.isBlank()) {
+            jLabel7.setText("* Please fill in the phone number");
+            jLabel7.setVisible(true);
+            return;
+        }
         //new java.sql.Date(DOB.getDate().getTime())
-        AccountCreateResult result = Account.createAccount(UsernameTF.getText(), PasswordTF.getText(), EmailTF.getText(), AddressField.getText(), EircodeTF.getText(), PhoneNumberTF.getText());
-        switch (result) {
+        Packet accountCreatePacket = Account.createAccount(UsernameTF.getText(), PasswordTF.getText(), EmailTF.getText(), AddressField.getText(), EircodeTF.getText(), PhoneNumberTF.getText());
+        switch (accountCreatePacket.getResult()) {
             case SUCCESS:
                 dispose();
                 Account account = Account.getInstance();
                 Packet loginPacket = account.login(UsernameTF.getText(), PasswordTF.getText());
-                if (loginPacket.getResult() == PacketResult.SUCCESS) {
-                    new SelectAccountType(this).setVisible(true);
+                switch (loginPacket.getResult()) {
+                    case SUCCESS:
+                        new SelectAccountType(this).setVisible(true);
+                        break;
+                    case CONNECTION_ERROR:
+                        JOptionPane.showMessageDialog(this, "Unable to login into account - You must be connected to the Database!",
+                                "Unable to connect to database", JOptionPane.ERROR_MESSAGE);
+                        break;
+                    default:
+                        JOptionPane.showMessageDialog(this, "An Error has Occurred!",
+                                "Error Occurred", JOptionPane.ERROR_MESSAGE);
+                        break;
                 }
                 break;
-            case ALREADY_EXISTS:
-
+            case BAD_REQUEST:
+                JOptionPane.showMessageDialog(this, "The following account already exists.",
+                        "Account Already Exists", JOptionPane.ERROR_MESSAGE);
                 break;
-            case DATABASE_ERROR:
-
+            case CONNECTION_ERROR:
+                JOptionPane.showMessageDialog(this, "Unable to create account - You must be connected to the Database!",
+                        "Unable to connect to database", JOptionPane.ERROR_MESSAGE);
+                break;
+            default:
+                JOptionPane.showMessageDialog(this, "An Error has Occurred!",
+                        "Error Occurred", JOptionPane.ERROR_MESSAGE);
                 break;
         }
     }//GEN-LAST:event_SignUpButtonActionPerformed
@@ -246,6 +314,7 @@ public class CreateAccountForm extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;

@@ -22,8 +22,8 @@ public class Account {
     private String address;
     private String eircode;
 
-    private int accountId;
-    private String sessionId;
+    private int accountId = 0;
+    private String sessionId = "";
 
     private static Account instance = null;
 
@@ -43,11 +43,10 @@ public class Account {
         if (accountIdPacket.getResult() != PacketResult.SUCCESS) {
             return accountIdPacket;
         }
+        accountId = (int)accountIdPacket.getInformation();
         Packet sessionIdPacket = requestLogin(username, password);
-        if (sessionIdPacket.getResult() != PacketResult.SUCCESS) {
-            return sessionIdPacket;
-        }
-        if (isLoggedIn()) {
+        if (sessionIdPacket.getResult() == PacketResult.SUCCESS) {
+            sessionId = (String) sessionIdPacket.getInformation();
             this.username = username;
             Packet detailsPacket = requestDetails(accountId, sessionId);
             if (detailsPacket.getResult() == PacketResult.SUCCESS) {
@@ -61,13 +60,14 @@ public class Account {
             }
             return detailsPacket;
         }
-        return new Packet(PacketResult.ACCESS_DENIED);
+        return sessionIdPacket;
     }
 
-    public boolean isLoggedIn() {
-        return sessionId != "";
+    public void signout() {
+        accountId = 0;
+        sessionId = "";
     }
-
+    
     public Packet getAccountType() {
         Packet sessionIdPacket = checkSessionId(accountId, sessionId);
         if (sessionIdPacket.getResult() == PacketResult.SUCCESS) {
@@ -91,18 +91,24 @@ public class Account {
         return sessionIdPacket;
     }
 
-    public static AccountCreateResult createAccount(String username, String password, String email, String address, String eircode, String phoneNumber) {
+    public static Packet createAccount(String username, String password, String email, String address, String eircode, String phoneNumber) {
         username = username.toLowerCase();
-        if (!accountExists(username)) { // Check if username doesn't exist
+        Packet accountIdPacket = getAccountId(username);
+        if (accountIdPacket.getResult() == PacketResult.SUCCESS) {
             Object[] args = {0, username, password, email, address, eircode, phoneNumber};
             DatabaseHandler handler = DatabaseHandler.getInstance();
-            boolean success = handler.insert("Account(accountId,username,password,email,address,eircode,phoneNumber) VALUES (?,?,?,?,?,?,?)", args);
-            if (success) {
-                return AccountCreateResult.SUCCESS;
+            if (handler.isConnected()) {
+                boolean success = handler.insert("Account(accountId,username,password,email,address,eircode,phoneNumber) VALUES (?,?,?,?,?,?,?)", args);
+                if (success) {
+                    return new Packet(PacketResult.SUCCESS);
+                } else {
+                    return new Packet(PacketResult.DATABASE_ERROR);
+                }
+            } else {
+                return new Packet(PacketResult.CONNECTION_ERROR);
             }
-            return AccountCreateResult.DATABASE_ERROR;
         }
-        return AccountCreateResult.ALREADY_EXISTS;
+        return accountIdPacket;
     }
 
     public Packet setAccountTypeToCustomer(String title, String firstName, String lastName, java.util.Date dob) {
@@ -147,11 +153,6 @@ public class Account {
             }
         }
         return sessionIdPacket;
-    }
-
-    private static boolean accountExists(String username) {
-        Packet packet = getAccountId(username);
-        return packet.getResult() == PacketResult.SUCCESS;
     }
 
     private static Packet getAccountId(String username) {

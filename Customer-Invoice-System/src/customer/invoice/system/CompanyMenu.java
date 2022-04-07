@@ -838,7 +838,10 @@ public class CompanyMenu extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void LogOutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LogOutButtonActionPerformed
-        // TODO add your handling code here:
+        Account account = Account.getInstance();
+        account.signout();
+        dispose();
+        new LoginAccountForm(this).setVisible(true);
     }//GEN-LAST:event_LogOutButtonActionPerformed
 
     private void SettingsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SettingsButtonActionPerformed
