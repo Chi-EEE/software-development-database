@@ -35,6 +35,20 @@ public class Invoice {
         return invoiceId;
     }
 
+    public Packet setInformation() {
+        DatabaseHandler handler = DatabaseHandler.getInstance();
+        if (handler.isConnected()) {
+            Object[] args = {invoiceId};
+            boolean success = handler.update("Application.Invoice SET address=?, email=?, date=?, phoneNumber=? WHERE invoiceId=?", args);
+            if (success) {
+                return new Packet(PacketResult.SUCCESS);
+            } else {
+                return new Packet(PacketResult.DATABASE_ERROR);
+            }
+        }
+        return new Packet(PacketResult.CONNECTION_ERROR);
+    }
+
     public ArrayList<InvoiceItem> getInvoiceItems(Component component) {
         items = new ArrayList<InvoiceItem>(); // Reset Invoice items
         DatabaseHandler handler = DatabaseHandler.getInstance();

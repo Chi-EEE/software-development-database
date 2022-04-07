@@ -1,6 +1,5 @@
 package customer.invoice.system;
 
-import com.mysql.cj.MysqlType;
 import java.awt.Component;
 import java.awt.Font;
 import java.text.DateFormat;
@@ -14,9 +13,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
-import java.sql.SQLException;
 import java.time.LocalDateTime;
-import java.math.BigInteger;
 
 /**
  *
@@ -26,6 +23,7 @@ public class CompanyMenu extends javax.swing.JFrame {
 
     /**
      * Creates new form SignUpForm
+     *
      * @param component
      */
     public CompanyMenu(Component component) {
@@ -34,6 +32,13 @@ public class CompanyMenu extends javax.swing.JFrame {
         Invoice.setVisible(true);
         Customer.setVisible(false);
         AddressTA.setFont(new Font("Segou UI", Font.PLAIN, 11));
+
+        InvoiceTable.setFocusable(false);
+        InvoiceTable.setRowSelectionAllowed(true);
+
+        InvoiceItemTable.setFocusable(false);
+        InvoiceItemTable.setRowSelectionAllowed(true);
+
         hideEditButtons();
         initaliseInvoices();
 
@@ -47,13 +52,13 @@ public class CompanyMenu extends javax.swing.JFrame {
                         selectedInvoice = new Invoice(invoiceId);
                     }
                     invoiceNo.setText("Invoice No. " + invoiceId);
-                    setInvoiceInformation(selectedInvoice);
+                    fillInvoiceInformation(selectedInvoice);
                 }
             }
         });
     }
 
-    private void setInvoiceInformation(Invoice selectedInvoice) {
+    private void fillInvoiceInformation(Invoice selectedInvoice) {
         DatabaseHandler handler = DatabaseHandler.getInstance();
         if (handler.isConnected()) {
             Object[] args_1 = {selectedInvoice.getInvoiceId()};
@@ -97,9 +102,9 @@ public class CompanyMenu extends javax.swing.JFrame {
     }
 
     private void hideEditButtons() {
-        AddProductButton.setVisible(false);
-        EditProductButton.setVisible(false);
-        RemoveProductButton.setVisible(false);
+        AddInvoiceItemButton.setVisible(false);
+        EditInvoiceItemButton.setVisible(false);
+        RemoveInvoiceItemButton.setVisible(false);
         ConfirmInvoiceButton.setVisible(false);
         ConfirmCustomerButton.setVisible(false);
     }
@@ -167,6 +172,13 @@ public class CompanyMenu extends javax.swing.JFrame {
         InvoiceCancelButton = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         InvoiceDateForm = new com.toedter.calendar.JDateChooser();
+        AddInvoiceItemForm = new javax.swing.JDialog();
+        jLabel3 = new javax.swing.JLabel();
+        jTextField1 = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        jSpinner1 = new javax.swing.JSpinner();
+        AddInvoiceItemFormButton = new javax.swing.JButton();
+        CancelInvoiceItemFormButton = new javax.swing.JButton();
         TopBar = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         LogOutButton = new javax.swing.JButton();
@@ -211,14 +223,14 @@ public class CompanyMenu extends javax.swing.JFrame {
         AmendInvoiceButton = new javax.swing.JButton();
         jLabel13 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        InvoiceItemTable = new javax.swing.JTable();
         jLabel18 = new javax.swing.JLabel();
         PhoneNumber = new javax.swing.JTextField();
         jLabel19 = new javax.swing.JLabel();
         EmailAddress = new javax.swing.JTextField();
-        RemoveProductButton = new javax.swing.JButton();
-        EditProductButton = new javax.swing.JButton();
-        AddProductButton = new javax.swing.JButton();
+        RemoveInvoiceItemButton = new javax.swing.JButton();
+        EditInvoiceItemButton = new javax.swing.JButton();
+        AddInvoiceItemButton = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
         AddressTA = new javax.swing.JTextArea();
         ConfirmInvoiceButton = new javax.swing.JButton();
@@ -329,6 +341,68 @@ public class CompanyMenu extends javax.swing.JFrame {
                     .addComponent(InvoiceCancelButton)
                     .addComponent(InvoiceOkButton))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        AddInvoiceItemForm.setTitle("Add Item");
+
+        jLabel3.setText("Product:");
+
+        jLabel4.setText("Quantity:");
+
+        AddInvoiceItemFormButton.setText("Add");
+        AddInvoiceItemFormButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                AddInvoiceItemFormButtonActionPerformed(evt);
+            }
+        });
+
+        CancelInvoiceItemFormButton.setText("Cancel");
+        CancelInvoiceItemFormButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CancelInvoiceItemFormButtonActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout AddInvoiceItemFormLayout = new javax.swing.GroupLayout(AddInvoiceItemForm.getContentPane());
+        AddInvoiceItemForm.getContentPane().setLayout(AddInvoiceItemFormLayout);
+        AddInvoiceItemFormLayout.setHorizontalGroup(
+            AddInvoiceItemFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(AddInvoiceItemFormLayout.createSequentialGroup()
+                .addGroup(AddInvoiceItemFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(AddInvoiceItemFormLayout.createSequentialGroup()
+                        .addGap(6, 6, 6)
+                        .addGroup(AddInvoiceItemFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(AddInvoiceItemFormLayout.createSequentialGroup()
+                                .addComponent(jLabel3)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(AddInvoiceItemFormLayout.createSequentialGroup()
+                                .addComponent(jLabel4)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, AddInvoiceItemFormLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(AddInvoiceItemFormButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(CancelInvoiceItemFormButton)))
+                .addGap(0, 4, Short.MAX_VALUE))
+        );
+        AddInvoiceItemFormLayout.setVerticalGroup(
+            AddInvoiceItemFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(AddInvoiceItemFormLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(AddInvoiceItemFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(AddInvoiceItemFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(AddInvoiceItemFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(AddInvoiceItemFormButton)
+                    .addComponent(CancelInvoiceItemFormButton))
+                .addContainerGap(8, Short.MAX_VALUE))
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -591,7 +665,7 @@ public class CompanyMenu extends javax.swing.JFrame {
 
         BottomPanel.add(Customer, "card2");
 
-        InvoiceTable.setModel(new javax.swing.table.DefaultTableModel(
+        InvoiceTable.setModel(new UnEditableDefaultTableModel(
             new Object [][] {
 
             },
@@ -672,12 +746,9 @@ public class CompanyMenu extends javax.swing.JFrame {
 
         jLabel13.setText("Address: ");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        InvoiceItemTable.setModel(new UnEditableDefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+
             },
             new String [] {
                 "ID", "Title", "Qty", "Unit Price", "Total Price"
@@ -691,7 +762,14 @@ public class CompanyMenu extends javax.swing.JFrame {
                 return types [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(InvoiceItemTable);
+        if (InvoiceItemTable.getColumnModel().getColumnCount() > 0) {
+            InvoiceItemTable.getColumnModel().getColumn(0).setHeaderValue("ID");
+            InvoiceItemTable.getColumnModel().getColumn(1).setHeaderValue("Title");
+            InvoiceItemTable.getColumnModel().getColumn(2).setHeaderValue("Qty");
+            InvoiceItemTable.getColumnModel().getColumn(3).setHeaderValue("Unit Price");
+            InvoiceItemTable.getColumnModel().getColumn(4).setHeaderValue("Total Price");
+        }
 
         jLabel18.setText("Phone Number: ");
 
@@ -701,14 +779,14 @@ public class CompanyMenu extends javax.swing.JFrame {
 
         EmailAddress.setEnabled(false);
 
-        RemoveProductButton.setText("Delete Selected");
+        RemoveInvoiceItemButton.setText("Delete Selected");
 
-        EditProductButton.setText("Edit Selected");
+        EditInvoiceItemButton.setText("Edit Selected");
 
-        AddProductButton.setText("Add New");
-        AddProductButton.addActionListener(new java.awt.event.ActionListener() {
+        AddInvoiceItemButton.setText("Add New");
+        AddInvoiceItemButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                AddProductButtonActionPerformed(evt);
+                AddInvoiceItemButtonActionPerformed(evt);
             }
         });
 
@@ -763,11 +841,11 @@ public class CompanyMenu extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(EmailAddress, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(InvoicePanelLayout.createSequentialGroup()
-                                .addComponent(AddProductButton)
+                                .addComponent(AddInvoiceItemButton)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(EditProductButton)
+                                .addComponent(EditInvoiceItemButton)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(RemoveProductButton)))
+                                .addComponent(RemoveInvoiceItemButton)))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -799,9 +877,9 @@ public class CompanyMenu extends javax.swing.JFrame {
                                     .addComponent(EmailAddress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGroup(InvoicePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(AddProductButton)
-                                    .addComponent(EditProductButton, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(RemoveProductButton)))
+                                    .addComponent(AddInvoiceItemButton)
+                                    .addComponent(EditInvoiceItemButton, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(RemoveInvoiceItemButton)))
                             .addGroup(InvoicePanelLayout.createSequentialGroup()
                                 .addGap(6, 6, 6)
                                 .addGroup(InvoicePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -874,14 +952,14 @@ public class CompanyMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_DeleteInvoiceButtonActionPerformed
 
     void setInvoiceEditing() {
-        TitleBox.setEnabled(editingInvoice);
-        AddressTA.setEnabled(editingInvoice);
-        InvoiceDate.setEnabled(editingInvoice);
-        PhoneNumber.setEnabled(editingInvoice);
-        EmailAddress.setEnabled(editingInvoice);
-        AddProductButton.setVisible(editingInvoice);
-        EditProductButton.setVisible(editingInvoice);
-        RemoveProductButton.setVisible(editingInvoice);
+        TitleBox.setSelectedItem(null);
+        AddressTA.setText("");
+        InvoiceDate.setDate(null);
+        PhoneNumber.setText("");
+        EmailAddress.setText("");
+        AddInvoiceItemButton.setVisible(editingInvoice);
+        EditInvoiceItemButton.setVisible(editingInvoice);
+        RemoveInvoiceItemButton.setVisible(editingInvoice);
         ConfirmInvoiceButton.setVisible(editingInvoice);
         if (editingInvoice) {
             AmendInvoiceButton.setText("View");
@@ -899,13 +977,32 @@ public class CompanyMenu extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_AmendInvoiceButtonActionPerformed
 
-    private void AddProductButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddProductButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_AddProductButtonActionPerformed
+    private void AddInvoiceItemButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddInvoiceItemButtonActionPerformed
+        AddInvoiceItemForm.setLocationRelativeTo(this);
+        AddInvoiceItemForm.setVisible(true);
+    }//GEN-LAST:event_AddInvoiceItemButtonActionPerformed
 
     private void ConfirmInvoiceButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ConfirmInvoiceButtonActionPerformed
-        int result = JOptionPane.showConfirmDialog(this,
+        int result = JOptionPane.showConfirmDialog(this, // 0 = yes, 1 = no
                 "Are you sure you want to confirm these details?", "Edit Confirmation", JOptionPane.YES_NO_OPTION);
+        if (result == 0) { // Do nothing to boxes
+            Packet setInformationPacket = selectedInvoice.setInformation();
+            switch (setInformationPacket.getResult()) {
+                case SUCCESS:
+                    JOptionPane.showMessageDialog(this, "Invoice Id: " + selectedInvoice.getInvoiceId() + "  was successfully updated.");
+                    break;
+                case CONNECTION_ERROR:
+                    JOptionPane.showMessageDialog(this, "Unable to update invoive - You must be connected to the Database!",
+                            "Unable to connect to database", JOptionPane.ERROR_MESSAGE);
+                    break;
+                default:
+                    JOptionPane.showMessageDialog(this, "An Error Occurred!",
+                            "Error Occurred", JOptionPane.ERROR_MESSAGE);
+                    break;
+            }
+        } else {
+            fillInvoiceInformation(selectedInvoice);
+        }
         editingInvoice = false;
         setInvoiceEditing();
     }//GEN-LAST:event_ConfirmInvoiceButtonActionPerformed
@@ -996,14 +1093,14 @@ public class CompanyMenu extends javax.swing.JFrame {
         int customerId = item.getId();
 
         String address = InvoiceAddressForm.getText();
-        if (address.isEmpty()) { // Validation
+        if (address.isBlank()) { // Validation
             JOptionPane.showMessageDialog(AddInvoiceForm, "Please input an address into the address field!",
                     "Empty Address Field", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
         String email = InvoiceEmailForm.getText();
-        if (email.isEmpty()) { // Validation
+        if (email.isBlank()) { // Validation
             JOptionPane.showMessageDialog(AddInvoiceForm, "Please input an amail address into the email field!",
                     "Empty Email Field", JOptionPane.ERROR_MESSAGE);
             return;
@@ -1017,7 +1114,7 @@ public class CompanyMenu extends javax.swing.JFrame {
         }
 
         String phoneNumber = InvoicePhoneNumberForm.getText();
-        if (phoneNumber.isEmpty()) { // Validation
+        if (phoneNumber.isBlank()) { // Validation
             JOptionPane.showMessageDialog(AddInvoiceForm, "Please input a phone number into the phone number field!",
                     "Empty Phone Number Field", JOptionPane.ERROR_MESSAGE);
             return;
@@ -1040,6 +1137,15 @@ public class CompanyMenu extends javax.swing.JFrame {
         AddInvoiceForm.dispose();
     }//GEN-LAST:event_InvoiceCancelButtonActionPerformed
 
+    private void AddInvoiceItemFormButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddInvoiceItemFormButtonActionPerformed
+        
+        AddInvoiceItemForm.dispose();
+    }//GEN-LAST:event_AddInvoiceItemFormButtonActionPerformed
+
+    private void CancelInvoiceItemFormButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CancelInvoiceItemFormButtonActionPerformed
+        AddInvoiceItemForm.dispose();
+    }//GEN-LAST:event_CancelInvoiceItemFormButtonActionPerformed
+
     private DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
     private boolean editingCustomer = false;
     private boolean editingInvoice = false;
@@ -1052,11 +1158,14 @@ public class CompanyMenu extends javax.swing.JFrame {
     private HashMap<Integer, Invoice> invoices = new HashMap<Integer, Invoice>();
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JDialog AddInvoiceForm;
-    private javax.swing.JButton AddProductButton;
+    private javax.swing.JButton AddInvoiceItemButton;
+    private javax.swing.JDialog AddInvoiceItemForm;
+    private javax.swing.JButton AddInvoiceItemFormButton;
     private javax.swing.JTextArea AddressTA;
     private javax.swing.JButton AmendCustomerButton;
     private javax.swing.JButton AmendInvoiceButton;
     private javax.swing.JPanel BottomPanel;
+    private javax.swing.JButton CancelInvoiceItemFormButton;
     private javax.swing.JButton ConfirmCustomerButton;
     private javax.swing.JButton ConfirmInvoiceButton;
     private javax.swing.JButton CreateCustomerButton;
@@ -1074,7 +1183,7 @@ public class CompanyMenu extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> CustomerTitle;
     private javax.swing.JButton DeleteCustomerButton;
     private javax.swing.JButton DeleteInvoiceButton;
-    private javax.swing.JButton EditProductButton;
+    private javax.swing.JButton EditInvoiceItemButton;
     private javax.swing.JTextField EmailAddress;
     private javax.swing.JSplitPane Invoice;
     private javax.swing.JTextArea InvoiceAddressForm;
@@ -1083,6 +1192,7 @@ public class CompanyMenu extends javax.swing.JFrame {
     private com.toedter.calendar.JDateChooser InvoiceDate;
     private com.toedter.calendar.JDateChooser InvoiceDateForm;
     private javax.swing.JTextField InvoiceEmailForm;
+    private javax.swing.JTable InvoiceItemTable;
     private javax.swing.JButton InvoiceOkButton;
     private javax.swing.JPanel InvoicePanel;
     private javax.swing.JTextField InvoicePhoneNumberForm;
@@ -1091,7 +1201,7 @@ public class CompanyMenu extends javax.swing.JFrame {
     private javax.swing.JPanel ListInvoicePanel;
     private javax.swing.JButton LogOutButton;
     private javax.swing.JTextField PhoneNumber;
-    private javax.swing.JButton RemoveProductButton;
+    private javax.swing.JButton RemoveInvoiceItemButton;
     private javax.swing.JButton SettingsButton;
     private javax.swing.JComboBox<String> TitleBox;
     private javax.swing.JPanel TopBar;
@@ -1109,16 +1219,19 @@ public class CompanyMenu extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel jLabel28;
     private javax.swing.JLabel jLabel29;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel30;
     private javax.swing.JLabel jLabel31;
     private javax.swing.JLabel jLabel32;
     private javax.swing.JLabel jLabel33;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JScrollPane jScrollPane8;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JSpinner jSpinner1;
+    private javax.swing.JTextField jTextField1;
     // End of variables declaration//GEN-END:variables
 }
