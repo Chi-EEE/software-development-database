@@ -1,6 +1,7 @@
 package customer.invoice.system;
 
 import com.mysql.cj.MysqlType;
+import java.awt.Component;
 import java.awt.Font;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -25,10 +26,11 @@ public class CompanyMenu extends javax.swing.JFrame {
 
     /**
      * Creates new form SignUpForm
+     * @param component
      */
-    public CompanyMenu() {
+    public CompanyMenu(Component component) {
         initComponents();
-        this.setLocationRelativeTo(null);
+        this.setLocationRelativeTo(component);
         Invoice.setVisible(true);
         Customer.setVisible(false);
         AddressTA.setFont(new Font("Segou UI", Font.PLAIN, 11));
@@ -408,16 +410,14 @@ public class CompanyMenu extends javax.swing.JFrame {
 
         CustomerTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+
             },
             new String [] {
                 "Customer No.", "Name", "Email"
             }
         ));
         CustomerTable.setToolTipText("");
+        CustomerTable.setShowHorizontalLines(true);
         jScrollPane5.setViewportView(CustomerTable);
 
         CreateCustomerButton.setText("Create New Customer");
@@ -607,6 +607,7 @@ public class CompanyMenu extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        InvoiceTable.setShowHorizontalLines(true);
         jScrollPane2.setViewportView(InvoiceTable);
 
         CreateInvoiceButton.setText("Create new Invoice");

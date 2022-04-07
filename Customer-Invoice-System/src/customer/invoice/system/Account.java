@@ -38,42 +38,57 @@ public class Account {
 
     }
 
-    public boolean login(String username, String password) {
-        accountId = getAccountId(username);
-        sessionId = requestLogin(username, password);
+    public Packet login(String username, String password) {
+        Packet accountIdPacket = getAccountId(username);
+        if (accountIdPacket.getResult() != PacketResult.SUCCESS) {
+            return accountIdPacket;
+        }
+        Packet sessionIdPacket = requestLogin(username, password);
+        if (sessionIdPacket.getResult() != PacketResult.SUCCESS) {
+            return sessionIdPacket;
+        }
         if (isLoggedIn()) {
             this.username = username;
-            List<List<Object>> result = requestDetails(accountId, sessionId);
-            if (result != null) {
-                this.email = (String) result.get(0).get(0);
-                this.phoneNumber = (String) result.get(0).get(1);
-                this.address = (String) result.get(0).get(2);
-                this.eircode = (String) result.get(0).get(3);
+            Packet detailsPacket = requestDetails(accountId, sessionId);
+            if (detailsPacket.getResult() == PacketResult.SUCCESS) {
+                List<Object> details = ((List<List<Object>>) detailsPacket.getInformation()).get(0);
+                this.email = (String) details.get(0);
+                this.phoneNumber = (String) details.get(1);
+                this.address = (String) details.get(2);
+                this.eircode = (String) details.get(3);
+                System.out.println("Logged in.");
+                return new Packet(PacketResult.SUCCESS);
             }
-            System.out.println("Logged in.");
-            return true;
+            return detailsPacket;
         }
-        return false;
+        return new Packet(PacketResult.ACCESS_DENIED);
     }
 
     public boolean isLoggedIn() {
         return sessionId != "";
     }
 
-    public AccountType getAccountType() {
-        if (checkSessionId(accountId, sessionId)) {
+    public Packet getAccountType() {
+        Packet sessionIdPacket = checkSessionId(accountId, sessionId);
+        if (sessionIdPacket.getResult() == PacketResult.SUCCESS) {
             DatabaseHandler handler = DatabaseHandler.getInstance();
             Object[] info = {accountId};
             List<List<Object>> result_1 = handler.get("accountId FROM Application.Company WHERE accountId = ?", info, 1);
-            if (result_1.size() >= 1) {
-                return AccountType.COMPANY;
+            if (handler.isConnected()) {
+                if (result_1.size() >= 1) {
+                    return new Packet(PacketResult.SUCCESS, AccountType.COMPANY);
+                }
             }
-            List<List<Object>> result_2 = handler.get("accountId FROM Application.Customer WHERE accountId = ?", info, 1);
-            if (result_2.size() >= 1) {
-                return AccountType.CUSTOMER;
+
+            if (handler.isConnected()) {
+                List<List<Object>> result_2 = handler.get("accountId FROM Application.Customer WHERE accountId = ?", info, 1);
+                if (result_2.size() >= 1) {
+                    return new Packet(PacketResult.SUCCESS, AccountType.CUSTOMER);
+                }
             }
+            return new Packet(PacketResult.CONNECTION_ERROR);
         }
-        return AccountType.NULL;
+        return sessionIdPacket;
     }
 
     public static AccountCreateResult createAccount(String username, String password, String email, String address, String eircode, String phoneNumber) {
@@ -90,99 +105,171 @@ public class Account {
         return AccountCreateResult.ALREADY_EXISTS;
     }
 
-    public void setAccountTypeToCustomer(String title, String firstName, String lastName, java.util.Date dob) {
-        if (checkSessionId(accountId, sessionId)) {
+    public Packet setAccountTypeToCustomer(String title, String firstName, String lastName, java.util.Date dob) {
+        Packet sessionIdPacket = checkSessionId(accountId, sessionId);
+        if (sessionIdPacket.getResult() == PacketResult.SUCCESS) {
+            Packet accountTypePacket = getAccountType();
+            if (accountTypePacket.getResult() != PacketResult.SUCCESS) {
+                return accountTypePacket;
+            }
             int titleInteger = Title.valueOf(title).ordinal();
             java.sql.Date sqlDOB = new java.sql.Date(dob.getTime());
-            if (getAccountType() == AccountType.NULL) {
+            if ((AccountType) accountTypePacket.getInformation() == AccountType.NULL) {
                 DatabaseHandler handler = DatabaseHandler.getInstance();
-                Object[] args = {0, accountId, titleInteger, firstName, lastName, dob};
-                boolean success = handler.insert("Customer(customerId, accountId,title,firstName,lastName,dob) VALUES (?,?,?,?,?,?)", args);
-                System.out.println("Created Customer Account");
+                if (handler.isConnected()) {
+                    Object[] args = {0, accountId, titleInteger, firstName, lastName, dob};
+                    boolean success = handler.insert("Customer(customerId, accountId,title,firstName,lastName,dob) VALUES (?,?,?,?,?,?)", args);
+                    System.out.println("Created Customer Account");
+                } else {
+                    return new Packet(PacketResult.CONNECTION_ERROR);
+                }
             }
         }
+        return sessionIdPacket;
     }
 
-    public void setAccountTypeToCompany(String name, String website) {
-        if (checkSessionId(accountId, sessionId)) {
-            if (getAccountType() == AccountType.NULL) {
+    public Packet setAccountTypeToCompany(String name, String website) {
+        Packet sessionIdPacket = checkSessionId(accountId, sessionId);
+        if (sessionIdPacket.getResult() == PacketResult.SUCCESS) {
+            Packet accountTypePacket = getAccountType();
+            if (accountTypePacket.getResult() != PacketResult.SUCCESS) {
+                return accountTypePacket;
+            }
+            if ((AccountType) accountTypePacket.getInformation() == AccountType.NULL) {
                 DatabaseHandler handler = DatabaseHandler.getInstance();
-                Object[] args = {0, accountId, name, website};
-                boolean success = handler.insert("Company(companyId, accountId,name,website) VALUES (?,?,?,?)", args);
-                System.out.println("Created Company Account");
+                if (handler.isConnected()) {
+                    Object[] args = {0, accountId, name, website};
+                    boolean success = handler.insert("Company(companyId, accountId,name,website) VALUES (?,?,?,?)", args);
+                    System.out.println("Created Company Account");
+                } else {
+                    return new Packet(PacketResult.CONNECTION_ERROR);
+                }
             }
         }
+        return sessionIdPacket;
     }
 
     private static boolean accountExists(String username) {
-        return getAccountId(username) > 0;
+        Packet packet = getAccountId(username);
+        return packet.getResult() == PacketResult.SUCCESS;
     }
 
-    private static int getAccountId(String username) {
+    private static Packet getAccountId(String username) {
         Object[] info = {username};
         DatabaseHandler handler = DatabaseHandler.getInstance();
-        List<List<Object>> result = handler.get("accountId FROM Application.Account WHERE username = ?", info, 1);
-        if (result.size() >= 1) {
-            return (int) result.get(0).get(0);
+        if (handler.isConnected()) {
+            List<List<Object>> result = handler.get("accountId FROM Application.Account WHERE username = ?", info, 1);
+            if (result.size() >= 1) {
+                return new Packet(PacketResult.SUCCESS, (int) result.get(0).get(0));
+            } else {
+                return new Packet(PacketResult.BAD_REQUEST);
+            }
         }
-        return 0;
+        return new Packet(PacketResult.CONNECTION_ERROR);
     }
 
-    private static boolean canLogin(String username, String password) {
+    private static Packet canLogin(String username, String password) {
         Object[] info = {username, password};
         DatabaseHandler handler = DatabaseHandler.getInstance();
-        List<List<Object>> result = handler.get("accountId FROM Application.Account WHERE username = ? AND password = ?", info, 1);
-        if (result.size() >= 1) {
-            return ((int) result.get(0).get(0) > 0);
+        if (handler.isConnected()) {
+            List<List<Object>> result = handler.get("accountId FROM Application.Account WHERE username = ? AND password = ?", info, 1);
+            if (result.size() >= 1) {
+                return new Packet(PacketResult.SUCCESS, (int) result.get(0).get(0) > 0);
+            } else {
+                return new Packet(PacketResult.ACCESS_DENIED);
+            }
         }
-        return false;
+        return new Packet(PacketResult.CONNECTION_ERROR);
     }
 
-    /***
-     * Checks if account id and session id matches inside of the SessionId database table.
-     * [USED TO CHECK IF USER IS SIGNED IN OR ACCOUNT EXISTS]
+    /**
+     * *
+     * Checks if account id and session id matches inside of the SessionId
+     * database table. [USED TO CHECK IF USER IS SIGNED IN OR ACCOUNT EXISTS]
+     *
      * @param accountId Account Id of user
      * @param sessionId Session Id of current session
      * @return true if logged in and account exists
      */
-    private static boolean checkSessionId(int accountId, String sessionId) {
+    private static Packet checkSessionId(int accountId, String sessionId) {
         Object[] info = {accountId, sessionId};
         DatabaseHandler handler = DatabaseHandler.getInstance();
-        List<List<Object>> result = handler.get("accountId FROM Application.SessionId WHERE accountId = ? AND sessionId = ?", info, 1);
-        if (result.size() >= 1) {
-            return true;
-        }
-        return false;
-    }
-
-    private static String requestLogin(String username, String password) {
-        int accountId = getAccountId(username);
-        if (accountId > 0) { // Verify if account username exists
-            if (canLogin(username, password)) {
-                String sessionId = UUID.randomUUID().toString();
-                DatabaseHandler handler = DatabaseHandler.getInstance();
-                Object[] info = {username, password};
-                List<List<Object>> result = handler.get("Application.SessionId.sessionId FROM Application.SessionId JOIN Application.Account ON Application.Account.accountId = Application.SessionId.accountId AND Application.Account.username = ? AND Application.Account.password = ?", info, 1);
-                if (result.size() == 0) { // No session id exists
-                    Object[] args = {accountId, sessionId};
-                    boolean success = handler.insert("SessionId(accountId,sessionId) VALUES (?,?)", args);
-                } else { // Session id already exists
-                    Object[] args = {sessionId, accountId};
-                    boolean success = handler.update("SessionId SET sessionId=? WHERE accountId=?", args);
-                }
-                return sessionId;
+        if (handler.isConnected()) {
+            List<List<Object>> result = handler.get("accountId FROM Application.SessionId WHERE accountId = ? AND sessionId = ?", info, 1);
+            if (result.size() >= 1) {
+                return new Packet(PacketResult.SUCCESS);
+            } else {
+                return new Packet(PacketResult.BAD_REQUEST);
             }
         }
-        return "";
+        return new Packet(PacketResult.CONNECTION_ERROR);
     }
 
-    private static List<List<Object>> requestDetails(int accountId, String sessionId) {
-        List<List<Object>> result = null;
-        if (checkSessionId(accountId, sessionId)) {
-            DatabaseHandler handler = DatabaseHandler.getInstance();
-            Object[] info = {accountId};
-            result = handler.get("email, phoneNumber, address, eircode FROM Application.Account WHERE accountId = ?", info, 1);
+    private static Packet requestLogin(String username, String password) {
+        Packet accountIdPacket = getAccountId(username);
+        if (accountIdPacket.getResult() != PacketResult.SUCCESS) {
+            return accountIdPacket;
         }
-        return result;
+        int accountId = (int) accountIdPacket.getInformation();
+        if (accountId > 0) { // Verify if account username exists
+            Packet canLoginPacket = canLogin(username, password);
+            if (canLoginPacket.getResult() == PacketResult.SUCCESS) {
+                String sessionId = UUID.randomUUID().toString();
+                DatabaseHandler handler = DatabaseHandler.getInstance();
+                if (handler.isConnected()) {
+                    Object[] info = {username, password};
+                    List<List<Object>> result = handler.get("Application.SessionId.sessionId FROM Application.SessionId JOIN Application.Account ON Application.Account.accountId = Application.SessionId.accountId AND Application.Account.username = ? AND Application.Account.password = ?", info, 1);
+                    if (result.isEmpty()) { // No session id exists
+                        if (handler.isConnected()) {
+                            Object[] args = {accountId, sessionId};
+                            boolean success = handler.insert("SessionId(accountId,sessionId) VALUES (?,?)", args);
+                            if (success) {
+                                return new Packet(PacketResult.SUCCESS, sessionId);
+                            } else {
+                                return new Packet(PacketResult.DATABASE_ERROR);
+                            }
+                        } else {
+                            return new Packet(PacketResult.CONNECTION_ERROR);
+                        }
+                    } else { // Session id already exists
+                        Object[] args = {sessionId, accountId};
+                        if (handler.isConnected()) {
+                            boolean success = handler.update("SessionId SET sessionId=? WHERE accountId=?", args);
+                            if (success) {
+                                return new Packet(PacketResult.SUCCESS, sessionId);
+                            } else {
+                                return new Packet(PacketResult.DATABASE_ERROR);
+                            }
+                        } else {
+                            return new Packet(PacketResult.CONNECTION_ERROR);
+                        }
+                    }
+                } else {
+                    return new Packet(PacketResult.CONNECTION_ERROR);
+                }
+            } else {
+                return canLoginPacket;
+            }
+        }
+        return new Packet(PacketResult.ERROR_OCCURRED);
+    }
+
+    private static Packet requestDetails(int accountId, String sessionId) {
+        Packet sessionIdPacket = checkSessionId(accountId, sessionId);
+        if (sessionIdPacket.getResult() != PacketResult.SUCCESS) {
+            return sessionIdPacket;
+        }
+        DatabaseHandler handler = DatabaseHandler.getInstance();
+        if (handler.isConnected()) {
+            Object[] info = {accountId};
+            List<List<Object>> result = handler.get("email, phoneNumber, address, eircode FROM Application.Account WHERE accountId = ?", info, 1);
+            if (!result.isEmpty()) {
+                return new Packet(PacketResult.SUCCESS, result); // List<List<Object>>
+            } else {
+                return new Packet(PacketResult.DATABASE_ERROR);
+            }
+        } else {
+            return new Packet(PacketResult.CONNECTION_ERROR);
+        }
     }
 }

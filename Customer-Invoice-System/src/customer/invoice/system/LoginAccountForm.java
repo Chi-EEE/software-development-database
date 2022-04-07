@@ -1,5 +1,7 @@
 package customer.invoice.system;
 
+import java.awt.Component;
+
 /**
  *
  * @author C00261172
@@ -8,10 +10,13 @@ public class LoginAccountForm extends javax.swing.JFrame {
 
     /**
      * Creates new form SignUpForm
+     *
+     * @param component
      */
-    public LoginAccountForm() {
+    public LoginAccountForm(Component component) {
         initComponents();
-        IncorrectPasswordLabel.setVisible(false);
+        this.setLocationRelativeTo(component);
+        ErrorLabel.setVisible(false);
     }
 
     /**
@@ -31,7 +36,7 @@ public class LoginAccountForm extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         PasswordTF = new javax.swing.JPasswordField();
         SignUpButton = new javax.swing.JButton();
-        IncorrectPasswordLabel = new javax.swing.JLabel();
+        ErrorLabel = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -78,8 +83,7 @@ public class LoginAccountForm extends javax.swing.JFrame {
             }
         });
 
-        IncorrectPasswordLabel.setForeground(new java.awt.Color(255, 51, 51));
-        IncorrectPasswordLabel.setText("* Incorrect Password. Try again or click 'Forgot Password to reset it");
+        ErrorLabel.setForeground(new java.awt.Color(255, 51, 51));
 
         jButton1.setText("Forgot Password");
 
@@ -105,7 +109,7 @@ public class LoginAccountForm extends javax.swing.JFrame {
                         .addContainerGap())
                     .addGroup(layout.createSequentialGroup()
                         .addGap(6, 6, 6)
-                        .addComponent(IncorrectPasswordLabel)
+                        .addComponent(ErrorLabel)
                         .addGap(0, 0, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
@@ -121,14 +125,14 @@ public class LoginAccountForm extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(PasswordTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(2, 2, 2)
-                .addComponent(IncorrectPasswordLabel)
+                .addComponent(ErrorLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jButton1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(LoginButton)
                         .addComponent(SignUpButton)))
-                .addContainerGap(18, Short.MAX_VALUE))
+                .addContainerGap(34, Short.MAX_VALUE))
         );
 
         pack();
@@ -136,34 +140,58 @@ public class LoginAccountForm extends javax.swing.JFrame {
 
     private void LoginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LoginButtonActionPerformed
         Account account = Account.getInstance();
-        boolean success = account.login(UsernameTF.getText(), PasswordTF.getText());
-        if (success) { // Successful login
-            AccountType accountType = account.getAccountType();
-            switch (accountType) {
-                case COMPANY:
-                    System.out.println("Company Menu Here");
-                    break;
-                case CUSTOMER:
-                    System.out.println("Customer Menu Here");
-                    break;
-                case NULL:
-                    new SelectAccountType().setVisible(true);
-                    break;
-            }
-            dispose();
-        }
-        else {
-            IncorrectPasswordLabel.setVisible(true);
+        Packet loginPacket = account.login(UsernameTF.getText(), PasswordTF.getText());
+        switch (loginPacket.getResult()) {
+            case SUCCESS:
+                Packet accountTypePacket = account.getAccountType();
+                if (accountTypePacket.getResult() == PacketResult.SUCCESS) {
+                    AccountType accountType = (AccountType) accountTypePacket.getInformation();
+                    switch (accountType) {
+                        case COMPANY:
+                            new CompanyMenu(this).setVisible(true);
+                            break;
+                        case CUSTOMER:
+                            System.out.println("Customer Menu Here");
+                            break;
+                        case NULL:
+                            new SelectAccountType(this).setVisible(true);
+                            break;
+                    }
+                }
+                dispose();
+                break;
+            case ACCESS_DENIED:
+                ErrorLabel.setText("* Incorrect Password. Try again or click 'Forgot Password to reset it");
+                ErrorLabel.setVisible(true);
+                break;
+            case DATABASE_ERROR:
+                ErrorLabel.setText("* An error occurred inside of the database query");
+                ErrorLabel.setVisible(true);
+                break;
+            case ERROR_OCCURRED:
+                ErrorLabel.setText("* An error occurred");
+                ErrorLabel.setVisible(true);
+                break;
+            case CONNECTION_ERROR:
+                ErrorLabel.setText("* A connection error.");
+                ErrorLabel.setVisible(true);
+                break;
+            case BAD_REQUEST:
+                ErrorLabel.setText("* Bad Request.");
+                ErrorLabel.setVisible(true);
+                break;
+            default:
+                break;
         }
     }//GEN-LAST:event_LoginButtonActionPerformed
 
     private void SignUpButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SignUpButtonActionPerformed
-        new CreateAccountForm().setVisible(true);
+        new CreateAccountForm(this).setVisible(true);
         dispose();
     }//GEN-LAST:event_SignUpButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel IncorrectPasswordLabel;
+    private javax.swing.JLabel ErrorLabel;
     private javax.swing.JButton LoginButton;
     private javax.swing.JPasswordField PasswordTF;
     private javax.swing.JButton SignUpButton;

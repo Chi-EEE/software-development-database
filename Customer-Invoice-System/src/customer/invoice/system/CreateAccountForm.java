@@ -1,5 +1,7 @@
 package customer.invoice.system;
 
+import java.awt.Component;
+
 /**
  *
  * @author C00261172
@@ -8,9 +10,11 @@ public class CreateAccountForm extends javax.swing.JFrame {
 
     /**
      * Creates new form SignUpForm
+     * @param component
      */
-    public CreateAccountForm() {
+    public CreateAccountForm(Component component) {
         initComponents();
+        this.setLocationRelativeTo(component);
     }
 
     /**
@@ -205,8 +209,9 @@ public class CreateAccountForm extends javax.swing.JFrame {
             case SUCCESS:
                 dispose();
                 Account account = Account.getInstance();
-                if (account.login(UsernameTF.getText(), PasswordTF.getText())) {
-                    new SelectAccountType().setVisible(true);
+                Packet loginPacket = account.login(UsernameTF.getText(), PasswordTF.getText());
+                if (loginPacket.getResult() == PacketResult.SUCCESS) {
+                    new SelectAccountType(this).setVisible(true);
                 }
                 break;
             case ALREADY_EXISTS:
@@ -219,7 +224,7 @@ public class CreateAccountForm extends javax.swing.JFrame {
     }//GEN-LAST:event_SignUpButtonActionPerformed
 
     private void BackButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BackButtonActionPerformed
-        new LoginAccountForm().setVisible(true);
+        new LoginAccountForm(this).setVisible(true);
         dispose();
     }//GEN-LAST:event_BackButtonActionPerformed
 
