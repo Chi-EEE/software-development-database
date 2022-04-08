@@ -1,5 +1,6 @@
 package customer.invoice.system;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -13,15 +14,21 @@ public class Account {
 
     private String username;
     private String email;
-    private String phoneNumber;
-    private String address;
-    private String eircode;
+    // password
 
     private int accountId = 0;
     private String sessionId = "";
 
     private static Account instance = null;
 
+    public int getAccountId() {
+        return accountId;
+    }
+
+    public String getSessionId() {
+        return sessionId;
+    }
+    
     public static Account getInstance() {
         if (instance == null) {
             instance = new Account();
@@ -47,9 +54,9 @@ public class Account {
             if (detailsPacket.getResult() == PacketResult.SUCCESS) {
                 List<Object> details = ((List<List<Object>>) detailsPacket.getInformation()).get(0);
                 this.email = (String) details.get(0);
-                this.phoneNumber = (String) details.get(1);
-                this.address = (String) details.get(2);
-                this.eircode = (String) details.get(3);
+//                this.phoneNumber = (String) details.get(1);
+//                this.address = (String) details.get(2);
+//                this.eircode = (String) details.get(3);
                 System.out.println("Logged in.");
                 return new Packet(PacketResult.SUCCESS);
             }
@@ -68,10 +75,15 @@ public class Account {
         if (sessionIdPacket.getResult() == PacketResult.SUCCESS) {
             DatabaseHandler handler = DatabaseHandler.getInstance();
             Object[] info = {accountId};
-            List<List<Object>> result_1 = handler.get("accountId FROM Application.Company WHERE accountId = ?", info, 1);
+            List<List<Object>> companyList = handler.get("companyId, companyName FROM Application.Company WHERE accountId = ?", info, 1);
             if (handler.isConnected()) {
-                if (result_1.size() >= 1) {
-                    return new Packet(PacketResult.SUCCESS, AccountType.COMPANY);
+                if (companyList.size() >= 1) {
+                    List<Object> company = companyList.get(0);
+                    ArrayList<Object> information = new ArrayList<Object>();
+                    information.add(AccountType.COMPANY);
+                    information.add(company.get(0));
+                    information.add(company.get(1));
+                    return new Packet(PacketResult.SUCCESS, information);
                 }
             }
 
@@ -187,7 +199,7 @@ public class Account {
      * @param sessionId Session Id of current session
      * @return (PacketResult.SUCCESS) if the session id exists
      */
-    private static Packet checkSessionId(int accountId, String sessionId) {
+    public static Packet checkSessionId(int accountId, String sessionId) {
         Object[] info = {accountId, sessionId};
         DatabaseHandler handler = DatabaseHandler.getInstance();
         if (handler.isConnected()) {

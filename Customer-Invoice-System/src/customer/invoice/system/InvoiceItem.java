@@ -9,12 +9,14 @@ public class InvoiceItem {
     private int invoiceId;
     private int productId;
     private int productQuantity;
+    private int cost;
 
-    public InvoiceItem(int invoiceItemId, int invoiceId, int productId, int productQuantity) {
+    public InvoiceItem(int invoiceItemId, int invoiceId, int productId, int productQuantity, int cost) {
         this.invoiceItemId = invoiceItemId;
         this.invoiceId = invoiceId;
         this.productId = productId;
         this.productQuantity = productQuantity;
+        this.cost = cost;
     }
 
     public InvoiceItem(int invoiceItemId, int productQuantity) {
@@ -36,5 +38,9 @@ public class InvoiceItem {
 
     public int getProductQuantity() {
         return productQuantity;
+    }
+
+    public int getCost() {
+        return cost;
     }
 }
