@@ -1,12 +1,13 @@
+/**
+ * Author: Chi Huu Huynh
+ * Login: C00261172
+ * Date: 08/04/2022
+ */
 package customer.invoice.system;
 
 import java.awt.Component;
 import javax.swing.JOptionPane;
 
-/**
- *
- * @author admin
- */
 public class SelectAccountType extends javax.swing.JFrame {
 
     /**
@@ -240,7 +241,7 @@ public class SelectAccountType extends javax.swing.JFrame {
 
     private void OkButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OkButtonActionPerformed
         Account account = Account.getInstance();
-        if (CompanyRadio.isSelected()) {
+        if (CompanyRadio.isSelected()) { // If selected then company
             Packet companyPacket = account.setAccountTypeToCompany(CompanyNameTF.getText(), WebsiteTF.getText());
             switch (companyPacket.getResult()) {
                 case SUCCESS:
@@ -259,7 +260,7 @@ public class SelectAccountType extends javax.swing.JFrame {
                             "Error Occurred", JOptionPane.ERROR_MESSAGE);
                     break;
             }
-        } else {
+        } else { // Else customer
             account.setAccountTypeToCustomer(FirstNameTF.getText(), LastNameTF.getText(), DOB.getDate());
             JOptionPane.showMessageDialog(this, "Customer Menu here showing invoices!");
         }

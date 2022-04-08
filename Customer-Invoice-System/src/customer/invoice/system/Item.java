@@ -1,16 +1,14 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+/**
+ * Author: Chi Huu Huynh
+ * Login: C00261172
+ * Date: 08/04/2022
+ * Summary: Used to store information for Combo boxes
  */
 package customer.invoice.system;
 
-/**
- *
- * @author C00261172
- */
 public class Item {
 
-    private Object value;
+    private Object value; // Anything can be here
     private String name;
 
     public Item(Object value, String name) {

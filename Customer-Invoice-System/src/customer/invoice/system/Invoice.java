@@ -1,3 +1,8 @@
+/**
+ * Author: Chi Huu Huynh
+ * Login: C00261172
+ * Date: 08/04/2022
+ */
 package customer.invoice.system;
 
 import java.awt.Component;
@@ -37,7 +42,7 @@ public class Invoice {
     }
 
     /**\
-     * 
+     * Sets the information of the invoice from the inputted values
      * @param customerId
      * @param invoiceId
      * @param date
@@ -61,6 +66,11 @@ public class Invoice {
             return companyVerify;
         }
 
+    /**
+     * Gets all of the invoice items that have the same invoice id as the invoice
+     * @param component
+     * @return 
+     */
     public ArrayList<InvoiceItem> getInvoiceItems(Component component) {
         items = new ArrayList<>(); // Reset Invoice items
         DatabaseHandler handler = DatabaseHandler.getInstance();
@@ -107,6 +117,11 @@ public class Invoice {
         return checkSessionIdPacket;
     }
 
+    /**
+     * Deletes an invoice with the given invoice id
+     * @param invoiceId
+     * @return 
+     */
     public static Packet deleteInvoice(int invoiceId) {
         Packet companyVerify = Account.companyVerify();
         if (companyVerify.getResult() == PacketResult.SUCCESS) {

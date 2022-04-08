@@ -1,3 +1,9 @@
+/**
+ * Author: Chi Huu Huynh
+ * Login: C00261172
+ * Date: 08/04/2022
+ * Summary: Most important class of the system
+ */
 package customer.invoice.system;
 
 import java.awt.Component;
@@ -17,7 +23,7 @@ import javax.swing.JOptionPane;
  */
 public class DatabaseHandler {
 
-    static final String DATABASE_URL = "jdbc:mysql://localhost/Application";
+    static final String DATABASE_URL = "jdbc:mysql://localhost/Application"; // DB address
     static final String DATABASE_USER = "root";
     static final String DATABASE_PASSWORD = "password";
 
@@ -25,6 +31,10 @@ public class DatabaseHandler {
     private Connection connection = null;
     private PreparedStatement pstat = null;
 
+    /**
+     * Make sure there is only one of the DatabaseHandler
+     * @return 
+     */
     public static DatabaseHandler getInstance() {
         if (instance == null) {
             instance = new DatabaseHandler();
@@ -36,6 +46,9 @@ public class DatabaseHandler {
 
     }
 
+    /**
+     * Attempt to connect to DB
+     */
     public void connect() {
         try {
             String className = "com.mysql.cj.jdbc.Driver";
@@ -50,6 +63,11 @@ public class DatabaseHandler {
         }
     }
 
+    /**
+     * Check if connected to DB
+     *
+     * @return
+     */
     public boolean isConnected() {
         boolean closed = true;
         if (connection == null) {
@@ -57,12 +75,19 @@ public class DatabaseHandler {
         }
         try {
             closed = connection.isClosed();
-        } catch(SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return !closed;
     }
 
+    /**
+     * Performs a update query to the database
+     *
+     * @param query
+     * @param args
+     * @return
+     */
     public boolean update(String query, Object[] args) {
         if (isConnected()) {
             int entriesUpdated = 0;
@@ -90,6 +115,13 @@ public class DatabaseHandler {
         return false;
     }
 
+    /**
+     * Performs a insert query into the DB
+     *
+     * @param query
+     * @param args
+     * @return
+     */
     public boolean insert(String query, Object[] args) {
         if (isConnected()) {
             int entriesCreated = 0;
@@ -116,7 +148,14 @@ public class DatabaseHandler {
         }
         return false;
     }
-    
+
+    /**
+     * Performs a delete query to the DB
+     * @param table
+     * @param condition
+     * @param args
+     * @return 
+     */
     public boolean delete(String table, String condition, Object[] args) {
         if (isConnected()) {
             int entriesDeleted = 0;
@@ -144,6 +183,13 @@ public class DatabaseHandler {
         return false;
     }
 
+    /**
+     * Performs a get query to get the information from the DB
+     * @param query
+     * @param args
+     * @param rowCount Amount of entries to get
+     * @return 
+     */
     public List<List<Object>> get(String query, Object[] args, int rowCount) {
         if (isConnected()) {
             ResultSet resultSet = null;
@@ -175,7 +221,13 @@ public class DatabaseHandler {
         }
         return null;
     }
-    
+
+    /**
+     * Performs a get query to get the information from the DB
+     * @param query
+     * @param rowCount Amount of entries to get
+     * @return 
+     */
     public List<List<Object>> get(String query, int rowCount) {
         if (isConnected()) {
             ResultSet resultSet = null;
@@ -204,6 +256,9 @@ public class DatabaseHandler {
         return null;
     }
 
+    /**
+     * Destructor for connection
+     */
     protected void finalize() {
         try {
             if (isConnected()) {

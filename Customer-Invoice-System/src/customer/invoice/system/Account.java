@@ -1,13 +1,14 @@
+/**
+ * Author: Chi Huu Huynh
+ * Login: C00261172
+ * Date: 08/04/2022
+ */
 package customer.invoice.system;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-/**
- *
- * @author C00261172
- */
 public class Account {
 
     private String username;
@@ -38,23 +39,26 @@ public class Account {
 
     }
 
+    /**
+     * Used for logging in for the first time
+     *
+     * @param username
+     * @param password
+     * @return PacketResult.SUCCESS if successful
+     */
     public Packet login(String username, String password) {
         Packet accountIdPacket = getAccountId(username);
         if (accountIdPacket.getResult() != PacketResult.SUCCESS) {
             return accountIdPacket;
         }
         accountId = (int) accountIdPacket.getInformation();
-        Packet sessionIdPacket = requestLogin(username, password);
+        Packet sessionIdPacket = requestLogin(username, password); // Get session id
         if (sessionIdPacket.getResult() == PacketResult.SUCCESS) {
             sessionId = (String) sessionIdPacket.getInformation();
             this.username = username;
             Packet detailsPacket = requestDetails(accountId, sessionId);
-            if (detailsPacket.getResult() == PacketResult.SUCCESS) {
-                List<Object> details = ((List<List<Object>>) detailsPacket.getInformation()).get(0);
-                this.email = (String) details.get(0);
-//                this.phoneNumber = (String) details.get(1);
-//                this.address = (String) details.get(2);
-//                this.eircode = (String) details.get(3);
+            if (detailsPacket.getResult() == PacketResult.SUCCESS) { // Get information
+                List<Object> details = ((List<List<Object>>) detailsPacket.getInformation()).get(0); // Information
                 System.out.println("Logged in.");
                 return new Packet(PacketResult.SUCCESS);
             }
@@ -68,11 +72,17 @@ public class Account {
         sessionId = "";
     }
 
+    /**
+     * Gets the account type of the account
+     *
+     * @return PacketResult.SUCCESS if successful
+     */
     public Packet getAccountType() {
-        Packet sessionIdPacket = checkSessionId(accountId, sessionId);
+        Packet sessionIdPacket = checkSessionId(accountId, sessionId); // check
         if (sessionIdPacket.getResult() == PacketResult.SUCCESS) {
             DatabaseHandler handler = DatabaseHandler.getInstance();
             Object[] info = {accountId};
+            // Check if account is in Company DB
             List<List<Object>> companyList = handler.get("companyId, name FROM Application.Company WHERE accountId = ?", info, 1);
             if (handler.isConnected()) {
                 if (companyList.size() >= 1) {
@@ -84,6 +94,7 @@ public class Account {
                     return new Packet(PacketResult.SUCCESS, information);
                 }
                 if (handler.isConnected()) {
+                    // Check if account is in Customer DB
                     List<List<Object>> result_2 = handler.get("accountId FROM Application.Customer WHERE accountId = ?", info, 1);
                     if (result_2.size() >= 1) {
                         return new Packet(PacketResult.SUCCESS, AccountType.CUSTOMER);
@@ -96,13 +107,24 @@ public class Account {
         return sessionIdPacket;
     }
 
+    /**
+     * Create a new account
+     * @param username
+     * @param password
+     * @param email
+     * @param address
+     * @param eircode
+     * @param phoneNumber
+     * @return PacketResult.BAD_REQUEST if successful
+     */
     public static Packet createAccount(String username, String password, String email, String address, String eircode, String phoneNumber) {
         username = username.toLowerCase();
-        Packet accountIdPacket = getAccountId(username);
+        Packet accountIdPacket = getAccountId(username); // Get account id
         if (accountIdPacket.getResult() == PacketResult.BAD_REQUEST) { // BAD REQUEST = No Account
             Object[] args = {0, username, password, email, address, eircode, phoneNumber};
             DatabaseHandler handler = DatabaseHandler.getInstance();
             if (handler.isConnected()) {
+                // Create account
                 boolean success = handler.insert("Account(accountId,username,password,email,address,eircode,phoneNumber) VALUES (?,?,?,?,?,?,?)", args);
                 if (success) {
                     return new Packet(PacketResult.BAD_REQUEST);
@@ -116,18 +138,25 @@ public class Account {
         return accountIdPacket;
     }
 
+    /**
+     * Sets account type to customer
+     * @param firstName
+     * @param lastName
+     * @param dob
+     * @return PacketResult.SUCCESS if successful
+     */
     public Packet setAccountTypeToCustomer(String firstName, String lastName, java.util.Date dob) {
-        Packet sessionIdPacket = checkSessionId(accountId, sessionId);
+        Packet sessionIdPacket = checkSessionId(accountId, sessionId); // Check if session id is correct
         if (sessionIdPacket.getResult() == PacketResult.SUCCESS) {
             Packet accountTypePacket = getAccountType();
             if (accountTypePacket.getResult() != PacketResult.SUCCESS) {
                 return accountTypePacket;
             }
-            java.sql.Date sqlDOB = new java.sql.Date(dob.getTime());
-            if ((AccountType) accountTypePacket.getInformation() == AccountType.NULL) {
+            if ((AccountType) accountTypePacket.getInformation() == AccountType.NULL) { // If null account type
                 DatabaseHandler handler = DatabaseHandler.getInstance();
                 if (handler.isConnected()) {
                     Object[] args = {0, accountId, firstName, lastName, dob};
+                    // Insert account into Customer DB
                     boolean success = handler.insert("Customer(customerId, accountId, firstName, lastName, dob) VALUES (?,?,?,?,?)", args);
                     if (success) {
                         return new Packet(PacketResult.SUCCESS);
@@ -141,6 +170,12 @@ public class Account {
         return sessionIdPacket;
     }
 
+    /**
+     * Sets account type to company
+     * @param name
+     * @param website
+     * @return PacketResult.SUCCESS if successful
+     */
     public Packet setAccountTypeToCompany(String name, String website) {
         Packet sessionIdPacket = checkSessionId(accountId, sessionId);
         if (sessionIdPacket.getResult() == PacketResult.SUCCESS) {
@@ -148,10 +183,11 @@ public class Account {
             if (accountTypePacket.getResult() != PacketResult.SUCCESS) {
                 return accountTypePacket;
             }
-            if ((AccountType) accountTypePacket.getInformation() == AccountType.NULL) {
+            if ((AccountType) accountTypePacket.getInformation() == AccountType.NULL) { // If null account type
                 DatabaseHandler handler = DatabaseHandler.getInstance();
                 if (handler.isConnected()) {
                     Object[] args = {0, accountId, name, website};
+                    // Insert into company DB
                     boolean success = handler.insert("Company(companyId, accountId, name, website) VALUES (?,?,?,?)", args);
                     if (success) {
                         return new Packet(PacketResult.SUCCESS);
@@ -165,10 +201,16 @@ public class Account {
         return sessionIdPacket;
     }
 
+    /**
+     * Gets the account id of the username
+     * @param username
+     * @return PacketResult.SUCCESS and account id if successful
+     */
     private static Packet getAccountId(String username) {
         Object[] info = {username};
         DatabaseHandler handler = DatabaseHandler.getInstance();
         if (handler.isConnected()) {
+            // Get account id
             List<List<Object>> result = handler.get("accountId FROM Application.Account WHERE username = ?", info, 1);
             if (result.size() >= 1) {
                 return new Packet(PacketResult.SUCCESS, (int) result.get(0).get(0));
@@ -179,10 +221,17 @@ public class Account {
         return new Packet(PacketResult.CONNECTION_ERROR);
     }
 
+    /**
+     * Check if user can login with username and password
+     * @param username
+     * @param password
+     * @return PacketResult.SUCCESS and accountid if successful
+     */
     private static Packet canLogin(String username, String password) {
         Object[] info = {username, password};
         DatabaseHandler handler = DatabaseHandler.getInstance();
         if (handler.isConnected()) {
+            // If can get account id from username and pass
             List<List<Object>> result = handler.get("accountId FROM Application.Account WHERE username = ? AND password = ?", info, 1);
             if (result.size() >= 1) {
                 return new Packet(PacketResult.SUCCESS, (int) result.get(0).get(0) > 0);
@@ -278,14 +327,21 @@ public class Account {
         return new Packet(PacketResult.ERROR_OCCURRED); // No account exists??? (This should never happen)
     }
 
+    /**
+     * Request the information of the account using account id and session id
+     * @param accountId
+     * @param sessionId
+     * @return PacketResult.SUCCESS and information if successful
+     */
     private static Packet requestDetails(int accountId, String sessionId) {
-        Packet sessionIdPacket = checkSessionId(accountId, sessionId);
+        Packet sessionIdPacket = checkSessionId(accountId, sessionId); // Check logged in
         if (sessionIdPacket.getResult() != PacketResult.SUCCESS) {
             return sessionIdPacket;
         }
         DatabaseHandler handler = DatabaseHandler.getInstance();
         if (handler.isConnected()) {
             Object[] info = {accountId};
+            // Get information
             List<List<Object>> result = handler.get("email, phoneNumber, address, eircode FROM Application.Account WHERE accountId = ?", info, 1);
             if (!result.isEmpty()) {
                 return new Packet(PacketResult.SUCCESS, result); // List<List<Object>>
@@ -296,7 +352,11 @@ public class Account {
             return new Packet(PacketResult.CONNECTION_ERROR);
         }
     }
-    
+
+    /**
+     * Verification for company
+     * @return PacketResult.SUCCESS if successful
+     */
     public static Packet companyVerify() {
         Account account = Account.getInstance();
         Packet accountTypePacket = account.getAccountType();
@@ -310,5 +370,5 @@ public class Account {
         }
         return accountTypePacket;
     }
-    
+
 }

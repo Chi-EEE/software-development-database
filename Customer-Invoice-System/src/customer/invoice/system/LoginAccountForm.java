@@ -1,17 +1,19 @@
+/**
+ * Author: Chi Huu Huynh
+ * Login: C00261172
+ * Date: 08/04/2022
+ * Summary: Login screen
+ */
 package customer.invoice.system;
 
 import java.awt.Component;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
-/**
- *
- * @author C00261172
- */
 public class LoginAccountForm extends javax.swing.JFrame {
 
     /**
-     * Creates new form SignUpForm
+     * Creates new form LoginForm
      *
      * @param component
      */
@@ -39,7 +41,6 @@ public class LoginAccountForm extends javax.swing.JFrame {
         PasswordTF = new javax.swing.JPasswordField();
         SignUpButton = new javax.swing.JButton();
         ErrorLabel = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Login Account");
@@ -88,8 +89,6 @@ public class LoginAccountForm extends javax.swing.JFrame {
 
         ErrorLabel.setForeground(new java.awt.Color(255, 51, 51));
 
-        jButton1.setText("Forgot Password");
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -105,9 +104,7 @@ public class LoginAccountForm extends javax.swing.JFrame {
                             .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(LoginButton, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
                         .addComponent(SignUpButton)
                         .addContainerGap())
                     .addGroup(layout.createSequentialGroup()
@@ -130,11 +127,9 @@ public class LoginAccountForm extends javax.swing.JFrame {
                 .addGap(2, 2, 2)
                 .addComponent(ErrorLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(LoginButton)
-                        .addComponent(SignUpButton)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(LoginButton)
+                    .addComponent(SignUpButton))
                 .addContainerGap(34, Short.MAX_VALUE))
         );
 
@@ -156,6 +151,7 @@ public class LoginAccountForm extends javax.swing.JFrame {
         }
 
         Account account = Account.getInstance();
+        // Check if can login
         Packet loginPacket = account.login(UsernameTF.getText(), PasswordTF.getText());
         switch (loginPacket.getResult()) {
             case SUCCESS:
@@ -163,16 +159,20 @@ public class LoginAccountForm extends javax.swing.JFrame {
                 switch (accountTypePacket.getResult()) {
                     /* Start */
                     case SUCCESS:
+                        // Get account type
                         ArrayList<Object> accountInformation = (ArrayList<Object>) accountTypePacket.getInformation();
                         AccountType accountType = (AccountType) accountInformation.get(0);
                         switch (accountType) {
                             case COMPANY:
+                                // Show company menu
                                 new CompanyMenu(this).setVisible(true);
                                 break;
                             case CUSTOMER:
-                                System.out.println("Customer Menu Here");
+                                // Show nothing
+                                JOptionPane.showMessageDialog(this, "Customer Menu here showing invoices!");
                                 break;
                             case NULL:
+                                // Show choose account type
                                 new SelectAccountType(this).setVisible(true);
                                 break;
                         }
@@ -190,7 +190,7 @@ public class LoginAccountForm extends javax.swing.JFrame {
                 dispose();
                 break;
             case ACCESS_DENIED:
-                ErrorLabel.setText("* Incorrect Password. Try again or click 'Forgot Password to reset it");
+                ErrorLabel.setText("* Incorrect Password. Try again");
                 ErrorLabel.setVisible(true);
                 break;
             case DATABASE_ERROR:
@@ -206,7 +206,7 @@ public class LoginAccountForm extends javax.swing.JFrame {
                 ErrorLabel.setVisible(true);
                 break;
             default:
-                ErrorLabel.setText("* Incorrect Password. Try again or click 'Forgot Password to reset it");
+                ErrorLabel.setText("* Incorrect Password. Try again");
                 ErrorLabel.setVisible(true);
                 break;
         }
@@ -223,7 +223,6 @@ public class LoginAccountForm extends javax.swing.JFrame {
     private javax.swing.JPasswordField PasswordTF;
     private javax.swing.JButton SignUpButton;
     private javax.swing.JTextField UsernameTF;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

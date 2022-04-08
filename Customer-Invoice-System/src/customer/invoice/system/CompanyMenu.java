@@ -1,3 +1,8 @@
+/**
+ * Author: Chi Huu Huynh
+ * Login: C00261172
+ * Date: 08/04/2022
+ */
 package customer.invoice.system;
 
 import java.awt.Component;
@@ -17,10 +22,6 @@ import java.time.LocalDateTime;
 import javax.swing.JComboBox;
 import javax.swing.ListSelectionModel;
 
-/**
- *
- * @author C00261172
- */
 public class CompanyMenu extends javax.swing.JFrame {
 
     /**
@@ -38,6 +39,7 @@ public class CompanyMenu extends javax.swing.JFrame {
 
         AddressTA.setFont(new Font("Segou UI", Font.PLAIN, 11));
 
+        // Uneditable
         InvoiceTable.setFocusable(false);
         InvoiceTable.setRowSelectionAllowed(true);
         InvoiceTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -53,6 +55,7 @@ public class CompanyMenu extends javax.swing.JFrame {
         ProductTable.setFocusable(false);
         ProductTable.setRowSelectionAllowed(true);
         ProductTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        //
 
         hideEditButtons();
         initaliseInvoices();
@@ -86,12 +89,19 @@ public class CompanyMenu extends javax.swing.JFrame {
         });
     }
 
+    /**
+     * Gets customers and adds them to combo box
+     *
+     * @param component
+     */
     private void addCustomerJComboBox(JComboBox component) {
         DatabaseHandler handler = DatabaseHandler.getInstance();
         if (handler.isConnected()) {
             component.removeAllItems();
+            // Get customers
             List<List<Object>> customerlist = handler.get(" customerId, firstName, lastName, address, email, phoneNumber FROM Application.Customer INNER JOIN Application.Account ON Application.Customer.accountId = Application.Account.accountId", 1000);
             for (List<Object> customer : customerlist) {
+                // Add to combo box
                 component.addItem(new Item((int) customer.get(0), (String) customer.get(1) + " " + (String) customer.get(2)));
             }
         } else {
@@ -100,14 +110,21 @@ public class CompanyMenu extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * Adds products which the company owns to combo box
+     *
+     * @param component
+     */
     private void addProductJComboBox(JComboBox component) {
         DatabaseHandler handler = DatabaseHandler.getInstance();
         if (handler.isConnected()) {
             Object[] args = {Company.getCompanyId()};
+            // Get products
             List<List<Object>> productlist = handler.get(" productId, name, cost, quantity FROM Application.Product WHERE companyId=?", args, 1000);
             component.removeAllItems();
             for (List<Object> product : productlist) {
                 int quantity = (int) product.get(3);
+                // Add to combo box
                 component.addItem(new Item(new Product((int) product.get(0), quantity), (String) product.get(1) + ": $" + Integer.toString((int) product.get(2)) + "| Stock: " + Integer.toString(quantity)));
             }
         } else {
@@ -116,6 +133,9 @@ public class CompanyMenu extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * Clears all invoice information in view / amend invoice panel
+     */
     private void clearInvoiceInformation() {
         AddressTA.setText("");
         PhoneNumber.setText("");
@@ -128,6 +148,9 @@ public class CompanyMenu extends javax.swing.JFrame {
         CustomerInvoiceBox.removeAllItems();
     }
 
+    /**
+     * Fills invoice information into view / amend invoice panel
+     */
     private void fillInvoiceInformation() {
         DatabaseHandler handler = DatabaseHandler.getInstance();
         if (handler.isConnected()) {
@@ -169,6 +192,9 @@ public class CompanyMenu extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * Fills customer information into view customer panel
+     */
     private void fillCustomerInformation() {
         DatabaseHandler handler = DatabaseHandler.getInstance();
         if (handler.isConnected()) {
@@ -198,16 +224,27 @@ public class CompanyMenu extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * Hides all edit buttons
+     */
     private void hideEditButtons() {
         AddInvoiceItemButton.setVisible(false);
         RemoveInvoiceItemButton.setVisible(false);
         ConfirmInvoiceButton.setVisible(false);
     }
 
+    /**
+     * Returns java.util.Date from java.sql.LocalDateTime
+     * @param dateToConvert
+     * @return java.util.Date
+     */
     private Date convertToDateViaSqlTimestamp(LocalDateTime dateToConvert) {
         return java.sql.Timestamp.valueOf(dateToConvert);
     }
 
+    /**
+     * Fills out the main invoice table with information
+     */
     private void initaliseInvoices() {
         // Get model with the column names
         DefaultTableModel model = (DefaultTableModel) InvoiceTable.getModel();
@@ -215,7 +252,8 @@ public class CompanyMenu extends javax.swing.JFrame {
 
         DatabaseHandler handler = DatabaseHandler.getInstance();
         if (handler.isConnected()) {
-            List<List<Object>> invoicelist = handler.get(" date,invoiceId,(SELECT SUM(i.quantity * e.cost) FROM Application.Invoice AS o INNER JOIN Application.InvoiceItem AS i ON o.invoiceId = i.invoiceId INNER JOIN Application.Product AS e ON i.productId = e.productId WHERE o.invoiceId = Application.Invoice.invoiceId GROUP BY o.invoiceId) FROM Application.Invoice", 1000);
+            Object[] args = {Company.getCompanyId()};
+            List<List<Object>> invoicelist = handler.get(" date,invoiceId,(SELECT SUM(i.quantity * e.cost) FROM Application.Invoice AS o INNER JOIN Application.InvoiceItem AS i ON o.invoiceId = i.invoiceId INNER JOIN Application.Product AS e ON i.productId = e.productId WHERE o.invoiceId = Application.Invoice.invoiceId GROUP BY o.invoiceId) FROM Application.Invoice WHERE Application.Invoice.companyId=?", args, 1000);
             for (List<Object> invoice : invoicelist) {
                 java.util.Date newDate = convertToDateViaSqlTimestamp((LocalDateTime) invoice.get(0));
                 int invoiceId = (int) invoice.get(1);
@@ -232,6 +270,9 @@ public class CompanyMenu extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * Fills main customer table with information
+     */
     private void initaliseCustomers() {
         // Get model with the column names
         DefaultTableModel model = (DefaultTableModel) CustomerTable.getModel();
@@ -255,6 +296,9 @@ public class CompanyMenu extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * Fills main product table with information
+     */
     private void initaliseProducts() {
         // Get model with the column names
         DefaultTableModel model = (DefaultTableModel) ProductTable.getModel();
@@ -279,6 +323,9 @@ public class CompanyMenu extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * Fills invoice item box with information
+     */
     private void getInvoiceItems() {
         // Get model with the column names
         DefaultTableModel model = (DefaultTableModel) InvoiceItemTable.getModel();
@@ -312,6 +359,15 @@ public class CompanyMenu extends javax.swing.JFrame {
         return list.toArray();
     }
 
+    /**
+     * Used to add invoice item to invoice item table
+     * @param productId
+     * @param invoiceItemName
+     * @param quantity
+     * @param cost
+     * @param totalCost
+     * @return 
+     */
     private Object[] addInvoiceItem(int productId, String invoiceItemName, int quantity, int cost, int totalCost) {
         List<String> list = new ArrayList<>();
         list.add(Integer.toString(productId));
@@ -320,9 +376,17 @@ public class CompanyMenu extends javax.swing.JFrame {
         list.add(Integer.toString(cost));
         list.add(Integer.toString(totalCost));
 
+        // Convert and use as array
         return list.toArray();
     }
 
+    /**
+     * Used to add customer item to customer table
+     * @param customerId
+     * @param customerName
+     * @param customerEmail
+     * @return Array for customer table
+     */
     private Object[] addCustomer(int customerId, String customerName, String customerEmail) {
         List<String> list = new ArrayList<>();
 
@@ -333,6 +397,14 @@ public class CompanyMenu extends javax.swing.JFrame {
         return list.toArray();
     }
 
+    /**
+     * Used to add product to product table
+     * @param productId
+     * @param name
+     * @param quantity
+     * @param cost
+     * @return Array for product table
+     */
     private Object[] addProduct(int productId, String name, int quantity, int cost) {
         List<String> list = new ArrayList<>();
 
@@ -574,12 +646,6 @@ public class CompanyMenu extends javax.swing.JFrame {
         CancelInvoiceItemFormButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 CancelInvoiceItemFormButtonActionPerformed(evt);
-            }
-        });
-
-        ProductInvoiceItemCombo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ProductInvoiceItemComboActionPerformed(evt);
             }
         });
 
@@ -1243,6 +1309,7 @@ public class CompanyMenu extends javax.swing.JFrame {
             int result = JOptionPane.showConfirmDialog(this,
                     "Are you sure you want to delete this invoice?", "Delete Invoice Confirmation", JOptionPane.YES_NO_OPTION);
             if (result == 0) {
+                // Delete
                 Packet deletePacket = Invoice.deleteInvoice(selectedInvoice);
                 switch (deletePacket.getResult()) {
                     case SUCCESS:
@@ -1270,6 +1337,9 @@ public class CompanyMenu extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_DeleteInvoiceButtonActionPerformed
 
+    /**
+     * Set the invoice state editing
+     */
     void setInvoiceEditing() {
         CustomerInvoiceBox.setEnabled(editingInvoice);
         InvoiceDate.setEnabled(editingInvoice);
@@ -1311,6 +1381,7 @@ public class CompanyMenu extends javax.swing.JFrame {
             }
             Item item = (Item) CustomerInvoiceBox.getSelectedItem();
             int customerId = (int) item.getValue();
+            // Set the information of invoice
             Packet setInformationPacket = Invoice.setInformation(customerId, selectedInvoice, invoiceDate);
             switch (setInformationPacket.getResult()) {
                 case SUCCESS:
@@ -1353,7 +1424,6 @@ public class CompanyMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_CreateInvoiceButtonActionPerformed
 
     private void InvoiceOkButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_InvoiceOkButtonActionPerformed
-        // TODO: THISSS
         Item item = (Item) CustomerBox.getSelectedItem();
         if (item == null) { // Validation
             JOptionPane.showMessageDialog(AddInvoiceForm, "Please input an select a customer inside of the box!",
@@ -1469,10 +1539,6 @@ public class CompanyMenu extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_DeleteProductButtonActionPerformed
 
-    private void ProductInvoiceItemComboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ProductInvoiceItemComboActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_ProductInvoiceItemComboActionPerformed
-
     private void RemoveInvoiceItemButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RemoveInvoiceItemButtonActionPerformed
         int row = InvoiceItemTable.getSelectedRow();
         if (row < 0) {
@@ -1551,6 +1617,7 @@ public class CompanyMenu extends javax.swing.JFrame {
             }
             int cost = Integer.parseInt(ProductTable.getValueAt(productRow, 2).toString());
             int quantity = Integer.parseInt(ProductTable.getValueAt(productRow, 3).toString());
+            // Update product information
             Packet updatePacket = Product.updateProduct(productId, name, cost, quantity);
             switch (updatePacket.getResult()) {
                 case SUCCESS:
@@ -1568,6 +1635,7 @@ public class CompanyMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_ProductTablePropertyChange
 
     private void AddProductFormButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddProductFormButtonActionPerformed
+        // Add product
         Packet addProductPacket = Product.insertProduct(NameProductForm.getText(), (int) QuantityProductForm.getValue(), (int) CostProductForm.getValue());
         switch (addProductPacket.getResult()) {
             case SUCCESS:

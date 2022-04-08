@@ -1,6 +1,8 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+/**
+ * Author: Chi Huu Huynh
+ * Login: C00261172
+ * Date: 08/04/2022
+ * Summary: Used for uneditable tables
  */
 package customer.invoice.system;
 
@@ -35,7 +37,7 @@ public class UnEditableDefaultTableModel extends DefaultTableModel {
     public UnEditableDefaultTableModel(Object[][] data, Object[] columnNames) {
         super(data, columnNames);
     }
-    
+
     @Override
     public boolean isCellEditable(int row, int column) {
         return false;//This causes all cells to be not editable

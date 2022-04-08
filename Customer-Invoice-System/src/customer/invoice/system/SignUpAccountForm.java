@@ -1,12 +1,13 @@
+/**
+ * Author: Chi Huu Huynh
+ * Login: C00261172
+ * Date: 08/04/2022
+ */
 package customer.invoice.system;
 
 import java.awt.Component;
 import javax.swing.JOptionPane;
 
-/**
- *
- * @author C00261172
- */
 public class SignUpAccountForm extends javax.swing.JFrame {
 
     /**
@@ -209,6 +210,9 @@ public class SignUpAccountForm extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void SignUpButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SignUpButtonActionPerformed
+        /**
+         * Ultra simple verfication 
+        */
         String username = UsernameTF.getText();
         if (username.isBlank()) {
             jLabel7.setText("* Please fill in the username");
@@ -256,7 +260,8 @@ public class SignUpAccountForm extends javax.swing.JFrame {
             jLabel7.setVisible(true);
             return;
         }
-        //new java.sql.Date(DOB.getDate().getTime())
+        
+        // Create account
         Packet accountCreatePacket = Account.createAccount(UsernameTF.getText(), PasswordTF.getText(), EmailTF.getText(), AddressField.getText(), EircodeTF.getText(), PhoneNumberTF.getText());
         switch (accountCreatePacket.getResult()) {
             case BAD_REQUEST:

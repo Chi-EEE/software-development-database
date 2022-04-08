@@ -1,9 +1,11 @@
+/**
+ * Author: Chi Huu Huynh
+ * Login: C00261172
+ * Date: 08/04/2022
+ * Summary: Used to store information for GUI
+ */
 package customer.invoice.system;
 
-/**
- *
- * @author C00261172
- */
 public class InvoiceItem {
     private int invoiceItemId;
     private int invoiceId;
