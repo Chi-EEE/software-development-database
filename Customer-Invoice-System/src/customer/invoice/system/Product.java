@@ -17,6 +17,10 @@ public class Product {
     private int productId;
     private int quantity = -1;
 
+    /**
+     * constructor
+     * @param productId Product id
+     */
     public Product(int productId) {
         this.productId = productId;
     }
@@ -84,10 +88,10 @@ public class Product {
     
     /**
      * Update product information using product id
-     * @param productId
-     * @param name
-     * @param cost
-     * @param quantity
+     * @param productId Product Id
+     * @param name Name
+     * @param cost Cost
+     * @param quantity Quantity
      * @return 
      */
     public static Packet updateProduct(int productId, String name, int cost, int quantity) {
@@ -106,7 +110,7 @@ public class Product {
     /**
      * Get quantity of product from product id and its company id
      * @param companyId Only company own can view
-     * @return 
+     * @return new Packet(PacketResult.SUCCESS, quantity)
      */
     public Packet getQuantity(int companyId) {
         if (quantity == -1) {
