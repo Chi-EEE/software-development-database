@@ -1613,8 +1613,8 @@ public class CompanyMenu extends javax.swing.JFrame {
             if (name.isBlank()) {
                 return;
             }
-            int cost = Integer.parseInt(ProductTable.getValueAt(productRow, 2).toString());
-            int quantity = Integer.parseInt(ProductTable.getValueAt(productRow, 3).toString());
+            int quantity = Integer.parseInt(ProductTable.getValueAt(productRow, 2).toString());
+            int cost = Integer.parseInt(ProductTable.getValueAt(productRow, 3).toString());
             // Update product information
             Packet updatePacket = Product.updateProduct(productId, name, cost, quantity);
             switch (updatePacket.getResult()) {

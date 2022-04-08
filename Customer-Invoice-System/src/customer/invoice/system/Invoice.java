@@ -128,10 +128,11 @@ public class Invoice {
                 DatabaseHandler handler = DatabaseHandler.getInstance();
                 if (handler.isConnected()) {
                     Object[] args = {invoiceId};
+                    // Check if there is any invoice items
                     List<List<Object>> invoiceItemList = handler.get("productId FROM Application.InvoiceItem WHERE invoiceId=?", args, 1);
                     if (invoiceItemList.size() == 1) {
                         List<Object> invoiceItems = invoiceItemList.get(0);
-                        for (int i = 0; i < invoiceItems.size(); i++) {
+                        for (int i = 0; i < invoiceItems.size(); i++) { // Loop through invoice items and remove them
                             Company.deleteInvoiceItem((int)invoiceItems.get(i), invoiceId);
                         }
                     }

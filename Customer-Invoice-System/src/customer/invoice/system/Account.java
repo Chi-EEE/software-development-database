@@ -97,9 +97,13 @@ public class Account {
                     // Check if account is in Customer DB
                     List<List<Object>> result_2 = handler.get("accountId FROM Application.Customer WHERE accountId = ?", info, 1);
                     if (result_2.size() >= 1) {
-                        return new Packet(PacketResult.SUCCESS, AccountType.CUSTOMER);
+                        ArrayList<Object> information = new ArrayList<>();
+                        information.add(AccountType.CUSTOMER);
+                        return new Packet(PacketResult.SUCCESS, information);
                     }
-                    return new Packet(PacketResult.SUCCESS, AccountType.NULL);
+                    ArrayList<Object> information = new ArrayList<>();
+                    information.add(AccountType.NULL);
+                    return new Packet(PacketResult.SUCCESS, information);
                 }
             }
             return new Packet(PacketResult.CONNECTION_ERROR);
@@ -109,6 +113,7 @@ public class Account {
 
     /**
      * Create a new account
+     *
      * @param username
      * @param password
      * @param email
@@ -140,6 +145,7 @@ public class Account {
 
     /**
      * Sets account type to customer
+     *
      * @param firstName
      * @param lastName
      * @param dob
@@ -152,7 +158,8 @@ public class Account {
             if (accountTypePacket.getResult() != PacketResult.SUCCESS) {
                 return accountTypePacket;
             }
-            if ((AccountType) accountTypePacket.getInformation() == AccountType.NULL) { // If null account type
+            ArrayList<Object> information = (ArrayList<Object>) accountTypePacket.getInformation();
+            if ((AccountType) information.get(0) == AccountType.NULL) { // If null account type
                 DatabaseHandler handler = DatabaseHandler.getInstance();
                 if (handler.isConnected()) {
                     Object[] args = {0, accountId, firstName, lastName, dob};
@@ -172,6 +179,7 @@ public class Account {
 
     /**
      * Sets account type to company
+     *
      * @param name
      * @param website
      * @return PacketResult.SUCCESS if successful
@@ -183,7 +191,8 @@ public class Account {
             if (accountTypePacket.getResult() != PacketResult.SUCCESS) {
                 return accountTypePacket;
             }
-            if ((AccountType) accountTypePacket.getInformation() == AccountType.NULL) { // If null account type
+            ArrayList<Object> information = (ArrayList<Object>) accountTypePacket.getInformation();
+            if ((AccountType) information.get(0)== AccountType.NULL) { // If null account type
                 DatabaseHandler handler = DatabaseHandler.getInstance();
                 if (handler.isConnected()) {
                     Object[] args = {0, accountId, name, website};
@@ -203,6 +212,7 @@ public class Account {
 
     /**
      * Gets the account id of the username
+     *
      * @param username
      * @return PacketResult.SUCCESS and account id if successful
      */
@@ -223,6 +233,7 @@ public class Account {
 
     /**
      * Check if user can login with username and password
+     *
      * @param username
      * @param password
      * @return PacketResult.SUCCESS and accountid if successful
@@ -329,6 +340,7 @@ public class Account {
 
     /**
      * Request the information of the account using account id and session id
+     *
      * @param accountId
      * @param sessionId
      * @return PacketResult.SUCCESS and information if successful
@@ -355,6 +367,7 @@ public class Account {
 
     /**
      * Verification for company
+     *
      * @return PacketResult.SUCCESS if successful
      */
     public static Packet companyVerify() {
