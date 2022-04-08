@@ -626,7 +626,6 @@ public class CompanyMenu extends javax.swing.JFrame {
         AddInvoiceItemForm.setTitle("Add Item");
         AddInvoiceItemForm.setAlwaysOnTop(true);
         AddInvoiceItemForm.setModal(true);
-        AddInvoiceItemForm.setResizable(false);
         AddInvoiceItemForm.setSize(new java.awt.Dimension(245, 142));
 
         jLabel3.setText("Product:");
@@ -771,7 +770,6 @@ public class CompanyMenu extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Company Menu");
-        setResizable(false);
 
         TopBar.setBackground(new java.awt.Color(0, 153, 255));
 

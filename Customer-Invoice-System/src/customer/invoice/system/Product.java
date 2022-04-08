@@ -111,7 +111,7 @@ public class Product {
     public Packet getQuantity(int companyId) {
         if (quantity == -1) {
             Packet companyVerifyPacket = Account.companyVerify(); // Check
-            if (companyVerifyPacket.getResult() != PacketResult.SUCCESS) {
+            if (companyVerifyPacket.getResult() == PacketResult.SUCCESS) {
                 DatabaseHandler handler = DatabaseHandler.getInstance();
                 if (handler.isConnected()) {
                     Object[] args = {productId, companyId};
