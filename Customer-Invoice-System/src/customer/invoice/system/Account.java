@@ -1,10 +1,5 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package customer.invoice.system;
 
-;
 import java.util.List;
 import java.util.UUID;
 
@@ -190,12 +185,13 @@ public class Account {
      *
      * @param accountId Account Id of user
      * @param sessionId Session Id of current session
-     * @return true if logged in and account exists
+     * @return (PacketResult.SUCCESS) if the session id exists
      */
     private static Packet checkSessionId(int accountId, String sessionId) {
         Object[] info = {accountId, sessionId};
         DatabaseHandler handler = DatabaseHandler.getInstance();
         if (handler.isConnected()) {
+            // Check if session id with account id exists in Session id table
             List<List<Object>> result = handler.get("accountId FROM Application.SessionId WHERE accountId = ? AND sessionId = ?", info, 1);
             if (result.size() >= 1) {
                 return new Packet(PacketResult.SUCCESS);
@@ -206,24 +202,34 @@ public class Account {
         return new Packet(PacketResult.CONNECTION_ERROR);
     }
 
+    /**
+     * Checks both the username and password inputted
+     * If the username and password are found then
+     * Create / Update the session id and upload it into the database
+     * @param username
+     * @param password
+     * @return (PacketResult.SUCCESS and sessionId) if successful
+     */
     private static Packet requestLogin(String username, String password) {
-        Packet accountIdPacket = getAccountId(username);
-        if (accountIdPacket.getResult() != PacketResult.SUCCESS) {
+        Packet accountIdPacket = getAccountId(username); // Does username exist
+        if (accountIdPacket.getResult() != PacketResult.SUCCESS) { // Check if packet was successful
             return accountIdPacket;
         }
         int accountId = (int) accountIdPacket.getInformation();
         if (accountId > 0) { // Verify if account username exists
-            Packet canLoginPacket = canLogin(username, password);
+            Packet canLoginPacket = canLogin(username, password); // Attempt login with username and password
             if (canLoginPacket.getResult() == PacketResult.SUCCESS) {
-                String sessionId = UUID.randomUUID().toString();
+                String sessionId = UUID.randomUUID().toString(); // Create session id
                 DatabaseHandler handler = DatabaseHandler.getInstance();
                 if (handler.isConnected()) {
                     Object[] info = {username, password};
+                    // Attempt to get session id from username and password
                     List<List<Object>> result = handler.get("Application.SessionId.sessionId FROM Application.SessionId JOIN Application.Account ON Application.Account.accountId = Application.SessionId.accountId AND Application.Account.username = ? AND Application.Account.password = ?", info, 1);
                     if (result.isEmpty()) { // No session id exists
                         if (handler.isConnected()) {
                             Object[] args = {accountId, sessionId};
                             boolean success = handler.insert("SessionId(accountId,sessionId) VALUES (?,?)", args);
+                            // Create session id
                             if (success) {
                                 return new Packet(PacketResult.SUCCESS, sessionId);
                             } else {
@@ -235,6 +241,7 @@ public class Account {
                     } else { // Session id already exists
                         Object[] args = {sessionId, accountId};
                         if (handler.isConnected()) {
+                            // Update session id
                             boolean success = handler.update("SessionId SET sessionId=? WHERE accountId=?", args);
                             if (success) {
                                 return new Packet(PacketResult.SUCCESS, sessionId);
@@ -252,7 +259,7 @@ public class Account {
                 return canLoginPacket;
             }
         }
-        return new Packet(PacketResult.ERROR_OCCURRED);
+        return new Packet(PacketResult.ERROR_OCCURRED); // No account exists??? (This should never happen)
     }
 
     private static Packet requestDetails(int accountId, String sessionId) {
