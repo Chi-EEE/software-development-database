@@ -28,8 +28,6 @@ public class AddCustomerForm extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        CustomerTitle = new javax.swing.JComboBox<>();
-        jLabel28 = new javax.swing.JLabel();
         jLabel23 = new javax.swing.JLabel();
         CustomerFirstName = new javax.swing.JTextField();
         CustomerLastName = new javax.swing.JTextField();
@@ -48,10 +46,6 @@ public class AddCustomerForm extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Add Customer");
-
-        CustomerTitle.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Mr", "Mrs", "Ms", "Mx" }));
-
-        jLabel28.setText("Title:");
 
         jLabel23.setText("First Name:");
 
@@ -105,10 +99,6 @@ public class AddCustomerForm extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel28)
-                                .addGap(47, 47, 47)
-                                .addComponent(CustomerTitle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel25)
                                 .addGap(25, 25, 25)
                                 .addComponent(CustomerEmailAddress, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -131,10 +121,6 @@ public class AddCustomerForm extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel28, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(CustomerTitle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel23)
                     .addComponent(CustomerFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -170,24 +156,23 @@ public class AddCustomerForm extends javax.swing.JFrame {
 
     private void OkButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OkButtonActionPerformed
         DatabaseHandler handler = DatabaseHandler.getInstance();
-        int title = Title.valueOf(String.valueOf(CustomerTitle.getSelectedItem())).ordinal();
         String firstName = CustomerFirstName.getText();
-        if (firstName.isEmpty()) { // Validation
+        if (firstName.isBlank()) { // Validation
             
         }
         
         String lastName = CustomerLastName.getText();
-        if (lastName.isEmpty()) { // Validation
+        if (lastName.isBlank()) { // Validation
             
         }
         
         String address = CustomerAddress.getText();
-        if (address.isEmpty()) { // Validation
+        if (address.isBlank()) { // Validation
             
         }
         
         String email = CustomerEmailAddress.getText();
-        if (email.isEmpty()) { // Validation
+        if (email.isBlank()) { // Validation
             
         }
         
@@ -197,12 +182,12 @@ public class AddCustomerForm extends javax.swing.JFrame {
         }
         
         String phoneNumber = CustomerPhoneNumber.getText();
-        if (phoneNumber.isEmpty()) { // Validation
+        if (phoneNumber.isBlank()) { // Validation
             
         }
         
-        Object[] args = {0, title, firstName, lastName, address, email, dob, phoneNumber};
-        boolean success = handler.insert("Customer(customerId,title,firstName,lastName,address,email,dob,phoneNumber) VALUES (?,?,?,?,?,?,?,?)", args);
+        Object[] args = {0, firstName, lastName, address, email, dob, phoneNumber};
+        boolean success = handler.insert("Customer(customerId,firstName,lastName,phoneNumber) VALUES (?,?,?,?,?,?,?,?)", args);
         if (success) {
             System.out.println("Successful at creating customer: " + firstName);
         }
@@ -255,7 +240,6 @@ public class AddCustomerForm extends javax.swing.JFrame {
     private javax.swing.JTextField CustomerFirstName;
     private javax.swing.JTextField CustomerLastName;
     private javax.swing.JTextField CustomerPhoneNumber;
-    private javax.swing.JComboBox<String> CustomerTitle;
     private javax.swing.JButton OkButton;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel23;
@@ -263,7 +247,6 @@ public class AddCustomerForm extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel25;
     private javax.swing.JLabel jLabel26;
     private javax.swing.JLabel jLabel27;
-    private javax.swing.JLabel jLabel28;
     private javax.swing.JScrollPane jScrollPane7;
     // End of variables declaration//GEN-END:variables
 }

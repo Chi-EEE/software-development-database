@@ -1,10 +1,7 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package customer.invoice.system;
 
 import java.awt.Component;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -14,6 +11,7 @@ public class SelectAccountType extends javax.swing.JFrame {
 
     /**
      * Creates new form ManageAccount
+     *
      * @param component
      */
     public SelectAccountType(Component component) {
@@ -44,8 +42,6 @@ public class SelectAccountType extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         LastNameTF = new javax.swing.JTextField();
-        jLabel5 = new javax.swing.JLabel();
-        TitleBox = new javax.swing.JComboBox<>();
         DOB = new com.toedter.calendar.JDateChooser();
         jLabel6 = new javax.swing.JLabel();
         CompanyDetailPanel = new javax.swing.JPanel();
@@ -56,6 +52,7 @@ public class SelectAccountType extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Select Account Type");
+        setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(0, 153, 255));
 
@@ -114,10 +111,6 @@ public class SelectAccountType extends javax.swing.JFrame {
 
         jLabel4.setText("Last Name");
 
-        jLabel5.setText("Title");
-
-        TitleBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Mr", "Mrs", "Ms", "Mx" }));
-
         jLabel6.setText("Date of Birth");
 
         javax.swing.GroupLayout CustomerDetailPanelLayout = new javax.swing.GroupLayout(CustomerDetailPanel);
@@ -127,7 +120,6 @@ public class SelectAccountType extends javax.swing.JFrame {
             .addGroup(CustomerDetailPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(CustomerDetailPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel5)
                     .addGroup(CustomerDetailPanelLayout.createSequentialGroup()
                         .addComponent(jLabel3)
                         .addGap(51, 51, 51)
@@ -136,19 +128,14 @@ public class SelectAccountType extends javax.swing.JFrame {
                         .addComponent(FirstNameTF, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(LastNameTF, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(TitleBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel6)
                     .addComponent(DOB, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(39, Short.MAX_VALUE))
         );
         CustomerDetailPanelLayout.setVerticalGroup(
             CustomerDetailPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(CustomerDetailPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel5)
-                .addGap(6, 6, 6)
-                .addComponent(TitleBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(CustomerDetailPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(jLabel4))
@@ -160,7 +147,7 @@ public class SelectAccountType extends javax.swing.JFrame {
                 .addComponent(jLabel6)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(DOB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(64, Short.MAX_VALUE))
         );
 
         jPanel3.add(CustomerDetailPanel, "card2");
@@ -254,9 +241,27 @@ public class SelectAccountType extends javax.swing.JFrame {
     private void OkButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OkButtonActionPerformed
         Account account = Account.getInstance();
         if (CompanyRadio.isSelected()) {
-            account.setAccountTypeToCompany(CompanyNameTF.getText(), WebsiteTF.getText());
+            Packet companyPacket = account.setAccountTypeToCompany(CompanyNameTF.getText(), WebsiteTF.getText());
+            switch (companyPacket.getResult()) {
+                case SUCCESS:
+                    new CompanyMenu(this).setVisible(true);
+                    break;
+                case CONNECTION_ERROR:
+                    JOptionPane.showMessageDialog(this, "Unable to set account type to company - You must be connected to the Database!",
+                            "Unable to connect to database", JOptionPane.ERROR_MESSAGE);
+                    break;
+                case DATABASE_ERROR:
+                    JOptionPane.showMessageDialog(this, "Unable to set account type to company - Something went wrong in the database query!",
+                            "Unable to connect to database", JOptionPane.ERROR_MESSAGE);
+                    break;
+                default:
+                    JOptionPane.showMessageDialog(this, "An Error has Occurred!",
+                            "Error Occurred", JOptionPane.ERROR_MESSAGE);
+                    break;
+            }
         } else {
-            account.setAccountTypeToCustomer(String.valueOf(TitleBox.getSelectedItem()), FirstNameTF.getText(), LastNameTF.getText(), DOB.getDate());
+            account.setAccountTypeToCustomer(FirstNameTF.getText(), LastNameTF.getText(), DOB.getDate());
+            JOptionPane.showMessageDialog(this, "Customer Menu here showing invoices!");
         }
         dispose();
     }//GEN-LAST:event_OkButtonActionPerformed
@@ -272,13 +277,11 @@ public class SelectAccountType extends javax.swing.JFrame {
     private javax.swing.JTextField FirstNameTF;
     private javax.swing.JTextField LastNameTF;
     private javax.swing.JButton OkButton;
-    private javax.swing.JComboBox<String> TitleBox;
     private javax.swing.JTextField WebsiteTF;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;

@@ -1,6 +1,7 @@
 package customer.invoice.system;
 
 import java.awt.Component;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
 /**
@@ -42,6 +43,7 @@ public class LoginAccountForm extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Login Account");
+        setResizable(false);
 
         jLabel2.setText("Username");
 
@@ -140,6 +142,19 @@ public class LoginAccountForm extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void LoginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LoginButtonActionPerformed
+        String username = UsernameTF.getText();
+        if (username.isBlank()) {
+            ErrorLabel.setText("* Please enter your username");
+            ErrorLabel.setVisible(true);
+            return;
+        }
+        String password = PasswordTF.getText();
+        if (password.isBlank()) {
+            ErrorLabel.setText("* Please enter your password");
+            ErrorLabel.setVisible(true);
+            return;
+        }
+
         Account account = Account.getInstance();
         Packet loginPacket = account.login(UsernameTF.getText(), PasswordTF.getText());
         switch (loginPacket.getResult()) {
@@ -148,7 +163,8 @@ public class LoginAccountForm extends javax.swing.JFrame {
                 switch (accountTypePacket.getResult()) {
                     /* Start */
                     case SUCCESS:
-                        AccountType accountType = (AccountType) accountTypePacket.getInformation();
+                        ArrayList<Object> accountInformation = (ArrayList<Object>) accountTypePacket.getInformation();
+                        AccountType accountType = (AccountType) accountInformation.get(0);
                         switch (accountType) {
                             case COMPANY:
                                 new CompanyMenu(this).setVisible(true);
@@ -189,19 +205,15 @@ public class LoginAccountForm extends javax.swing.JFrame {
                 ErrorLabel.setText("* A connection error.");
                 ErrorLabel.setVisible(true);
                 break;
-            case BAD_REQUEST:
-                ErrorLabel.setText("* Bad Request.");
-                ErrorLabel.setVisible(true);
-                break;
             default:
-                JOptionPane.showMessageDialog(this, "An Error has Occurred!",
-                        "Error Occurred", JOptionPane.ERROR_MESSAGE);
+                ErrorLabel.setText("* Incorrect Password. Try again or click 'Forgot Password to reset it");
+                ErrorLabel.setVisible(true);
                 break;
         }
     }//GEN-LAST:event_LoginButtonActionPerformed
 
     private void SignUpButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SignUpButtonActionPerformed
-        new CreateAccountForm(this).setVisible(true);
+        new SignUpAccountForm(this).setVisible(true);
         dispose();
     }//GEN-LAST:event_SignUpButtonActionPerformed
 

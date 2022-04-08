@@ -7,14 +7,14 @@ import javax.swing.JOptionPane;
  *
  * @author C00261172
  */
-public class CreateAccountForm extends javax.swing.JFrame {
+public class SignUpAccountForm extends javax.swing.JFrame {
 
     /**
      * Creates new form SignUpForm
      *
      * @param component
      */
-    public CreateAccountForm(Component component) {
+    public SignUpAccountForm(Component component) {
         initComponents();
         this.setLocationRelativeTo(component);
     }
@@ -52,6 +52,7 @@ public class CreateAccountForm extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Sign Up");
+        setResizable(false);
 
         AddressField.setColumns(20);
         AddressField.setRows(5);
@@ -258,7 +259,7 @@ public class CreateAccountForm extends javax.swing.JFrame {
         //new java.sql.Date(DOB.getDate().getTime())
         Packet accountCreatePacket = Account.createAccount(UsernameTF.getText(), PasswordTF.getText(), EmailTF.getText(), AddressField.getText(), EircodeTF.getText(), PhoneNumberTF.getText());
         switch (accountCreatePacket.getResult()) {
-            case SUCCESS:
+            case BAD_REQUEST:
                 dispose();
                 Account account = Account.getInstance();
                 Packet loginPacket = account.login(UsernameTF.getText(), PasswordTF.getText());
@@ -276,7 +277,7 @@ public class CreateAccountForm extends javax.swing.JFrame {
                         break;
                 }
                 break;
-            case BAD_REQUEST:
+            case SUCCESS:
                 JOptionPane.showMessageDialog(this, "The following account already exists.",
                         "Account Already Exists", JOptionPane.ERROR_MESSAGE);
                 break;

@@ -7,18 +7,31 @@ import java.util.Date;
  */
 public class Customer {
     private int customerId;
-    private Title title;
-    private String firstName;
-    private String lastName;
-    private String email;
-    private Date dob;
+    private String address;
+    private String eircode;
     private String phoneNumber;
 
-    public Customer(int customerId, String firstName, String lastName, String email) {
+    public Customer(int customerId, String address, String eircode, String phoneNumber) {
         this.customerId = customerId;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
+        this.address = address;
+        this.eircode = eircode;
+        this.phoneNumber = phoneNumber;
     }
 
+    public int getCustomerId() {
+        return customerId;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public String getEircode() {
+        return eircode;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+    
 }

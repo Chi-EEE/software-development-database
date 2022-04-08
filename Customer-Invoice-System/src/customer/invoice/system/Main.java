@@ -25,8 +25,8 @@ public class Main {
         databaseHandler.connect();
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-//                new LoginAccountForm(null).setVisible(true);
-                new CompanyMenu(null).setVisible(true);
+                new LoginAccountForm(null).setVisible(true);
+//                new CompanyMenu(null).setVisible(true);
             }
         });
     }

@@ -36,19 +36,16 @@ public class Invoice {
         return invoiceId;
     }
 
-    /**
-     * Set invoice information (customer and date)
+    /**\
+     * 
      * @param customerId
+     * @param invoiceId
      * @param date
      * @return 
      */
-    public Packet setInformation(int customerId, Date date) {
-        Account account = Account.getInstance();
-        Packet accountTypePacket = account.getAccountType();
-        if (accountTypePacket.getResult() == PacketResult.SUCCESS) { // Successful
-            ArrayList<Object> information = (ArrayList<Object>) accountTypePacket.getInformation();
-            AccountType accountType = (AccountType) information.get(0);
-            if (accountType == AccountType.COMPANY) { // Check account type
+    public static Packet setInformation(int customerId, int invoiceId, Date date) {
+        Packet companyVerify = Account.companyVerify();
+        if (companyVerify.getResult() == PacketResult.SUCCESS) {
                 DatabaseHandler handler = DatabaseHandler.getInstance();
                 if (handler.isConnected()) {
                     Object[] args = {customerId, date, invoiceId};
@@ -61,10 +58,8 @@ public class Invoice {
                 }
                 return new Packet(PacketResult.CONNECTION_ERROR);
             }
-            return new Packet(PacketResult.ACCESS_DENIED);
+            return companyVerify;
         }
-        return accountTypePacket;
-    }
 
     public ArrayList<InvoiceItem> getInvoiceItems(Component component) {
         items = new ArrayList<>(); // Reset Invoice items
@@ -112,17 +107,20 @@ public class Invoice {
         return checkSessionIdPacket;
     }
 
-    public static Packet deleteInvoice(Invoice invoice) {
-        Account account = Account.getInstance();
-        Packet accountTypePacket = account.getAccountType();
-        if (accountTypePacket.getResult() == PacketResult.SUCCESS) {
-            ArrayList<Object> information = (ArrayList<Object>) accountTypePacket.getInformation();
-            AccountType accountType = (AccountType) information.get(0);
-            if (accountType == AccountType.COMPANY) {
-                DatabaseHandler databaseHandler = DatabaseHandler.getInstance();
-                if (databaseHandler.isConnected()) {
-                    Object[] args = {invoice.getInvoiceId()};
-                    boolean success = databaseHandler.delete("Invoice", "invoiceId = ?;", args);
+    public static Packet deleteInvoice(int invoiceId) {
+        Packet companyVerify = Account.companyVerify();
+        if (companyVerify.getResult() == PacketResult.SUCCESS) {
+                DatabaseHandler handler = DatabaseHandler.getInstance();
+                if (handler.isConnected()) {
+                    Object[] args = {invoiceId};
+                    List<List<Object>> invoiceItemList = handler.get("productId FROM Application.InvoiceItem WHERE invoiceId=?", args, 1);
+                    if (invoiceItemList.size() == 1) {
+                        List<Object> invoiceItems = invoiceItemList.get(0);
+                        for (int i = 0; i < invoiceItems.size(); i++) {
+                            Company.deleteInvoiceItem((int)invoiceItems.get(i), invoiceId);
+                        }
+                    }
+                    boolean success = handler.delete("Invoice", "invoiceId = ?;", args);
                     if (success) {
                         return new Packet(PacketResult.SUCCESS);
                     }
@@ -130,8 +128,6 @@ public class Invoice {
                 }
                 return new Packet(PacketResult.CONNECTION_ERROR);
             }
-            return new Packet(PacketResult.ACCESS_DENIED);
-        }
-        return accountTypePacket;
+        return companyVerify;
     }
 }
