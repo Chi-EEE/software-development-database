@@ -11,7 +11,7 @@ package customer.invoice.system;
  * @author admin
  */
 public enum AccountType {
-    NULL,
-    CUSTOMER,
-    COMPANY
+    NULL, // Null account
+    CUSTOMER, // Customer account
+    COMPANY // Company account
 }

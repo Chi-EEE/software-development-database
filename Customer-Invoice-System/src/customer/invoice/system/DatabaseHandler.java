@@ -17,10 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 
-/**
- * @author C00261172
- * @summary Singleton Class for database
- */
 public class DatabaseHandler {
 
     static final String DATABASE_URL = "jdbc:mysql://localhost/Application"; // DB address
@@ -33,7 +29,7 @@ public class DatabaseHandler {
 
     /**
      * Make sure there is only one of the DatabaseHandler
-     * @return 
+     * @return An instance of database handler
      */
     public static DatabaseHandler getInstance() {
         if (instance == null) {

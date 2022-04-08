@@ -42,8 +42,8 @@ public class Account {
     /**
      * Used for logging in for the first time
      *
-     * @param username
-     * @param password
+     * @param username Username
+     * @param password Password
      * @return PacketResult.SUCCESS if successful
      */
     public Packet login(String username, String password) {
@@ -114,12 +114,12 @@ public class Account {
     /**
      * Create a new account
      *
-     * @param username
-     * @param password
-     * @param email
-     * @param address
-     * @param eircode
-     * @param phoneNumber
+     * @param username Username
+     * @param password Password
+     * @param email Email
+     * @param address Address
+     * @param eircode Eircode
+     * @param phoneNumber Phonenumber
      * @return PacketResult.BAD_REQUEST if successful
      */
     public static Packet createAccount(String username, String password, String email, String address, String eircode, String phoneNumber) {
@@ -146,9 +146,9 @@ public class Account {
     /**
      * Sets account type to customer
      *
-     * @param firstName
-     * @param lastName
-     * @param dob
+     * @param firstName First name
+     * @param lastName Last Name
+     * @param dob Date of Birth
      * @return PacketResult.SUCCESS if successful
      */
     public Packet setAccountTypeToCustomer(String firstName, String lastName, java.util.Date dob) {

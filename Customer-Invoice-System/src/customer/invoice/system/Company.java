@@ -29,7 +29,7 @@ public class Company {
      * Initalises the company information by checking if the account is a
      * company and setting the company id and name to the retrieved values
      *
-     * @return
+     * @return packet for account type
      */
     public static Packet initalise() {
         Account account = Account.getInstance();
@@ -52,9 +52,9 @@ public class Company {
      * item to invoice. If another invoice item exists inside of the invoice
      * then increment it
      *
-     * @param quantityRequested
-     * @param product
-     * @param invoice
+     * @param quantityRequested Quantity requested
+     * @param product Product
+     * @param invoiceId Invoice Id
      * @return
      */
     public static Packet addInvoiceItem(int quantityRequested, Product product, int invoiceId) {
